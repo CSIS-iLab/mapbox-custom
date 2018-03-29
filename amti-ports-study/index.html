@@ -6,14 +6,70 @@
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet' />
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700" rel="stylesheet">
     <style>
         body { margin:0; padding:0; }
         #map { position:absolute; top:0; bottom:0; width:100%; }
+        .tabContainer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 280px;
+    height: 400px;
+    overflow: hidden;
+    font-family: 'PT Sans Narrow', sans-serif;
+}
+        #menu{
+  background-color: #FFFFFF;
+  display: inline-block;
+  padding: 10px 10px 31px 10px;
+  text-align: left;
+}
+
+#menu h2 {
+  color: #023850;
+}
+
+ul {
+    list-style: none; /* Remove HTML bullets */
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    padding-left: 16px;
+}
+
+li::before {
+    content: "•"; /* Insert content that looks like bullets */
+    padding-right: 8px;
+    color: #0738d7; /* Or a color you prefer */
+    font-size: 48px;
+}
     </style>
 </head>
 <body>
 
 <div id='map'></div>
+<div class='tabContainer'>
+  <div id='menu'>
+
+    <h2>
+      Indian Ocean Port Projects
+    </h2>
+
+    <ul>
+      <li>
+        Case Studies
+      </li>
+      <li>
+        Other Projects of Interest
+      </li>
+    </ul>
+
+  </div>
+</div>
+
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw';
 var map = new mapboxgl.Map({
@@ -26,8 +82,8 @@ zoom: 4.32
 });
 
 // Add zoom and rotation controls to the map.
-map.addControl(new mapboxgl.NavigationControl());
-map.addControl(new mapboxgl.FullscreenControl());
+map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+map.addControl(new mapboxgl.FullscreenControl(), 'top-left');
 
 </script>
 
