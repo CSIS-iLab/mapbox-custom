@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<meta charset='utf-8' />
+		<title>Major Indian Ocean Port Projects</title>
+		<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+		<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.js'></script>
+		<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet' />
+		<link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700" rel="stylesheet">
+		<style>
+				body { margin:0; padding:0; }
+				#map { position:absolute; top:0; bottom:0; width:100%; }
+				.tabContainer {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 280px;
+		height: 400px;
+		overflow: hidden;
+		font-family: 'PT Sans Narrow', sans-serif;
+}
+
+#switcher {
+		position: absolute;
+		background: #fff;
+		padding: 10px;
+		font-family: 'Open Sans', sans-serif;
+}
+				#menu{
+	background-color: #FFFFFF;
+	display: inline-block;
+	padding: 10px 10px 31px 10px;
+	text-align: left;
+}
+
+#menu h2 {
+	color: #023850;
+}
+
+.colorKey{
+	height: 15px;
+	width: 15px;
+	display: inline-block;
+	margin-right: 5px;
+	margin-left: 5px;
+	vertical-align: middle;
+	border-radius: 20px;
+	border: black solid .5px;
+}
+		</style>
+</head>
+<body>
+
+<div id='map'></div>
+<div id='switcher'>
+    <input id='basic' type='radio' name='rtoggle' value='basic' checked='checked'>
+    <label for='basic'>basic</label>
+    <input id='streets' type='radio' name='rtoggle' value='streets'>
+    <label for='streets'>streets</label>
+    <input id='bright' type='radio' name='rtoggle' value='bright'>
+    <label for='bright'>bright</label>
+    <input id='light' type='radio' name='rtoggle' value='light'>
+    <label for='light'>light</label>
+    <input id='dark' type='radio' name='rtoggle' value='dark'>
+    <label for='dark'>dark</label>
+    <input id='satellite' type='radio' name='rtoggle' value='satellite'>
+    <label for='satellite'>satellite</label>
+</div>
+<div class='tabContainer'>
+	<div id='menu'>
+
+		<h2>
+			Select Indian Ocean Port Projects
+		</h2>
+
+		<div class="colorKey" style="background-color: #0738d7;"></div>Case Studies
+		<br / >
+		<div class="colorKey" style="background-color: #961d1d;"></div>Other Projects of Interest
+
+		<p>
+			Geodata research &copy; Center for Strategic and International Studies (CSIS)
+		</p>
+
+	</div>
+</div>
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw';
+var map = new mapboxgl.Map({
+		container: 'map', // container id
+		style: 'mapbox://styles/ilabmedia/cjfcjy0v177tp2rmilard8d6w', // stylesheet location
+		center: [72.709476, 12.169308],
+pitch: 45.50, // pitch in degrees
+bearing: -16.00, // bearing in degrees
+zoom: 4
+});
+
+var layerList = document.getElementById('switcher');
+var inputs = layerList.getElementsByTagName('input');
+
+for (var i = 0; i < inputs.length; i++) {
+    inputs[i].onclick = switchLayer;
+}
+
+function switchLayer(layer) {
+    var layerId = layer.target.id;
+    map.setStyle('mapbox://styles/mapbox/' + layerId + '-v9');
+}
+
+// Add zoom and rotation controls to the map.
+map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+map.addControl(new mapboxgl.FullscreenControl(), 'top-left');
+
+
+
+</script>
+
+</body>
+</html>
