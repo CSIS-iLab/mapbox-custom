@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<meta charset='utf-8' />
+		<title>Countries of the Kremlin Playbook</title>
+		<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+		<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.js'></script>
+		<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet' />
+		<link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700" rel="stylesheet">
+		<style>
+				body { margin:0; padding:0; }
+				#map { position:absolute; top:0; bottom:0; width:100%; }
+				.tabContainer {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 280px;
+		height: 400px;
+		overflow: hidden;
+		font-family: 'PT Sans Narrow', sans-serif;
+}
+/*				#menu{
+	background-color: #FFFFFF;
+	display: inline-block;
+	padding: 10px 10px 31px 10px;
+	text-align: left;
+}
+
+#menu h2 {
+	color: #023850;
+}
+
+*/
+
+#menu {
+		background: #fff;
+		position: absolute;
+		z-index: 1;
+		top: 10px;
+		right: 10px;
+		border-radius: 3px;
+		width: 120px;
+		border: 1px solid rgba(0,0,0,0.4);
+		font-family: 'Open Sans', sans-serif;
+}
+
+#menu a {
+		font-size: 13px;
+		color: #404040;
+		display: block;
+		margin: 0;
+		padding: 0;
+		padding: 10px;
+		text-decoration: none;
+		border-bottom: 1px solid rgba(0,0,0,0.25);
+		text-align: center;
+}
+
+#menu a:last-child {
+		border: none;
+}
+
+#menu a:hover {
+		background-color: #f8f8f8;
+		color: #404040;
+}
+
+#menu a.active {
+		background-color: #3887be;
+		color: #ffffff;
+}
+
+#menu a.active:hover {
+		background: #3074a4;
+}
+
+.colorKey{
+	height: 15px;
+	width: 15px;
+	display: inline-block;
+	margin-right: 5px;
+	margin-left: 5px;
+	vertical-align: middle;
+	border-radius: 20px;
+	border: black solid .5px;
+}
+		</style>
+</head>
+<body>
+<nav id="menu"></nav>
+<div id='map'></div>
+<!--<div class='tabContainer'>
+	<div id='menu'>
+
+		<h2>
+			The Kremlin Playbook
+		</h2>
+
+		<div class="colorKey" style="background-color: #0738d7;"></div>Case Studies
+		<br / >
+		<div class="colorKey" style="background-color: #961d1d;"></div>Other Projects of Interest
+
+		<p>
+			The Europe Program &copy; Center for Strategic and International Studies (CSIS)
+		</p>
+
+	</div>
+</div>-->
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw';
+var map = new mapboxgl.Map({
+		container: 'map', // container id
+		style: 'mapbox://styles/ilabmedia/cjidbdmiv17ky2smc23lmbtkl', // stylesheet location
+		center: [25.456753, 49.454692],
+pitch: 39.00, // pitch in degrees
+bearing: -15.20, // bearing in degrees
+zoom: 3.75
+});
+
+//Toggling menu
+map.on('load', function () {
+    map.addSource('russia', {
+        type: 'vector',
+        url: 'mapbox://ilabmedia.3wngen8u'
+    });
+    map.addLayer({
+        'id': 'russland',
+        'type': 'fill',
+        'source': 'russia',
+        'layout': {
+            'visibility': 'visible'
+        },
+        'paint': {
+            'fill-color': '#000'
+        },
+        'source-layer': 'admin',
+				'filter': 'Russia'
+    });
+});
+
+var toggleableLayerIds = [ 'russland' ];
+
+for (var i = 0; i < toggleableLayerIds.length; i++) {
+    var id = toggleableLayerIds[i];
+
+    var link = document.createElement('a');
+    link.href = '#';
+    link.className = 'active';
+    link.textContent = id;
+
+    link.onclick = function (e) {
+        var clickedLayer = this.textContent;
+        e.preventDefault();
+        e.stopPropagation();
+
+        var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+
+        if (visibility === 'visible') {
+            map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+            this.className = '';
+        } else {
+            this.className = 'active';
+            map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+        }
+    };
+
+    var layers = document.getElementById('menu');
+    layers.appendChild(link);
+}
+
+
+// Add zoom and rotation controls to the map.
+map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+map.addControl(new mapboxgl.FullscreenControl(), 'top-left');
+
+</script>
+
+</body>
+</html>
