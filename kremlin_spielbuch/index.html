@@ -22,7 +22,7 @@
 #megamenu{
 	background-color: #FFFFFF;
 	display: inline-block;
-	padding: 10px 10px 31px 10px;
+	padding: 10px 50% 31px 10px;
 	text-align: left;
 }
 
@@ -85,7 +85,7 @@
 		</style>
 </head>
 <body>
-		<nav id="menu"></nav>
+		<nav id="menu">Click to toggle layers</nav>
 <div id='map'></div>
 <div class='tabContainer'>
 	<div id='megamenu'>
@@ -94,12 +94,14 @@
 			The Kremlin Playbook
 		</h2>
 
-		<div class="colorKey" style="background-color: #0738d7;"></div>Case Studies
+		<div class="colorKey" style="background-color: #995f0a;"></div>Kremlin Playbook 1
 		<br / >
-		<div class="colorKey" style="background-color: #961d1d;"></div>Other Projects of Interest
+		<div class="colorKey" style="background-color: #f9ddc5;"></div>Kremlin Playbook 2
+		<br / >
+		<div class="colorKey" style="background-color: #ffffff;"></div>Spotlight Countries
 
 		<p>
-			The Europe Program &copy; Center for Strategic and International Studies (CSIS)
+			<a href="https://www.csis.org/programs/europe-program" target="_blank">The Europe Program</a> &copy; CSIS
 		</p>
 
 	</div>
@@ -113,7 +115,7 @@ var map = new mapboxgl.Map({
 		center: [25.456753, 49.454692],
 pitch: 39.00, // pitch in degrees
 bearing: -15.20, // bearing in degrees
-zoom: 3.75
+zoom: 4
 });
 
 //Toggling menu
@@ -123,7 +125,7 @@ map.on('load', function () {
         url: 'mapbox://ilabmedia.cjien65pv006p8uprg9kij9wc-29v7k' //THIS IS THE TILESET URL, NOT THE STYLE URL
     });
     map.addLayer({
-        'id': 'kp1', // string id, references var toggleableLayerIds switcher
+        'id': 'Kremlin Playbook 1', // string id, references var toggleableLayerIds switcher
         'type': 'fill',
 				'source': 'kp1', // line 123
 				'source-layer': 'kremlin_playbook_1', //name of tileset Layer Details
@@ -140,7 +142,7 @@ map.on('load', function () {
 	         url: 'mapbox://ilabmedia.cjieqjy1000wqcgpazat9yqdt-3s7hc' //THIS IS THE TILESET URL, NOT THE STYLE URL
 	     });
 	     map.addLayer({
-	         'id': 'kp2', // string id, references var toggleableLayerIds switcher
+	         'id': 'Kremlin Playbook 2', // string id, references var toggleableLayerIds switcher
 	         'type': 'fill',
 	 				'source': 'kp2', // line 123
 	 				'source-layer': 'kremlin_playbook_2', //name of tileset Layer Details
@@ -157,20 +159,23 @@ map.on('load', function () {
 						 url: 'mapbox://ilabmedia.cjieqzlww01y3airzc1j5gckz-8e91m' //THIS IS THE TILESET URL, NOT THE STYLE URL
 				 });
 				 map.addLayer({
-						 'id': 'spotlight', // string id, references var toggleableLayerIds switcher
-						 'type': 'fill',
+						 'id': 'Spotlight Countries', // string id, references var toggleableLayerIds switcher
+						 'type': 'fill-extrusion',
 						 'source': 'spotlight', // line 123
+						 'sprite': 'mapbox://sprites/mapbox/bright-v8',
 						 'source-layer': 'kp_spotlight_', //name of tileset Layer Details
 						 'layout': {
 								 'visibility': 'visible'
 						 },
 						 'paint': {
-							 		'fill-color': '#000'
+							 		'fill-extrusion-color': '#ffffff',
+									'fill-extrusion-height': 50000,
+									'fill-extrusion-opacity': .5
 						 }
 					 });
 });
 
-var toggleableLayerIds = [ 'kp1', 'kp2', 'spotlight' ];
+var toggleableLayerIds = [ 'Kremlin Playbook 1', 'Kremlin Playbook 2', 'Spotlight Countries' ];
 
 for (var i = 0; i < toggleableLayerIds.length; i++) {
     var id = toggleableLayerIds[i];
