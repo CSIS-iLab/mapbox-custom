@@ -14,23 +14,21 @@
 		position: absolute;
 		top: 0;
 		right: 0;
-		width: 280px;
+		width: 400px;
 		height: 400px;
 		overflow: hidden;
 		font-family: 'PT Sans Narrow', sans-serif;
 }
-/*				#menu{
+#megamenu{
 	background-color: #FFFFFF;
 	display: inline-block;
 	padding: 10px 10px 31px 10px;
 	text-align: left;
 }
 
-#menu h2 {
+#megamenu h2 {
 	color: #023850;
 }
-
-*/
 
 #menu {
 		background: #fff;
@@ -87,10 +85,10 @@
 		</style>
 </head>
 <body>
-<nav id="menu"></nav>
+		<nav id="menu"></nav>
 <div id='map'></div>
-<!--<div class='tabContainer'>
-	<div id='menu'>
+<div class='tabContainer'>
+	<div id='megamenu'>
 
 		<h2>
 			The Kremlin Playbook
@@ -105,7 +103,7 @@
 		</p>
 
 	</div>
-</div>-->
+</div>
 
 <script>
 mapboxgl.accessToken = 'pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw';
@@ -120,26 +118,59 @@ zoom: 3.75
 
 //Toggling menu
 map.on('load', function () {
-    map.addSource('russia', {
+    map.addSource('kp1', {
         type: 'vector',
-        url: 'mapbox://ilabmedia.3wngen8u'
+        url: 'mapbox://ilabmedia.cjien65pv006p8uprg9kij9wc-29v7k' //THIS IS THE TILESET URL, NOT THE STYLE URL
     });
     map.addLayer({
-        'id': 'russland',
+        'id': 'kp1', // string id, references var toggleableLayerIds switcher
         'type': 'fill',
-        'source': 'russia',
+				'source': 'kp1', // line 123
+				'source-layer': 'kremlin_playbook_1', //name of tileset Layer Details
         'layout': {
             'visibility': 'visible'
         },
         'paint': {
-            'fill-color': '#000'
-        },
-        'source-layer': 'admin',
-				'filter': 'Russia'
-    });
+            'fill-color': '#995f0a',
+						'fill-opacity': .5
+        }
+			 });
+			 map.addSource('kp2', {
+	         type: 'vector',
+	         url: 'mapbox://ilabmedia.cjieqjy1000wqcgpazat9yqdt-3s7hc' //THIS IS THE TILESET URL, NOT THE STYLE URL
+	     });
+	     map.addLayer({
+	         'id': 'kp2', // string id, references var toggleableLayerIds switcher
+	         'type': 'fill',
+	 				'source': 'kp2', // line 123
+	 				'source-layer': 'kremlin_playbook_2', //name of tileset Layer Details
+	         'layout': {
+	             'visibility': 'visible'
+	         },
+	         'paint': {
+	             'fill-color': '#f9ddc5',
+	 						'fill-opacity': .5
+	         }
+	 			 });
+				 map.addSource('spotlight', {
+						 type: 'vector',
+						 url: 'mapbox://ilabmedia.cjieqzlww01y3airzc1j5gckz-8e91m' //THIS IS THE TILESET URL, NOT THE STYLE URL
+				 });
+				 map.addLayer({
+						 'id': 'spotlight', // string id, references var toggleableLayerIds switcher
+						 'type': 'fill',
+						 'source': 'spotlight', // line 123
+						 'source-layer': 'kp_spotlight_', //name of tileset Layer Details
+						 'layout': {
+								 'visibility': 'visible'
+						 },
+						 'paint': {
+							 		'fill-color': '#000'
+						 }
+					 });
 });
 
-var toggleableLayerIds = [ 'russland' ];
+var toggleableLayerIds = [ 'kp1', 'kp2', 'spotlight' ];
 
 for (var i = 0; i < toggleableLayerIds.length; i++) {
     var id = toggleableLayerIds[i];
