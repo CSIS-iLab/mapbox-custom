@@ -100,9 +100,9 @@ const client = new carto.Client({
 
 // Load the markets dataset
 
-const priceFilter = new carto.filter.Range('estimated_revenue_usd', { lte: 40 });
+const priceFilter = new carto.filter.Range('estimated_revenue_usd', { lte: 500000 });
 
-const markets = new carto.source.SQL('dprkmarkets_by_geocoordinates');
+const markets = new carto.source.SQL('SELECT * FROM dprkmarkets_by_geocoordinates');
 markets.addFilter(priceFilter);
 
       const style_markets = new carto.style.CartoCSS(`
