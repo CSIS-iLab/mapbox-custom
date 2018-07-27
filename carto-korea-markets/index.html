@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,91 +12,125 @@
 <!-- Include CARTO.js -->
 <script src="https://libs.cartocdn.com/carto.js/v4.1.1/carto.min.js"></script>
 <link href="https://carto.com/developers/carto-js/examples/maps/public/style.css" rel="stylesheet">
+<style>
+
+#bp-logo {
+		position: absolute;
+		top: 20px;
+		height: 24px;
+		width: 200px;
+		border: 0;
+		padding: 0;
+		background-image: url(/bp_logo.png);
+		background-color: transparent;
+		cursor: pointer;
+	}
+
+	#copyright_bug {
+		position: absolute;
+		background: rgba(255,255,255,.7);
+		font-size: 11px;
+		left: 0;
+		bottom: 0;
+		width: 400px;
+		height: 16px;
+		text-align: center;
+		padding-top: 2px;
+	}
+
+
+</style>
+
 </head>
 <body>
 <div id="map"></div>
 <aside class="toolbox">
 <div class="box">
-  <header>
-    <h1>Private Markets in North Korea</h1>
-    <button class="github-logo js-source-link"></button>
-  </header>
+	<header>
+		<h1>Private Markets in North Korea</h1>
+		<button id="bp_logo"></button>
+	</header>
 
-  <section>
-    <p class="description open-sans">One of the most significant developments in North Korea over the past two decades has been the growth of markets. This map provides a broad view of the geographical location of markets across North Korea.  Each dot represents one market.</p>
+	<section>
+		<p class="description open-sans">One of the most significant developments in North Korea over the past two decades has been the growth of markets. This map provides a broad view of the geographical location of markets across North Korea.  Each dot represents one market.</p>
 
-    <div class="separator"></div>
+		<div class="separator"></div>
 
-    <!--<section class="usage">
-      <header>USAGE</header>
-      <p class="open-sans">Overlay borders of North Korean provinces and counties.</p>
-    </section>-->
-    <div id="controls">
-      <div id="info">
-        <h3>Administrative Regions</h3>
-      </div>
-      <ul>
-        <li>
-          <input type="checkbox" name="roomTypes[]" id="entire" value="Entire home/apt" checked>
-          <label for="entire">Provinces (Gun 군) </label>
-        </li>
-        <li>
-          <input type="checkbox" name="roomTypes[]" id="private" value="Private room" checked>
-          <label for="private">Counties (Do 도)</label>
-        </li>
-      </ul>
-      <div id="info">
-                <h3>Rents Paid to Government (Annual, in USD)</h3>
-              </div>
-              <div class="widget">
-                <p class="open-sans">Showing markets earning below and equal to <span class="js-price-placeholder">$500,000</span> per year.</p>
-              </div>
-              <input type="range" name="price" class="slider" min="349.29" max="849329.19" value="500000" step="1" min-with-suffix="$340" max-with-suffix="$850,000">
-            </div>
-    </div>
-  </section>
-  <footer class="js-footer">Original Research &copy; <a href="https://beyondparallel.csis.org/" target="_blank">Beyond Parallel</a> and CSIS | Sponsored by ... | 2018</footer>
+		<!--<section class="usage">
+			<header>USAGE</header>
+			<p class="open-sans">Overlay borders of North Korean provinces and counties.</p>
+		</section>-->
+		<div id="controls">
+			<div id="info">
+				<h3>Administrative Regions</h3>
+			</div>
+			<ul>
+				<li>
+					<input type="checkbox" name="roomTypes[]" id="entire" value="Entire home/apt" checked>
+					<label for="entire">Provinces (Gun 군) </label>
+				</li>
+				<li>
+					<input type="checkbox" name="roomTypes[]" id="private" value="Private room" checked>
+					<label for="private">Counties (Do 도)</label>
+				</li>
+			</ul>
+			<div id="info">
+								<h3>Rents Paid to Government (Annual, in USD)</h3>
+							</div>
+							<div class="widget">
+								<p class="open-sans">Showing markets earning below and equal to <span class="js-price-placeholder">$500,000</span> per year.</p>
+							</div>
+							<input type="range" name="price" class="slider" min="349.29" max="849329.19" value="500000" step="1" min-with-suffix="$340" max-with-suffix="$850,000">
+						</div>
+		</div>
+	</section>
+	<footer class="js-footer"></footer>
+
 </div>
 </aside>
+
+<div id="copyright_bug">
+	Original Research &copy; <a href="https://beyondparallel.csis.org/" target="_blank">Beyond Parallel</a> and CSIS | Sponsored by ... | 2018
+</div>
 
 <script>
 
 const inputRange = document.querySelector('#controls input[type=range]');
-  inputRange.style.setProperty('--value', (inputRange.value - inputRange.min) / 0.59);
+	inputRange.style.setProperty('--value', (inputRange.value - inputRange.min) / 8800);
 
-  const pricePlaceholder = document.querySelector('#controls .js-price-placeholder');
+	const pricePlaceholder = document.querySelector('#controls .js-price-placeholder');
 
-  function applyFilters (e) {
-    const maximumPrice = parseInt(e.target.value);
+	function applyFilters (e) {
+		const maximumPrice = parseInt(e.target.value);
 
-    priceFilter.setFilters({ lte: maximumPrice });
-    pricePlaceholder.innerText = "$" + maximumPrice;
-  }
+		priceFilter.setFilters({ lte: maximumPrice });
+		pricePlaceholder.innerText = "$" + maximumPrice;
+	}
 
-  function registerListeners () {
-    inputRange.addEventListener('input', e => {
-      inputRange.style.setProperty('--value', (inputRange.value - inputRange.min) / 0.59);
-    });
+	function registerListeners () {
+		inputRange.addEventListener('input', e => {
+			inputRange.style.setProperty('--value', (inputRange.value - inputRange.min) / 8800);
+		});
 
-    inputRange.addEventListener('change', e => {
-      applyFilters(e)
-    });
-  }
+		inputRange.addEventListener('change', e => {
+			applyFilters(e)
+		});
+	}
 
 // Intitiate the map parameters
 
 const map = L.map('map').setView([39.7952701,126.5886823], 7);
-map.scrollWheelZoom.disable();
+map.scrollWheelZoom.enable();
 
 L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/cjk40a37x21ha2skptjecv1j0/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw', {
-  maxZoom: 14
+	maxZoom: 14
 }).addTo(map);
 
 // API connection nonsense
 
 const client = new carto.Client({
-  apiKey: 'oOq5nIiQ2_kKSBDowFLCPg',
-  username: 'csis'
+	apiKey: 'oOq5nIiQ2_kKSBDowFLCPg',
+	username: 'csis'
 });
 
 // Load the markets dataset
@@ -105,25 +140,45 @@ const priceFilter = new carto.filter.Range('estimated_revenue_usd', { lte: 50000
 const markets = new carto.source.SQL('SELECT * FROM dprkmarkets_by_geocoordinates');
 markets.addFilter(priceFilter);
 
-      const style_markets = new carto.style.CartoCSS(`
-        #layer {
-  marker-width: ramp([estimated_revenue_usd], range(4, 10), quantiles(5));
-  marker-fill: #f2c730;
-  marker-fill-opacity: 1;
-  marker-allow-overlap: true;
-  marker-line-width: 1;
-  marker-line-color: #000000;
-  marker-line-opacity: 1;
-  marker-comp-op: screen;
+			const style_markets = new carto.style.CartoCSS(`
+				#layer {
+	marker-width: ramp([estimated_revenue_usd], range(4, 10), quantiles(5));
+	marker-fill: #f2c730;
+	marker-fill-opacity: 1;
+	marker-allow-overlap: true;
+	marker-line-width: 1;
+	marker-line-color: #000000;
+	marker-line-opacity: 1;
+	marker-comp-op: screen;
 }
-      `);
+			`);
 
-      const layer_markets = new carto.layer.Layer(markets, style_markets, {
-        featureOverColumns: ['name', 'area_m2', 'no_of_stalls', 'estimated_revenue_usd']
-      });
+			const layer_markets = new carto.layer.Layer(markets, style_markets, {
+				featureOverColumns: ['name', 'area_m2', 'no_of_stalls', 'estimated_revenue_usd']
+			});
 
-      client.addLayer(layer_markets);
-      client.getLeafletLayer().addTo(map);
+			client.addLayer(layer_markets);
+			client.getLeafletLayer().addTo(map);
+
+			// Popups or go to hell
+
+			const popup = L.popup({ closeButton: false });
+		layer_markets.on(carto.layer.events.FEATURE_OVER, featureEvent => {
+			popup.setLatLng(featureEvent.latLng);
+			if (!popup.isOpen()) {
+				popup.setContent(
+					"MARKET NAME " + "<br / ><strong>" +
+					featureEvent.data.name + "</strong><br /><br />" + "MARKET AREA<br />" + featureEvent.data.area_m2
+
+
+				);
+				popup.openOn(map);
+			}
+		});
+
+		layer_markets.on(carto.layer.events.FEATURE_OUT, featureEvent => {
+	popup.removeFrom(map);
+});
 
 registerListeners();
 </script>
