@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Category Filter | CARTO</title>
+<title>Private Markets in North Korea | Beyond Parallel | CSIS</title>
 <meta name="viewport" content="initial-scale=1.0">
 <meta charset="utf-8">
 <link href="https://fonts.googleapis.com/css?family=Montserrat:400,600,700|Open+Sans:300,400,600" rel="stylesheet">
@@ -26,11 +26,10 @@
 
     <div class="separator"></div>
 
-    <section class="usage">
+    <!--<section class="usage">
       <header>USAGE</header>
       <p class="open-sans">Overlay borders of North Korean provinces and counties.</p>
-    </section>
-
+    </section>-->
     <div id="controls">
       <div id="info">
         <h3>Administrative Regions</h3>
@@ -45,33 +44,45 @@
           <label for="private">Counties (Do 도)</label>
         </li>
       </ul>
+      <div id="info">
+                <h3>Rents Paid to Government (Annual, in USD)</h3>
+              </div>
+              <div class="widget">
+                <p class="open-sans">Showing markets earning below and equal to <span class="js-price-placeholder">$500,000</span> per year.</p>
+              </div>
+              <input type="range" name="price" class="slider" min="349.29" max="849329.19" value="500000" step="1" min-with-suffix="$340" max-with-suffix="$850,000">
+            </div>
     </div>
   </section>
-
-  <footer class="js-footer"></footer>
+  <footer class="js-footer">Original Research &copy; <a href="https://beyondparallel.csis.org/" target="_blank">Beyond Parallel</a> and CSIS | Sponsored by ... | 2018</footer>
 </div>
 </aside>
 
 <script>
-function getSelectedRoomTypes () {
-  const inputControls = document.querySelectorAll('#controls input');
-  const values = [];
 
-  inputControls.forEach(input => input.checked ? values.push(input.value): null);
-  return values;
-}
+const inputRange = document.querySelector('#controls input[type=range]');
+  inputRange.style.setProperty('--value', (inputRange.value - inputRange.min) / 0.59);
 
-function applyFilters () {
-  roomTypeFilter.setFilters({ in: getSelectedRoomTypes() });
-  // or
-  // roomTypeFilter.set('in', getSelectedRoomTypes());
-}
+  const pricePlaceholder = document.querySelector('#controls .js-price-placeholder');
 
-function registerListeners () {
-  document.querySelectorAll('#controls input').forEach(
-    input => input.addEventListener('click', () => applyFilters())
-  );
-}
+  function applyFilters (e) {
+    const maximumPrice = parseInt(e.target.value);
+
+    priceFilter.setFilters({ lte: maximumPrice });
+    pricePlaceholder.innerText = "$" + maximumPrice;
+  }
+
+  function registerListeners () {
+    inputRange.addEventListener('input', e => {
+      inputRange.style.setProperty('--value', (inputRange.value - inputRange.min) / 0.59);
+    });
+
+    inputRange.addEventListener('change', e => {
+      applyFilters(e)
+    });
+  }
+
+// Intitiate the map parameters
 
 const map = L.map('map').setView([39.7952701,126.5886823], 7);
 map.scrollWheelZoom.disable();
@@ -80,12 +91,20 @@ L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/cjk40a37x21ha2skptjecv1j
   maxZoom: 14
 }).addTo(map);
 
+// API connection nonsense
+
 const client = new carto.Client({
   apiKey: 'oOq5nIiQ2_kKSBDowFLCPg',
   username: 'csis'
 });
 
-const markets = new carto.source.Dataset('dprkmarkets_by_geocoordinates');
+// Load the markets dataset
+
+const priceFilter = new carto.filter.Range('estimated_revenue_usd', { lte: 40 });
+
+const markets = new carto.source.SQL('dprkmarkets_by_geocoordinates');
+markets.addFilter(priceFilter);
+
       const style_markets = new carto.style.CartoCSS(`
         #layer {
   marker-width: ramp([estimated_revenue_usd], range(4, 10), quantiles(5));
@@ -98,28 +117,13 @@ const markets = new carto.source.Dataset('dprkmarkets_by_geocoordinates');
   marker-comp-op: screen;
 }
       `);
-      const layer_markets = new carto.layer.Layer(markets, style_markets);
+
+      const layer_markets = new carto.layer.Layer(markets, style_markets, {
+        featureOverColumns: ['name', 'area_m2', 'no_of_stalls', 'estimated_revenue_usd']
+      });
 
       client.addLayer(layer_markets);
       client.getLeafletLayer().addTo(map);
-
-//const roomTypeFilter = new carto.filter.Category('room_type', { in: getSelectedRoomTypes() });
-
-//const source = new carto.source.SQL('SELECT * FROM dprkmarkets_by_geocoordinates');
-//source.addFilter(roomTypeFilter);
-
-//const style = new carto.style.CartoCSS(`
-//  #layer {
-//    marker-width: 7;
-//    marker-fill: #EE4D5A;
-//    marker-line-color: #FFFFFF;
-//    marker-fill: ramp([room_type], (#88CCEE, #CC6677, #DDCC77), ("Entire home/apt", "Private room", "Shared room"), "=");
-//  }
-//`);
-//const layer = new carto.layer.Layer(source, style);
-
-//client.addLayer(layer);
-//client.getLeafletLayer().addTo(map);
 
 registerListeners();
 </script>
