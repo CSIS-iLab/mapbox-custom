@@ -12,21 +12,30 @@
 <!-- Include CARTO.js -->
 <script src="https://libs.cartocdn.com/carto.js/v4.1.1/carto.min.js"></script>
 <link href="https://carto.com/developers/carto-js/examples/maps/public/style.css" rel="stylesheet">
+
 <style>
 
 #bp-logo {
 		position: absolute;
 		top: 20px;
+		right: 20px;
 		height: 24px;
-		width: 200px;
+		width: 50px;
+		height: 50px;
 		border: 0;
 		padding: 0;
-		background-image: url(/bp_logo.png);
+		background-image: url('bp_logo.png');
+		background-repeat:no-repeat;
 		background-color: transparent;
 		cursor: pointer;
 	}
 
+#popupStyles {
+	font-family: 'Open Sans', sans-serif;
+}
+
 	#copyright_bug {
+		font-family: 'Open Sans', sans-serif;
 		position: absolute;
 		background: rgba(255,255,255,.7);
 		font-size: 11px;
@@ -38,7 +47,6 @@
 		padding-top: 2px;
 	}
 
-
 </style>
 
 </head>
@@ -48,7 +56,7 @@
 <div class="box">
 	<header>
 		<h1>Private Markets in North Korea</h1>
-		<button id="bp_logo"></button>
+		<a href="https://beyondparallel.csis.org/" target="_blank"><button id="bp-logo"></button></a>
 	</header>
 
 	<section>
@@ -64,19 +72,20 @@
 			<div id="info">
 				<h3>Administrative Regions</h3>
 			</div>
+			<!-- Provinces/Counties checkboxes -->
 			<ul>
-				<li>
-					<input type="checkbox" name="roomTypes[]" id="entire" value="Entire home/apt" checked>
-					<label for="entire">Provinces (Gun 군) </label>
-				</li>
-				<li>
-					<input type="checkbox" name="roomTypes[]" id="private" value="Private room" checked>
-					<label for="private">Counties (Do 도)</label>
-				</li>
+				<li onclick="setProvince()">
+					<input type="radio" name="admin" id="provinces">
+					<label for="provinces">Provinces (Gun 군)</label>
+					<li onclick="setCounty()">
+						<input type="radio" name="admin" id="counties">
+						<label for="counties">Counties (Do 도)</label>
+					</li>
 			</ul>
 			<div id="info">
 								<h3>Rents Paid to Government (Annual, in USD)</h3>
 							</div>
+							<!-- Revenue slider -->
 							<div class="widget">
 								<p class="open-sans">Showing markets earning below and equal to <span class="js-price-placeholder">$500,000</span> per year.</p>
 							</div>
@@ -89,11 +98,18 @@
 </div>
 </aside>
 
+<!-- Copyright information -->
+
 <div id="copyright_bug">
 	Original Research &copy; <a href="https://beyondparallel.csis.org/" target="_blank">Beyond Parallel</a> and CSIS | Sponsored by ... | 2018
 </div>
 
 <script>
+
+	// Add admin selector scripts
+
+
+	// Formula for revenue range slider
 
 const inputRange = document.querySelector('#controls input[type=range]');
 	inputRange.style.setProperty('--value', (inputRange.value - inputRange.min) / 8800);
@@ -115,9 +131,10 @@ const inputRange = document.querySelector('#controls input[type=range]');
 		inputRange.addEventListener('change', e => {
 			applyFilters(e)
 		});
+
 	}
 
-// Intitiate the map parameters
+// Intitiate the map container parameters
 
 const map = L.map('map').setView([39.7952701,126.5886823], 7);
 map.scrollWheelZoom.enable();
@@ -129,9 +146,53 @@ L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/cjk40a37x21ha2skptjecv1j
 // API connection nonsense
 
 const client = new carto.Client({
-	apiKey: 'oOq5nIiQ2_kKSBDowFLCPg',
+	apiKey: 'SbU34R5Sn5DtMNEyXSSg_A',
 	username: 'csis'
 });
+
+// Load the province and county datasets
+
+const admin = new carto.source.SQL('SELECT * FROM dprkadminall');
+const admin_style = new carto.style.CartoCSS(`
+	#layer[type='count'] {
+	  polygon-fill: ramp([population], (#1a9876, #0f8d73, #087a62, #00654f), quantiles);
+	}
+	#layer::outline {
+	  line-width: 0.5;
+	  line-color: #FFFFFF;
+	  line-opacity: 0.5;
+	}
+
+	#layer[type='prov'] {
+	 		polygon-fill: ramp([population], (#66a4d3, #3782bc, #025da4, #1d4181, #052056), quantiles);
+		}
+		#layer::outline {
+		  line-width: 1;
+		  line-color: #FFFFFF;
+		  line-opacity: 0.5;
+	}
+
+`);
+
+const adminLayer = new carto.layer.Layer(admin, admin_style);
+
+		 client.addLayer(adminLayer);
+		 client.getLeafletLayer().addTo(map);
+
+		 function setProvince() {
+	admin.setQuery(`
+		SELECT * FROM dprkadminall
+			 WHERE type = \'prov\'
+	`);
+}
+
+function setCounty() {
+	admin.setQuery(`
+		SELECT *
+			FROM dprkadminall
+			WHERE type = \'count\'
+	`);
+}
 
 // Load the markets dataset
 
@@ -167,8 +228,8 @@ markets.addFilter(priceFilter);
 			popup.setLatLng(featureEvent.latLng);
 			if (!popup.isOpen()) {
 				popup.setContent(
-					"MARKET NAME " + "<br / ><strong>" +
-					featureEvent.data.name + "</strong><br /><br />" + "MARKET AREA<br />" + featureEvent.data.area_m2
+					"<div id='popupStyles'>MARKET NAME " + "<br / ><strong>" +
+					featureEvent.data.name + "</strong><br /><br />" + "MARKET AREA<br />" + featureEvent.data.area_m2 + "</div>"
 
 
 				);
