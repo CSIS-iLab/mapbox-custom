@@ -86,6 +86,7 @@
                 <label for="none">All boundaries off</label>
               </li>
 			</ul>
+			<div class="separator"></div>
 			<div id="info">
 								<h3>Rents Paid to Government (Annual, in USD)</h3>
 							</div>
@@ -140,7 +141,7 @@ const inputRange = document.querySelector('#controls input[type=range]');
 
 // Intitiate the map container parameters
 
-const map = L.map('map').setView([39.7952701,126.5886823], 7);
+const map = L.map('map').setView([40.0561753,127.4860422], 7);
 map.scrollWheelZoom.enable();
 
 L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/cjk40a37x21ha2skptjecv1j0/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw', {
@@ -247,8 +248,6 @@ markets.addFilter(priceFilter);
 				popup.setContent(
 					"<div id='popupStyles'>MARKET NAME " + "<br / ><strong>" +
 					featureEvent.data.name + "</strong><br /><br />" + "MARKET AREA<br />" + featureEvent.data.area_m2 + "</div>"
-
-
 				);
 				popup.openOn(map);
 			}
