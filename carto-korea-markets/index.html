@@ -81,6 +81,10 @@
 						<input type="radio" name="admin" id="counties">
 						<label for="counties">Counties (Do 도)</label>
 					</li>
+					<li onclick="setNone()">
+                <input type="radio" name="admin" checked id="none">
+                <label for="none">All boundaries off</label>
+              </li>
 			</ul>
 			<div id="info">
 								<h3>Rents Paid to Government (Annual, in USD)</h3>
@@ -154,22 +158,8 @@ const client = new carto.Client({
 
 const admin = new carto.source.SQL('SELECT * FROM dprkadminall');
 const admin_style = new carto.style.CartoCSS(`
-	#layer[type='count'] {
-	  polygon-fill: ramp([population], (#1a9876, #0f8d73, #087a62, #00654f), quantiles);
-	}
-	#layer::outline {
-	  line-width: 0.5;
-	  line-color: #FFFFFF;
-	  line-opacity: 0.5;
-	}
-
-	#layer[type='prov'] {
-	 		polygon-fill: ramp([population], (#66a4d3, #3782bc, #025da4, #1d4181, #052056), quantiles);
-		}
-		#layer::outline {
-		  line-width: 1;
-		  line-color: #FFFFFF;
-		  line-opacity: 0.5;
+	#layer {
+		polygon-opacity: 0;
 	}
 
 `);
@@ -184,6 +174,16 @@ const adminLayer = new carto.layer.Layer(admin, admin_style);
 		SELECT * FROM dprkadminall
 			 WHERE type = \'prov\'
 	`);
+	admin_style.setContent(`
+		#layer {
+		polygon-fill: ramp([population], (#66a4d3, #3782bc, #025da4, #1d4181, #052056), quantiles);
+	}
+	#layer::outline {
+		line-width: 1;
+		line-color: #FFFFFF;
+		line-opacity: 0.5;
+		}
+	`);
 }
 
 function setCounty() {
@@ -192,8 +192,25 @@ function setCounty() {
 			FROM dprkadminall
 			WHERE type = \'count\'
 	`);
+	admin_style.setContent(`
+		#layer {
+			polygon-fill: ramp([population], (#1a9876, #0f8d73, #087a62, #00654f), quantiles);
+		}
+		#layer::outline {
+			line-width: 0.5;
+			line-color: #FFFFFF;
+			line-opacity: 0.5;
+		}
+	`);
 }
 
+function setNone() {
+        admin_style.setContent(`
+          #layer {
+            polygon-opacity: 0;
+          }
+        `);
+      }
 // Load the markets dataset
 
 const priceFilter = new carto.filter.Range('estimated_revenue_usd', { lte: 500000 });
