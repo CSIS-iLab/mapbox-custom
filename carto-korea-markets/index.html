@@ -76,8 +76,8 @@ function registerListeners () {
 const map = L.map('map').setView([39.7952701,126.5886823], 7);
 map.scrollWheelZoom.disable();
 
-L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/cjjq5bmw009ds2sk8l4js8vce/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw', {
-  maxZoom: 18
+L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/cjk40a37x21ha2skptjecv1j0/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw', {
+  maxZoom: 14
 }).addTo(map);
 
 const client = new carto.Client({
@@ -85,23 +85,41 @@ const client = new carto.Client({
   username: 'csis'
 });
 
-const roomTypeFilter = new carto.filter.Category('room_type', { in: getSelectedRoomTypes() });
+const markets = new carto.source.Dataset('dprkmarkets_by_geocoordinates');
+      const style_markets = new carto.style.CartoCSS(`
+        #layer {
+  marker-width: ramp([estimated_revenue_usd], range(4, 10), quantiles(5));
+  marker-fill: #f2c730;
+  marker-fill-opacity: 1;
+  marker-allow-overlap: true;
+  marker-line-width: 1;
+  marker-line-color: #000000;
+  marker-line-opacity: 1;
+  marker-comp-op: screen;
+}
+      `);
+      const layer_markets = new carto.layer.Layer(markets, style_markets);
 
-const source = new carto.source.SQL('SELECT * FROM dprkmarkets_by_geocoordinates');
-source.addFilter(roomTypeFilter);
+      client.addLayer(layer_markets);
+      client.getLeafletLayer().addTo(map);
 
-const style = new carto.style.CartoCSS(`
-  #layer {
-    marker-width: 7;
-    marker-fill: #EE4D5A;
-    marker-line-color: #FFFFFF;
-    marker-fill: ramp([room_type], (#88CCEE, #CC6677, #DDCC77), ("Entire home/apt", "Private room", "Shared room"), "=");
-  }
-`);
-const layer = new carto.layer.Layer(source, style);
+//const roomTypeFilter = new carto.filter.Category('room_type', { in: getSelectedRoomTypes() });
 
-client.addLayer(layer);
-client.getLeafletLayer().addTo(map);
+//const source = new carto.source.SQL('SELECT * FROM dprkmarkets_by_geocoordinates');
+//source.addFilter(roomTypeFilter);
+
+//const style = new carto.style.CartoCSS(`
+//  #layer {
+//    marker-width: 7;
+//    marker-fill: #EE4D5A;
+//    marker-line-color: #FFFFFF;
+//    marker-fill: ramp([room_type], (#88CCEE, #CC6677, #DDCC77), ("Entire home/apt", "Private room", "Shared room"), "=");
+//  }
+//`);
+//const layer = new carto.layer.Layer(source, style);
+
+//client.addLayer(layer);
+//client.getLeafletLayer().addTo(map);
 
 registerListeners();
 </script>
