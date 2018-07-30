@@ -1,31 +1,69 @@
-#bp-logo {
-		position: absolute;
-		top: 20px;
-		right: 20px;
-		height: 24px;
-		width: 50px;
-		height: 50px;
-		border: 0;
-		padding: 0;
-		background-image: url('../images/bp_logo.png');
-		background-repeat:no-repeat;
-		background-color: transparent;
-		cursor: pointer;
-	}
-
-#popupStyles {
-	font-family: 'Open Sans', sans-serif;
+body {
+	font-family: 'Open Sans Condensed', sans-serif;
 }
 
-	#copyright_bug {
-		font-family: 'Open Sans', sans-serif;
-		position: absolute;
-		background: rgba(255,255,255,.7);
-		font-size: 11px;
-		left: 0;
-		bottom: 0;
-		width: 400px;
-		height: 16px;
-		text-align: center;
-		padding-top: 2px;
+#bp-logo {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	width: 50px;
+	height: 50px;
+	border: 0;
+	padding: 0;
+	background-image: url('../images/bp_logo.png');		background-repeat:no-repeat;
+	background-color: transparent;
+	cursor: pointer;
 	}
+
+.popupHeaderStyle {
+	font-family: 'Open Sans Condensed', sans-serif;
+	font-weight: 300;
+}
+
+.popupEntryStyle {
+	font-weight: 600;
+	font-family: 'Open Sans', sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+#copyright_bug {
+	font-family: 'Open Sans', sans-serif;
+	position: absolute;
+	background: rgba(255,255,255,.7);
+	font-size: 11px;
+	bottom: 0;
+	width: 297px;
+	height: 16px;
+	padding: 0 0 0 17px;
+	border-radius: 3px;
+}
+
+.box {
+	padding: 24px;
+	background-color: #fffdfd;
+}
+
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+	background-color: #e4e3e3;
+}
+
+.js-price-placeholder {
+	font-weight: 700;
+	color: #000;
+}
+
+.box header h1 {
+	font-family: 'Open Sans Condensed', sans-serif;
+	font-weight: 700;
+	font-size: 24px;
+	line-height: 28px;
+}
+
+#controls #info h3 {
+	font-family: 'Open Sans Condensed', sans-serif;
+	font-weight: 700;
+	text-transform: uppercase;
+	font-size: 20px;
+	line-height: 26px;
+}

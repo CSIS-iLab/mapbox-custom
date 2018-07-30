@@ -25,11 +25,14 @@ function registerListeners () {
 
 // Intitiate the map container parameters
 
-const map = L.map('map').setView([40.0561753,127.4860422], 7);
-map.scrollWheelZoom.enable();
+const map = L.map('map', {
+	center: [40.0561753,127.4860422],
+	zoom: 7,
+	maxZoom: 12,
+	minZoom: 6
+});
 
-L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/cjk40a37x21ha2skptjecv1j0/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw', {
-maxZoom: 14
+L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/cjk8djf7u3g8l2ro6u9p5wq38/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw', {
 }).addTo(map);
 
 // API connection information
@@ -46,7 +49,6 @@ const admin_style = new carto.style.CartoCSS(`
 #layer {
 	polygon-opacity: 0;
 }
-
 `);
 
 const adminLayer = new carto.layer.Layer(admin, admin_style);
@@ -106,19 +108,19 @@ markets.addFilter(priceFilter);
 
 		const style_markets = new carto.style.CartoCSS(`
 			#layer {
-marker-width: ramp([estimated_revenue_usd], range(4, 10), quantiles(5));
-marker-fill: #f2c730;
-marker-fill-opacity: 1;
-marker-allow-overlap: true;
-marker-line-width: 1;
-marker-line-color: #000000;
-marker-line-opacity: 1;
-marker-comp-op: screen;
+				marker-width: 7;
+				marker-fill: #f2c730;
+				marker-fill-opacity: 1;
+				marker-allow-overlap: true;
+				marker-line-width: 1;
+				marker-line-color: #000000;
+				marker-line-opacity: 1;
+				marker-comp-op: screen;
 }
 		`);
 
 		const layer_markets = new carto.layer.Layer(markets, style_markets, {
-			featureOverColumns: ['name', 'area_m2', 'no_of_stalls', 'estimated_revenue_usd']
+			featureOverColumns: ['name', 'area_comma_delimited', 'no_of_stalls', 'revenue_comma_limited']
 		});
 
 		client.addLayer(layer_markets);
@@ -131,8 +133,8 @@ marker-comp-op: screen;
 		popup.setLatLng(featureEvent.latLng);
 		if (!popup.isOpen()) {
 			popup.setContent(
-				"<div id='popupStyles'>MARKET NAME " + "<br / ><strong>" +
-				featureEvent.data.name + "</strong><br /><br />" + "MARKET AREA<br />" + featureEvent.data.area_m2 + "</div>"
+				"<div class='popupHeaderStyle'>MARKET NAME</div> " + "<div class='popupEntryStyle'>" +
+				featureEvent.data.name + "</div><br /><div class='popupHeaderStyle'>" + "MARKET AREA</div><div class='popupEntryStyle'>" + featureEvent.data.area_comma_delimited + "&nbsp;m<sup>2</sup></div><br />" + "<div class='popupHeaderStyle'>NUMBER OF STALLS</div><div class='popupEntryStyle'>" + featureEvent.data.no_of_stalls + "</div><br />" + "<div class='popupHeaderStyle'>EST. ANNUAL REVENUE</div><div class='popupEntryStyle'>" + "$" + featureEvent.data.revenue_comma_limited + "</div>"
 			);
 			popup.openOn(map);
 		}
