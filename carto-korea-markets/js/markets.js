@@ -29,6 +29,7 @@ const map = L.map('map', {
 	center: [40.0561753,127.4860422],
 	zoom: 7,
 	maxZoom: 13,
+	scrollWheelZoom: false,
 	minZoom: 6
 });
 
