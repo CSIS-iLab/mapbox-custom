@@ -1,0 +1,31 @@
+#bp-logo {
+		position: absolute;
+		top: 20px;
+		right: 20px;
+		height: 24px;
+		width: 50px;
+		height: 50px;
+		border: 0;
+		padding: 0;
+		background-image: url('../images/bp_logo.png');
+		background-repeat:no-repeat;
+		background-color: transparent;
+		cursor: pointer;
+	}
+
+#popupStyles {
+	font-family: 'Open Sans', sans-serif;
+}
+
+	#copyright_bug {
+		font-family: 'Open Sans', sans-serif;
+		position: absolute;
+		background: rgba(255,255,255,.7);
+		font-size: 11px;
+		left: 0;
+		bottom: 0;
+		width: 400px;
+		height: 16px;
+		text-align: center;
+		padding-top: 2px;
+	}
