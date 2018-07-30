@@ -41,10 +41,10 @@
 			<ul>
 				<li onclick="setProvince()">
 					<input type="radio" name="admin" id="provinces">
-					<label for="provinces">Provinces (Gun 군)</label>
+					<label for="provinces">Provinces (Do 도)</label>
 					<li onclick="setCounty()">
 						<input type="radio" name="admin" id="counties">
-						<label for="counties">Counties (Do 도)</label>
+						<label for="counties">Counties (Gun 군)</label>
 					</li>
 					<li onclick="setNone()">
 								<input type="radio" name="admin" checked id="none">
@@ -57,7 +57,7 @@
 							</div>
 							<!-- Revenue slider -->
 							<div class="widget">
-								<p class="open-sans">Showing markets earning greater than and equal to <span class="js-price-placeholder">$300</span> per year.</p>
+								<p class="open-sans">Showing markets generating greater than or equal to <span class="js-price-placeholder">$300</span> for the government per year.</p>
 							</div>
 							<input type="range" name="price" class="slider" min="349.29" max="849329.19" value="340" step="1" min-with-suffix="$300 / min" max-with-suffix="$850,000 / max">
 						</div>

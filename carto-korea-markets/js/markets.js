@@ -28,7 +28,7 @@ function registerListeners () {
 const map = L.map('map', {
 	center: [40.0561753,127.4860422],
 	zoom: 7,
-	maxZoom: 12,
+	maxZoom: 13,
 	minZoom: 6
 });
 
@@ -51,10 +51,28 @@ const admin_style = new carto.style.CartoCSS(`
 }
 `);
 
-const adminLayer = new carto.layer.Layer(admin, admin_style);
+const adminLayer = new carto.layer.Layer(admin, admin_style, {
+	featureClickColumns: ['name', 'pop_comma_delimited']
+});
+
 
 	 client.addLayer(adminLayer);
 	 client.getLeafletLayer().addTo(map);
+
+	 const adminPopup = L.popup({ closeButton: true });
+ adminLayer.on(carto.layer.events.FEATURE_CLICKED, adminfeatureEvent => {
+	 adminPopup.setLatLng(adminfeatureEvent.latLng);
+	 if (!adminPopup.isOpen()) {
+		 adminPopup.setContent(
+			 "<div class='popupHeaderStyle'>NAME</div><div class='popupEntryStyle'>" + adminfeatureEvent.data.name + "</div><br /><div class='popupHeaderStyle'>TOTAL POPULATION</div><div class='popupEntryStyle'>" + adminfeatureEvent.data.pop_comma_delimited + "</div>"
+		 );
+		 adminPopup.openOn(map);
+	 }
+ });
+
+// adminLayer.on(carto.layer.events.FEATURE_OUT, adminfeatureEvent => {
+//adminPopup.removeFrom(map);
+//});
 
 	 function setProvince() {
 admin.setQuery(`
@@ -134,7 +152,7 @@ markets.addFilter(priceFilter);
 		if (!popup.isOpen()) {
 			popup.setContent(
 				"<div class='popupHeaderStyle'>MARKET NAME</div> " + "<div class='popupEntryStyle'>" +
-				featureEvent.data.name + "</div><br /><div class='popupHeaderStyle'>" + "MARKET AREA</div><div class='popupEntryStyle'>" + featureEvent.data.area_comma_delimited + "&nbsp;m<sup>2</sup></div><br />" + "<div class='popupHeaderStyle'>NUMBER OF STALLS</div><div class='popupEntryStyle'>" + featureEvent.data.no_of_stalls + "</div><br />" + "<div class='popupHeaderStyle'>EST. ANNUAL REVENUE</div><div class='popupEntryStyle'>" + "$" + featureEvent.data.revenue_comma_limited + "</div>"
+				featureEvent.data.name + "</div><br /><div class='popupHeaderStyle'>" + "MARKET AREA</div><div class='popupEntryStyle'>" + featureEvent.data.area_comma_delimited + "&nbsp;m<sup>2</sup></div><br />" + "<div class='popupHeaderStyle'>EST. NUMBER OF VENDOR STALLS</div><div class='popupEntryStyle'>" + featureEvent.data.no_of_stalls + "</div><br />" + "<div class='popupHeaderStyle'>RENT PAID TO GOVERNMENT (ANNUAL, USD)</div><div class='popupEntryStyle'>" + "$" + featureEvent.data.revenue_comma_limited + "</div>"
 			);
 			popup.openOn(map);
 		}
