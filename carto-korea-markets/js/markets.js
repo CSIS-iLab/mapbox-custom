@@ -7,9 +7,9 @@ const pricePlaceholder = document.querySelector('#controls .js-price-placeholder
 
 function applyFilters (e) {
 	const maximumPrice = parseInt(e.target.value);
-
 	priceFilter.setFilters({ gte: maximumPrice });
-	pricePlaceholder.innerText = "$" + maximumPrice;
+	const maxPriceComma = maximumPrice.toLocaleString();
+	pricePlaceholder.innerText = "$" + maxPriceComma;
 }
 
 function registerListeners () {
