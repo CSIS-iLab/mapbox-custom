@@ -4,8 +4,8 @@
 		<meta charset='utf-8' />
 		<title>Oil and Gas Resources of the South China Sea</title>
 		<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-		<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.js'></script>
-		<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet' />
+		<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.47.0/mapbox-gl.css' rel='stylesheet' />
 		<link href="https://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700" rel="stylesheet">
 		<style>
 				body { margin:0; padding:0; }
@@ -116,14 +116,33 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzd
 var map = new mapboxgl.Map({
 		container: 'map', // container id
 		style: 'mapbox://styles/ilabmedia/cjjpud7fv01sz2rpg8x0qly6o', // stylesheet location
-		center: [115.013836, 11.695247],
-		pitch: 36.00, // pitch in degrees
-		bearing: -30.74, // bearing in degrees
-		zoom: 4.85,
+		center: [113.176196, 11.359748],
+		pitch: 0, // pitch in degrees
+		bearing: 0, // bearing in degrees
+		zoom: 4.7,
 		maxZoom: 6,
 		minZoom: 4
 });
 
+// Add popups
+
+map.on('click', function(e) {
+  var features = map.queryRenderedFeatures(e.point, {
+    layers: ['amti-interns-vietnam'] // replace this with the name of the layer
+  });
+
+  if (!features.length) {
+    return;
+  }
+
+  var feature = features[0];
+
+  var popup = new mapboxgl.Popup({ offset: [0, -15] })
+    .setLngLat(feature.geometry.coordinates)
+    .setHTML('<h3>' + feature.properties.Name + '</h3>')
+		.setLngLat(feature.geometry.coordinates)
+    .addTo(map);
+});
 
 // Add zoom and rotation controls to the map.
 map.addControl(new mapboxgl.NavigationControl(), 'top-left');

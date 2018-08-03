@@ -8,6 +8,7 @@ const pricePlaceholder = document.querySelector('#controls .js-price-placeholder
 function applyFilters (e) {
 	const maximumPrice = parseInt(e.target.value);
 	priceFilter.setFilters({ gte: maximumPrice });
+	// Convert integer value to comma-separated string
 	const maxPriceComma = maximumPrice.toLocaleString();
 	pricePlaceholder.innerText = "$" + maxPriceComma;
 }
