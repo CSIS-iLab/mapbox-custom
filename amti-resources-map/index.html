@@ -22,8 +22,9 @@
 #megamenu{
 	background-color: #FFFFFF;
 	display: inline-block;
-	padding: 10px 50% 31px 10px;
+	padding: 10px 0 31px 15px;
 	text-align: left;
+	width: 100%;
 }
 
 #megamenu h2 {
@@ -104,6 +105,11 @@
 		<br / >
 		<div class="colorKey" style="background-color: #ffff7a;"></div>Brunei
 
+		<h2>
+			Name of Block
+		</h2>
+	<div id='pd'><p>Hover over a state!</p></div>
+
 		<p>
 			<a href="https://amti.csis.org" target="_blank">AMTI</a> &copy; CSIS
 		</p>
@@ -126,27 +132,25 @@ var map = new mapboxgl.Map({
 
 // Add popups
 
-map.on('click', function(e) {
-  var features = map.queryRenderedFeatures(e.point, {
-    layers: ['amti-interns-vietnam'] // replace this with the name of the layer
-  });
+map.on('mousemove', function (e) {
+		var resources = map.queryRenderedFeatures(e.point, {
+				layers: ['amti-interns-vietnam', 'amti-interns-philippines052018', 'amti-interns-malaysia', 'amti-brunei', 'amti-interns-indonesia']
+		});
 
-  if (!features.length) {
-    return;
-  }
+		// make a pointer cursor
+map.getCanvas().style.cursor = 'default';
 
-  var feature = features[0];
-
-  var popup = new mapboxgl.Popup({ offset: [0, -15] })
-    .setLngLat(feature.geometry.coordinates)
-    .setHTML('<h3>' + feature.properties.Name + '</h3>')
-		.setLngLat(feature.geometry.coordinates)
-    .addTo(map);
+		if (resources.length > 0) {
+				document.getElementById('pd').innerHTML = "<h3><strong>" + resources[0].properties.Name + "</strong></h3>";
+		} else {
+				document.getElementById('pd').innerHTML = '<h3><strong>Hover over a block to get more information.</strong></h3>';
+		}
 });
 
 // Add zoom and rotation controls to the map.
 map.addControl(new mapboxgl.NavigationControl(), 'top-left');
 map.addControl(new mapboxgl.FullscreenControl(), 'top-left');
+
 
 </script>
 
