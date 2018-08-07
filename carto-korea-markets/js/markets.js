@@ -26,11 +26,9 @@ function registerListeners () {
 
 // Layer switcher?
 
-var zIndex = -100;
+const basemap = L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/cjk8djf7u3g8l2ro6u9p5wq38/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw', {});
 
-var basemap = L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/cjkjzuir10v132rq8qqxefi6g/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw', {});
-
-var satellite = L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/cjk8djf7u3g8l2ro6u9p5wq38/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw', {});
+const satellite = L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/cjkjzuir10v132rq8qqxefi6g/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw', {});
 
 // Intitiate the map container parameters
 
@@ -40,15 +38,15 @@ const map = L.map('map', {
 	maxZoom: 13,
 	scrollWheelZoom: false,
 	minZoom: 6,
-	layers: [basemap, satellite]
+	layers: [basemap]
 });
 
-var baseLayers = {
+const baseLayers = {
 	"Basemap": basemap,
 	"Satellite": satellite
 };
 
-L.control.layers(baseLayers).addTo(map);
+L.control.layers(baseLayers).setPosition('topleft').addTo(map);
 
 // API connection information
 
@@ -70,8 +68,9 @@ const adminLayer = new carto.layer.Layer(admin, admin_style, {
 	featureClickColumns: ['name', 'pop_comma_delimited']
 });
 
-
+// Add provinces and counties
 	 client.addLayer(adminLayer);
+	 client.moveLayer(adminLayer, 0);
 	 client.getLeafletLayer().addTo(map);
 
 
@@ -85,10 +84,6 @@ const adminLayer = new carto.layer.Layer(admin, admin_style, {
 		 adminPopup.openOn(map);
 	 }
  });
-
-// adminLayer.on(carto.layer.events.FEATURE_OUT, adminfeatureEvent => {
-//adminPopup.removeFrom(map);
-//});
 
 	 function setProvince() {
 admin.setQuery(`
@@ -157,7 +152,10 @@ markets.addFilter(priceFilter);
 			featureOverColumns: ['name', 'area_comma_delimited', 'no_of_stalls', 'revenue_comma_limited']
 		});
 
+		// Add markets point data
+
 		client.addLayer(layer_markets);
+		client.moveLayer(layer_markets, 1);
 		client.getLeafletLayer().addTo(map);
 
 // Popups
