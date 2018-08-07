@@ -24,6 +24,14 @@ function registerListeners () {
 
 }
 
+// Layer switcher?
+
+var zIndex = -100;
+
+var basemap = L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/cjkjzuir10v132rq8qqxefi6g/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw', {});
+
+var satellite = L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/cjk8djf7u3g8l2ro6u9p5wq38/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw', {});
+
 // Intitiate the map container parameters
 
 const map = L.map('map', {
@@ -31,11 +39,16 @@ const map = L.map('map', {
 	zoom: 7,
 	maxZoom: 13,
 	scrollWheelZoom: false,
-	minZoom: 6
+	minZoom: 6,
+	layers: [basemap, satellite]
 });
 
-L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/cjk8djf7u3g8l2ro6u9p5wq38/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw', {
-}).addTo(map);
+var baseLayers = {
+	"Basemap": basemap,
+	"Satellite": satellite
+};
+
+L.control.layers(baseLayers).addTo(map);
 
 // API connection information
 
@@ -60,6 +73,7 @@ const adminLayer = new carto.layer.Layer(admin, admin_style, {
 
 	 client.addLayer(adminLayer);
 	 client.getLeafletLayer().addTo(map);
+
 
 	 const adminPopup = L.popup({ closeButton: true });
  adminLayer.on(carto.layer.events.FEATURE_CLICKED, adminfeatureEvent => {
