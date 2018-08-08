@@ -35,18 +35,18 @@ const satellite = L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/cjkjzu
 const map = L.map('map', {
 	center: [40.0561753,127.4860422],
 	zoom: 7,
-	maxZoom: 13,
+	maxZoom: 18,
 	scrollWheelZoom: false,
 	minZoom: 6,
 	layers: [basemap]
 });
 
 const baseLayers = {
-	"Basemap": basemap,
-	"Satellite": satellite
+	"Street Map": basemap,
+	"Satellite Image": satellite
 };
 
-L.control.layers(baseLayers).setPosition('topleft').addTo(map);
+L.control.layers(baseLayers, null, {collapsed: false, autoZIndex: false}).setPosition('topleft').addTo(map);
 
 // API connection information
 
@@ -70,8 +70,7 @@ const adminLayer = new carto.layer.Layer(admin, admin_style, {
 
 // Add provinces and counties
 	 client.addLayer(adminLayer);
-	 client.moveLayer(adminLayer, 0);
-	 client.getLeafletLayer().addTo(map);
+	 client.getLeafletLayer().bringToFront().addTo(map);
 
 
 	 const adminPopup = L.popup({ closeButton: true });
@@ -155,8 +154,7 @@ markets.addFilter(priceFilter);
 		// Add markets point data
 
 		client.addLayer(layer_markets);
-		client.moveLayer(layer_markets, 1);
-		client.getLeafletLayer().addTo(map);
+		client.getLeafletLayer().bringToFront().addTo(map);
 
 // Popups
 
