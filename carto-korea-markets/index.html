@@ -15,6 +15,15 @@
 <link href="https://carto.com/developers/carto-js/examples/maps/public/style.css" rel="stylesheet">
 <!-- Include local styles and scripts -->
 <link href="css/carto_style.css" rel="stylesheet">
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-80051375-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-80051375-1');
+</script>
 </head>
 
 <body>
@@ -37,6 +46,7 @@
 				<div id="controls">
 					<div id="info">
 						<h3>Administrative Regions</h3>
+						<p class="open-sans">Darker colors represent higher populations.</p>
 					</div>
 <!-- Provinces/Counties checkboxes -->
 			<ul>

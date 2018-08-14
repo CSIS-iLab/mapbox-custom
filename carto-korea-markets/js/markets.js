@@ -102,11 +102,12 @@ admin_style.setContent(`
 }
 
 function setCounty() {
-admin.setQuery(`
-	SELECT *
-		FROM dprkadminall
-		WHERE type = \'count\'
-`);
+			admin.setQuery(`
+				SELECT *
+				FROM dprkadminall
+				WHERE type = \'count\'
+			`);
+
 admin_style.setContent(`
 	#layer {
 		polygon-fill: ramp([population], (#1a9876, #0f8d73, #087a62, #00654f), quantiles);
@@ -144,7 +145,7 @@ markets.addFilter(priceFilter);
 				marker-line-color: #000000;
 				marker-line-opacity: 1;
 				marker-comp-op: screen;
-}
+			}
 		`);
 
 		const layer_markets = new carto.layer.Layer(markets, style_markets, {
