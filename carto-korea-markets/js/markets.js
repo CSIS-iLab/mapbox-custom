@@ -24,29 +24,18 @@ function registerListeners () {
 
 }
 
-// Layer switcher?
-
-const basemap = L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/cjk8djf7u3g8l2ro6u9p5wq38/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw', {});
-
-const satellite = L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/cjkjzuir10v132rq8qqxefi6g/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw', {});
-
 // Intitiate the map container parameters
 
 const map = L.map('map', {
 	center: [40.0561753,127.4860422],
 	zoom: 7,
-	maxZoom: 18,
+	maxZoom: 13,
 	scrollWheelZoom: false,
-	minZoom: 6,
-	layers: [basemap]
+	minZoom: 6
 });
 
-const baseLayers = {
-	"Street Map": basemap,
-	"Satellite Image": satellite
-};
-
-L.control.layers(baseLayers, null, {collapsed: false, autoZIndex: false}).setPosition('topleft').addTo(map);
+L.tileLayer('https://api.mapbox.com/styles/v1/ilabmedia/cjk8djf7u3g8l2ro6u9p5wq38/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw', {
+}).addTo(map);
 
 // API connection information
 
@@ -68,10 +57,9 @@ const adminLayer = new carto.layer.Layer(admin, admin_style, {
 	featureClickColumns: ['name', 'pop_comma_delimited']
 });
 
-// Add provinces and counties
-	 client.addLayer(adminLayer);
-	 client.getLeafletLayer().bringToFront().addTo(map);
 
+	 client.addLayer(adminLayer);
+	 client.getLeafletLayer().addTo(map);
 
 	 const adminPopup = L.popup({ closeButton: true });
  adminLayer.on(carto.layer.events.FEATURE_CLICKED, adminfeatureEvent => {
@@ -83,6 +71,10 @@ const adminLayer = new carto.layer.Layer(admin, admin_style, {
 		 adminPopup.openOn(map);
 	 }
  });
+
+// adminLayer.on(carto.layer.events.FEATURE_OUT, adminfeatureEvent => {
+//adminPopup.removeFrom(map);
+//});
 
 	 function setProvince() {
 admin.setQuery(`
@@ -102,12 +94,11 @@ admin_style.setContent(`
 }
 
 function setCounty() {
-			admin.setQuery(`
-				SELECT *
-				FROM dprkadminall
-				WHERE type = \'count\'
-			`);
-
+admin.setQuery(`
+	SELECT *
+		FROM dprkadminall
+		WHERE type = \'count\'
+`);
 admin_style.setContent(`
 	#layer {
 		polygon-fill: ramp([population], (#1a9876, #0f8d73, #087a62, #00654f), quantiles);
@@ -145,17 +136,15 @@ markets.addFilter(priceFilter);
 				marker-line-color: #000000;
 				marker-line-opacity: 1;
 				marker-comp-op: screen;
-			}
+}
 		`);
 
 		const layer_markets = new carto.layer.Layer(markets, style_markets, {
 			featureOverColumns: ['name', 'area_comma_delimited', 'no_of_stalls', 'revenue_comma_limited']
 		});
 
-		// Add markets point data
-
 		client.addLayer(layer_markets);
-		client.getLeafletLayer().bringToFront().addTo(map);
+		client.getLeafletLayer().addTo(map);
 
 // Popups
 
