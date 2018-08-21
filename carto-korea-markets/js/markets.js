@@ -48,7 +48,8 @@ const baseLayers = {
 };
 
 L.control.layers(baseLayers, null, {collapsed: false, autoZIndex: false}).setPosition('topleft').addTo(map);
-L.control.zoom({zoomInText: "Zoom In +", zoomOutText: "Zoom Out -"}).addTo(map);
+L.control.zoomslider().addTo(map);
+// L.control.zoom({zoomInText: "Zoom In +", zoomOutText: "Zoom Out -"}).addTo(map);
 
 // API connection information
 

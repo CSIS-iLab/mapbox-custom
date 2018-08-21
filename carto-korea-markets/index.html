@@ -7,9 +7,12 @@
 <meta charset="utf-8">
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700" rel="stylesheet">
+<link href="zoom_slider/zoomslider.css" rel="stylesheet">
 <!-- Include Leaflet -->
 <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
 <link href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" rel="stylesheet">
+<!-- Include Zoom Slider plugin -->
+<script src="zoom_slider/zoomslider.js"></script>
 <!-- Include CARTO.js -->
 <script src="https://libs.cartocdn.com/carto.js/v4.1.1/carto.min.js"></script>
 <link href="https://carto.com/developers/carto-js/examples/maps/public/style.css" rel="stylesheet">
@@ -33,10 +36,10 @@
 			<div class="box">
 				<header>
 					<h1>General Markets in North Korea</h1>
-					<a href="https://beyondparallel.csis.org/" target="_blank"><button id="bp-logo"></button></a>
+					<a href="https://beyondparallel.csis.org/" target="_blank"><button class="mobile-toggle" id="bp-logo"></button></a>
 				</header>
 
-			<section>
+			<section class="mobile-toggle">
 				<p class="description open-sans">One of the most significant developments in North Korea over the past two decades has been the growth of markets. This map provides a broad view of the geographical location of markets across North Korea.  Each dot represents one market.</p>
 					<div class="separator"></div>
 <!--<section class="usage">
@@ -85,7 +88,7 @@
 <!-- Copyright information -->
 
 <div id="copyright_bug">
-	Original Research &copy; <a href="https://beyondparallel.csis.org/" target="_blank">Beyond Parallel</a> and <a href="https://www.csis.org" target="_blank">CSIS</a> | 2018
+	&copy; <a href="https://beyondparallel.csis.org/" target="_blank">Beyond Parallel</a> and <a href="https://www.csis.org" target="_blank">CSIS</a> | 2018
 </div>
 <script src="js/markets.js"></script>
 </body>

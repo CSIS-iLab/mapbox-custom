@@ -33,9 +33,9 @@ body {
 	background: rgba(255,255,255,.7);
 	font-size: 11px;
 	bottom: 0;
-	width: 297px;
+	width: 200px;
 	height: 16px;
-	padding: 0 0 0 17px;
+	padding: 0 0 0 10px;
 	border-radius: 3px;
 }
 
@@ -68,13 +68,44 @@ body {
 	line-height: 26px;
 }
 
-.leaflet-touch .leaflet-bar a {
-    width: 115px;
-    height: 30px;
-    line-height: 30px;
+.leaflet-control-zoomslider-body {
+    width: 20px;
+    border: solid #fff;
+    border-width: 0px 9px 0px 9px;
+    background-color: black;
+    margin: 0 auto;
+}
+
+/* FOR DISPLAYS ≤ 425px */
+
+@media (max-width: 425px) {
+ .mobile-toggle {
+ display: none;
+ }
+}
+
+@media (max-width: 425px) {
+ .box {
+ padding: 12px;
+ }
+}
+
+@media (max-width: 425px) {
+aside.toolbox {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    max-width: 200px;
+		min-width: 200px;
+    z-index: 2;
+}
+}
+
+@media (max-width: 425px) {
+.box header h1 {
     font-family: 'Open Sans Condensed', sans-serif;
-    text-transform: uppercase;
-    text-align: left;
-    padding-left: 5px;
-    font-size: 1rem;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 28px;
+}
 }
