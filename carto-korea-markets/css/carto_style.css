@@ -68,14 +68,6 @@ body {
 	line-height: 26px;
 }
 
-.leaflet-control-zoomslider-body {
-    width: 20px;
-    border: solid #fff;
-    border-width: 0px 9px 0px 9px;
-    background-color: black;
-    margin: 0 auto;
-}
-
 /* FOR DISPLAYS ≤ 425px */
 
 @media (max-width: 425px) {
