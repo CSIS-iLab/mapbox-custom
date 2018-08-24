@@ -81,7 +81,7 @@ const adminLayer = new carto.layer.Layer(admin, admin_style, {
 	 adminPopup.setLatLng(adminfeatureEvent.latLng);
 	 if (!adminPopup.isOpen()) {
 		 adminPopup.setContent(
-			 "<div class='popupHeaderStyle'>NAME</div><div class='popupEntryStyle'>" + adminfeatureEvent.data.name + "</div><br /><div class='popupHeaderStyle'>TOTAL POPULATION</div><div class='popupEntryStyle'>" + adminfeatureEvent.data.pop_comma_delimited + "</div>"
+			 "<div class='popupHeaderStyle'>PROVINCE/COUNTY NAME</div><div class='popupEntryStyle'>" + adminfeatureEvent.data.name + "</div><br /><div class='popupHeaderStyle'>TOTAL POPULATION</div><div class='popupEntryStyle'>" + adminfeatureEvent.data.pop_comma_delimited + "</div>"
 		 );
 		 adminPopup.openOn(map);
 	 }
@@ -163,7 +163,7 @@ markets.addFilter(priceFilter);
 // Popups
 
 		const popup = L.popup({ closeButton: false });
-	layer_markets.on(carto.layer.events.FEATURE_OVER, featureEvent => {
+	layer_markets.on(carto.layer.events.FEATURE_CLICKED, featureEvent => {
 		popup.setLatLng(featureEvent.latLng);
 		if (!popup.isOpen()) {
 			popup.setContent(
