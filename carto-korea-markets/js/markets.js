@@ -174,8 +174,4 @@ markets.addFilter(priceFilter);
 		}
 	});
 
-	layer_markets.on(carto.layer.events.FEATURE_OUT, featureEvent => {
-popup.removeFrom(map);
-});
-
 registerListeners();
