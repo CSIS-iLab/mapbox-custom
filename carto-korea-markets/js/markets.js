@@ -162,7 +162,7 @@ markets.addFilter(priceFilter);
 
 // Popups
 
-		const popup = L.popup({ closeButton: false });
+		const popup = L.popup({ closeButton: true });
 	layer_markets.on(carto.layer.events.FEATURE_CLICKED, featureEvent => {
 		popup.setLatLng(featureEvent.latLng);
 		if (!popup.isOpen()) {
