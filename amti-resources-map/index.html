@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Markets in North Korea | Beyond Parallel | CSIS</title>
+<title>Natural Resources in the South China Sea | AMTI | CSIS</title>
 <meta name="viewport" content="initial-scale=1.0">
 <meta charset="utf-8">
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet">
@@ -47,26 +47,62 @@
 		<aside class="toolbox">
 			<div class="box">
 				<header>
-					<h1>Terrorist Attacks Measured vs. World Bank Indicators</h1>
-					<a href="https://beyondparallel.csis.org/" target="_blank"><button class="mobile-toggle" id="logo"></button></a>
+					<h1>Natural Resources in the South China Sea</h1>
+					<a href="https://amti.csis.org/" target="_blank"><button class="mobile-toggle" id="logo"></button></a>
 					<p id="mobile-only">This map shows terror attacks from 2017.</p>
 				</header>
 
 			<section class="mobile-toggle">
-				<p class="description open-sans">We love TNT maps.</p>
+				<p class="description open-sans">We love AMTI maps.</p>
 					<div class="separator"></div>
 		<div id="controls">
 			<div id="info">
-				<h3>Toggle Attack Data</h3>
+	<h3>Resource Blocks Types</h3>
+	<p class="open-sans">
+		Sort resource blocks by country.
+	</p>
+</div>
+<ul>
+	<li>
+		<input type="checkbox" name="roomTypes[]" id="cn" value="China" checked>
+		<label for="cn">China</label>
+	</li>
+	<li>
+		<input type="checkbox" name="roomTypes[]" id="vn" value="Vietnam" checked>
+		<label for="vn">Vietnam</label>
+	</li>
+	<li>
+		<input type="checkbox" name="roomTypes[]" id="ms" value="Malaysia" checked>
+		<label for="ms">Malaysia</label>
+	</li>
+	<li>
+		<input type="checkbox" name="roomTypes[]" id="php" value="Philippines" checked>
+		<label for="php">Philippines</label>
+	</li>
+	<li>
+		<input type="checkbox" name="roomTypes[]" id="br" value="Brunei" checked>
+		<label for="br">Brunei</label>
+	</li>
+	<li>
+		<input type="checkbox" name="roomTypes[]" id="in" value="Indonesia" checked>
+		<label for="in">Indonesia</label>
+	</li>
+</ul>
+<div class="separator"></div>
+			<div id="info">
+				<h3>Toggle Claims Data</h3>
+				<p class="open-sans">
+					See what resource blocks overlap with international claim lines.
+				</p>
 			</div>
 			<ul>
 					<li onclick="setAttacks()">
 						<input type="radio" name="pointdata" checked id="attacks">
-						<label for="attacks">All 2017 attacks</label>
+						<label for="attacks">Show maritime claim lines</label>
 					</li>
 					<li onclick="setNone()">
 								<input type="radio" name="pointdata" id="none">
-								<label for="none">Hide attacks data</label>
+								<label for="none">Hide maritime claim lines</label>
 							</li>
 			</ul>
 		</div>
@@ -80,8 +116,8 @@
 <!-- Copyright information -->
 
 <div id="copyright_bug">
-	&copy; <a href="https://www.csis.org/programs/transnational-threats-project" target="_blank">Transnational Threats</a> and <a href="https://www.csis.org" target="_blank">CSIS</a> | 2018
+	&copy; <a href="https://amti.csis.org" target="_blank">Transnational Threats</a> and <a href="https://www.csis.org" target="_blank">CSIS</a> | 2018
 </div>
-<script src="js/indicators.js"></script>
+<script src="js/resources.js"></script>
 </body>
 </html>

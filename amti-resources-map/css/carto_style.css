@@ -10,7 +10,8 @@ body {
 	height: 50px;
 	border: 0;
 	padding: 0;
-	background-image: url('../images/logo.jpg');		background-repeat:no-repeat;
+	background-image: url('../images/logo.jpg');
+	background-repeat:no-repeat;
 	background-color: transparent;
 	cursor: pointer;
 	}
