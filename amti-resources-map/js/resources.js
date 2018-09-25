@@ -111,8 +111,8 @@ const countryDataFilter = new carto.filter.Category('country1', { in: getCountry
 				 function setClaims() {
 				 			claim_style.setContent(`
 				 				#layer {
-									line-width: 1.5;
-									line-color: ramp([country], (#5F4690, #1D6996, #38A6A5, #0F8554, #73AF48, #EDAD08), ("Vietnam", "China", "Malaysia", "Indonesia", "Brunei", "Philippines"), "=");
+									line-width: 4;
+									line-color: ramp([country], (#00c3ff, #ff0000, #a7956c, #e7d636, #fb9a99, #ffaa00), ("Vietnam", "China", "Malaysia", "Indonesia", "Brunei", "Philippines"), "=");
 				 				}
 				 			`);
 				 		}
@@ -127,4 +127,15 @@ const countryDataFilter = new carto.filter.Category('country1', { in: getCountry
 						`);
 					}
 
-// Add claim data
+					const claimsPopup = L.popup({ closeButton: true });
+						claimsLayer.on(carto.layer.events.FEATURE_CLICKED, claimFeatureEvent => {
+							claimsPopup.setLatLng(claimFeatureEvent.latLng);
+								if (!claimsPopup.isOpen()) {
+									claimsPopup.setContent(
+										"<div class='popupHeaderStyle'>NAME</div><div class='popupEntryStyle'>" + claimFeatureEvent.data.name + "</div>"
+									);
+							claimsPopup.openOn(map);
+						}
+					});
+
+					registerListeners();

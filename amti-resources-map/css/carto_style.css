@@ -16,6 +16,16 @@ body {
 	cursor: pointer;
 	}
 
+	.colorKey {
+		height: 10px;
+		width: 10px;
+		display: inline-block;
+		margin: 3px 5px 0 5px;
+		vertical-align: middle;
+		border-radius: 20px;
+		border: black solid .5px;
+	}
+
 .popupHeaderStyle {
 	font-family: 'Open Sans Condensed', sans-serif;
 	font-weight: 300;
