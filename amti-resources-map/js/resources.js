@@ -74,14 +74,14 @@ const countryDataFilter = new carto.filter.Category('country1', { in: getCountry
 			 });
 
 			client.addLayer(resourceLayer);
-			client.getLeafletLayer().bringToFront().addTo(map);
+			client.getLeafletLayer().addTo(map);
 
 			const resourcePopup = L.popup({ closeButton: true });
 				resourceLayer.on(carto.layer.events.FEATURE_CLICKED, blockFeatureEvent => {
 					resourcePopup.setLatLng(blockFeatureEvent.latLng);
 						if (!resourcePopup.isOpen()) {
 							resourcePopup.setContent(
-								"<div class='popupHeaderStyle'>BLOCK NAME</div><div class='popupEntryStyle'>" + blockFeatureEvent.data.name + "</div><br /><div class='popupHeaderStyle'>RESOURCE TYPE</div><div class='popupEntryStyle'>" + blockFeatureEvent.data.resource + "</div><br /><div class='popupHeaderStyle'>LICENSE STATUS</div><div class='popupEntryStyle'>" + blockFeatureEvent.data.status + "</div><br /><div class='popupHeaderStyle'>PRODUCTION STATUS</div><div class='popupEntryStyle'>" + blockFeatureEvent.data.production + "</div><br /><div class='popupHeaderStyle'>OPERATOR</div><div class='popupEntryStyle'>" + blockFeatureEvent.data.operator + "</div><br /><div class='popupHeaderStyle'>STAKEHOLDERS</div><div class='popupEntryStyle'>" + blockFeatureEvent.data.partner1 + blockFeatureEvent.data.partner2 + blockFeatureEvent.data.partner3 + "</div>"
+								"<div class='popupHeaderStyle'>BLOCK NAME</div><div class='popupEntryStyle'>" + blockFeatureEvent.data.name + "</div><br /><div class='popupHeaderStyle'>RESOURCE TYPE</div><div class='popupEntryStyle'>" + blockFeatureEvent.data.resource + "</div><br /><div class='popupHeaderStyle'>LICENSE STATUS</div><div class='popupEntryStyle'>" + blockFeatureEvent.data.status + "</div><br /><div class='popupHeaderStyle'>PRODUCTION STATUS</div><div class='popupEntryStyle'>" + blockFeatureEvent.data.production + "</div><br /><div class='popupHeaderStyle'>OPERATOR</div><div class='popupEntryStyle'>" + blockFeatureEvent.data.operator + "</div><br /><div class='popupHeaderStyle'>OTHER STAKEHOLDERS</div><div class='popupEntryStyle'>" + blockFeatureEvent.data.partner1 + blockFeatureEvent.data.partner2 + blockFeatureEvent.data.partner3 + "</div>"
 							);
 					resourcePopup.openOn(map);
 				}
