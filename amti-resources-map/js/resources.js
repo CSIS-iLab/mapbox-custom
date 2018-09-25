@@ -46,7 +46,7 @@ const map = L.map('map', {
 L.control.zoomslider().addTo(map);
 
 const client = new carto.Client({
-	apiKey: 'Od4GcwfYUCKl8iXmIg6nvw',
+	apiKey: 'VIKGbtgYDbaBvbByM9W8gg',
 	username: 'csis'
 });
 
@@ -70,7 +70,7 @@ const countryDataFilter = new carto.filter.Category('country1', { in: getCountry
 			`);
 
 			const resourceLayer = new carto.layer.Layer(resources, resourceStyle, {
-				 featureClickColumns: ['country1', 'status', 'operator', 'production']
+				 featureClickColumns: ['name', 'resource', 'status', 'production', 'operator', 'partner1', 'partner2', 'partner3']
 			 });
 
 			client.addLayer(resourceLayer);
@@ -81,16 +81,50 @@ const countryDataFilter = new carto.filter.Category('country1', { in: getCountry
 					resourcePopup.setLatLng(blockFeatureEvent.latLng);
 						if (!resourcePopup.isOpen()) {
 							resourcePopup.setContent(
-								"<div class='popupHeaderStyle'>COUNTRY</div><div class='popupEntryStyle'>" + blockFeatureEvent.data.country1 + "</div><br /><div class='popupHeaderStyle'>STATUS</div><div class='popupEntryStyle'>" + blockFeatureEvent.data.status + "</div>"
+								"<div class='popupHeaderStyle'>BLOCK NAME</div><div class='popupEntryStyle'>" + blockFeatureEvent.data.name + "</div><br /><div class='popupHeaderStyle'>RESOURCE TYPE</div><div class='popupEntryStyle'>" + blockFeatureEvent.data.resource + "</div><br /><div class='popupHeaderStyle'>LICENSE STATUS</div><div class='popupEntryStyle'>" + blockFeatureEvent.data.status + "</div><br /><div class='popupHeaderStyle'>PRODUCTION STATUS</div><div class='popupEntryStyle'>" + blockFeatureEvent.data.production + "</div><br /><div class='popupHeaderStyle'>OPERATOR</div><div class='popupEntryStyle'>" + blockFeatureEvent.data.operator + "</div><br /><div class='popupHeaderStyle'>STAKEHOLDERS</div><div class='popupEntryStyle'>" + blockFeatureEvent.data.partner1 + blockFeatureEvent.data.partner2 + blockFeatureEvent.data.partner3 + "</div>"
 							);
 					resourcePopup.openOn(map);
 				}
 			});
 
-			resourceLayer.bringToFront();
+						registerListeners();
 
-			console.log(resourceLayer);
+			// Claim line data add
 
-			registerListeners();
+			const claimLines = new carto.source.SQL('SELECT * FROM cs_claims');
+			const claim_style = new carto.style.CartoCSS(`
+				#layer {
+					line-width: 0;
+					line-color: #7F3C8D;
+					line-opacity: 1;
+				}
+			`);
+
+			const claimsLayer = new carto.layer.Layer(claimLines, claim_style, {
+				featureClickColumns: ['name']
+			 });
+
+			// Add provinces and counties
+				 client.addLayer(claimsLayer);
+				 client.getLeafletLayer().bringToFront().addTo(map);
+
+				 function setClaims() {
+				 			claim_style.setContent(`
+				 				#layer {
+									line-width: 1.5;
+									line-color: ramp([country], (#5F4690, #1D6996, #38A6A5, #0F8554, #73AF48, #EDAD08), ("Vietnam", "China", "Malaysia", "Indonesia", "Brunei", "Philippines"), "=");
+				 				}
+				 			`);
+				 		}
+
+			function setNone() {
+						claim_style.setContent(`
+							#layer {
+								line-width: 0;
+								line-color: #7F3C8D;
+								line-opacity: 1;
+							}
+						`);
+					}
 
 // Add claim data
