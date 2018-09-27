@@ -90,7 +90,7 @@ const countryDataFilter = new carto.filter.Category('country1', { in: getCountry
 			});
 
 
-		const resourceHover = L.popup();
+		const resourceHover = L.popup({ closeButton: false });
 
 			resourceLayer.on(carto.layer.events.FEATURE_OVER, blockFeatureEvent => {
 				resourceHover.setLatLng(blockFeatureEvent.latLng);
