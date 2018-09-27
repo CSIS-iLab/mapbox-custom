@@ -92,7 +92,7 @@ const countryDataFilter = new carto.filter.Category('country1', { in: getCountry
 
 			// Claim line data add
 
-			const claimLines = new carto.source.SQL('SELECT * FROM cs_claims');
+			const claimLines = new carto.source.SQL("SELECT * FROM table_2018_allcountries_oilandgas_production ORDER BY country1");
 			const claim_style = new carto.style.CartoCSS(`
 				#layer {
 					line-width: 0;
