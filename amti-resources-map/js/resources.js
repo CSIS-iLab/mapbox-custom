@@ -54,7 +54,7 @@ const client = new carto.Client({
 
 const countryDataFilter = new carto.filter.Category('country1', { in: getCountryData() });
 
-			const resources = new carto.source.SQL('SELECT * FROM table_2018_allcountries_oilandgas_production ORDER BY country1');
+			const resources = new carto.source.SQL('SELECT * FROM table_2018_allcountries_oilandgas_production ORDER BY country1 DESC');
 						resources.addFilter(countryDataFilter);
 
 			const resourceStyle = new carto.style.CartoCSS(`
