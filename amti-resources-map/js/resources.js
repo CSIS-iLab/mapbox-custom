@@ -92,7 +92,7 @@ const countryDataFilter = new carto.filter.Category('country1', { in: getCountry
 
 			// Claim line data add
 
-			const claimLines = new carto.source.SQL("SELECT * FROM table_2018_allcountries_oilandgas_production ORDER BY country1");
+			const claimLines = new carto.source.SQL("SELECT * FROM table_2018_allcountries_oilandgas_production ORDER BY country1 DESC");
 			const claim_style = new carto.style.CartoCSS(`
 				#layer {
 					line-width: 0;
@@ -155,13 +155,13 @@ const countryDataFilter = new carto.filter.Category('country1', { in: getCountry
 					      return stakeholderArray.join(" <em>and</em> ");
 					      break;
 					    case stakeholderArray.length > 3:
-					    	stakeholderArray.splice(stakeholderArray.length-1, 0, "and ")
+					    	stakeholderArray.splice(stakeholderArray.length-1, 0, ", ")
 								stakeholderString = stakeholderArray.slice(0, stakeholderArray.length-1).join(", ")
 								stakeholderString += stakeholderArray[stakeholderArray.length-1]
 								return stakeholderString
 					      break;
 					    default:
-					      return "none";
+					      return "N/A";
 					  }
 					};
 
