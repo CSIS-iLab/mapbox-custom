@@ -77,17 +77,35 @@ const countryDataFilter = new carto.filter.Category('country1', { in: getCountry
 			client.getLeafletLayer().addTo(map);
 
 			const resourcePopup = L.popup({ closeButton: true });
-				resourceLayer.on(carto.layer.events.FEATURE_OVER, blockFeatureEvent => {
+
+				resourceLayer.on(carto.layer.events.FEATURE_CLICKED, blockFeatureEvent => {
 					resourcePopup.setLatLng(blockFeatureEvent.latLng);
+					if (!resourcePopup.isOpen()) {
 							let data = blockFeatureEvent.data;
 							resourcePopup.setContent(
 								"<div class='popupHeaderStyle'>BLOCK NAME</div><div class='popupEntryStyle'>" + data.name + "</div><br /><div class='popupHeaderStyle'>RESOURCE TYPE</div><div class='popupEntryStyle'>" + data.resource + "</div><br /><div class='popupHeaderStyle'>LICENSE STATUS</div><div class='popupEntryStyle'>" + data.status + "</div><br /><div class='popupHeaderStyle'>PRODUCTION STATUS</div><div class='popupEntryStyle'>" + data.production + "</div><br /><div class='popupHeaderStyle'>OPERATOR</div><div class='popupEntryStyle'>" + data.operator + "</div><br /><div class='popupHeaderStyle'>OTHER STAKEHOLDERS</div><div class='popupEntryStyle'>" + formatStakeholders(data) + "</div>"
 							);
 					resourcePopup.openOn(map);
+				}
 			});
 
+
+		const resourceHover = L.popup();
+
+			resourceLayer.on(carto.layer.events.FEATURE_OVER, blockFeatureEvent => {
+				resourceHover.setLatLng(blockFeatureEvent.latLng);
+				if (!resourcePopup.isOpen()) {
+						let data = blockFeatureEvent.data;
+						resourceHover.setContent(
+							"<div class='popupHeaderStyle'>BLOCK NAME</div><div class='popupEntryStyle'>" + data.name + "</div>"
+						);
+				resourceHover.openOn(map);
+			}
+		});
+
+
 			resourceLayer.on(carto.layer.events.FEATURE_OUT, blockFeatureEvent => {
-				resourcePopup.removeFrom(map);
+				resourceHover.removeFrom(map);
 		});
 
 
