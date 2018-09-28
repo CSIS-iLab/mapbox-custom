@@ -111,9 +111,9 @@ const countryDataFilter = new carto.filter.Category('country1', { in: getCountry
 
 						registerListeners();
 
-			// Claim line data add
+			// Query the claims data
 
-			const claimLines = new carto.source.SQL("SELECT * FROM table_2018_allcountries_oilandgas_production ORDER BY country1 DESC");
+			const claimLines = new carto.source.SQL("SELECT * FROM cs_claims");
 			const claim_style = new carto.style.CartoCSS(`
 				#layer {
 					line-width: 0;
@@ -126,15 +126,16 @@ const countryDataFilter = new carto.filter.Category('country1', { in: getCountry
 				featureClickColumns: ['name']
 			 });
 
-			// Add provinces and counties
-				 client.addLayer(claimsLayer);
-				 client.getLeafletLayer().bringToFront().addTo(map);
+			// Add the claim lines to map
+
+			client.addLayer(claimsLayer);
+			client.getLeafletLayer().bringToFront().addTo(map);
 
 				 function setClaims() {
 				 			claim_style.setContent(`
 				 				#layer {
 									line-width: 4;
-									line-color: ramp([country], (#00c3ff, #ff0000, #a7956c, #e7d636, #fb9a99, #ffaa00), ("Vietnam", "China", "Malaysia", "Indonesia", "Brunei", "Philippines"), "=");
+									line-color: ramp([country], (#084d38, #1b3559, #492151, #405e2c, #795b00, #83203f), ("Vietnam", "China", "Malaysia", "Indonesia", "Brunei", "Philippines"), "=");
 				 				}
 				 			`);
 				 		}
@@ -149,16 +150,25 @@ const countryDataFilter = new carto.filter.Category('country1', { in: getCountry
 						`);
 					}
 
-					const claimsPopup = L.popup({ closeButton: true });
-						claimsLayer.on(carto.layer.events.FEATURE_CLICKED, claimFeatureEvent => {
+					// Set hover tooltips for claim lines
+
+					const claimsPopup = L.popup({ closeButton: false });
+
+						claimsLayer.on(carto.layer.events.FEATURE_OVER, claimFeatureEvent => {
 							claimsPopup.setLatLng(claimFeatureEvent.latLng);
-								if (!claimsPopup.isOpen()) {
+							if (!claimsPopup.isOpen()) {
 									claimsPopup.setContent(
-										"<div class='popupHeaderStyle'>NAME</div><div class='popupEntryStyle'>" + claimFeatureEvent.data.name + "</div>"
+										"<div class='popupHeaderStyle'>CLAIM</div><div class='popupEntryStyle'>" + claimFeatureEvent.data.name + "</div>"
 									);
 							claimsPopup.openOn(map);
 						}
 					});
+
+						claimsLayer.on(carto.layer.events.FEATURE_OUT, claimFeatureEvent => {
+							claimsPopup.removeFrom(map);
+					});
+
+					// Format null strings for partner cols and add comma-separation for multiples
 
 					const formatStakeholders = data => {
 					  let partnerColKeys = Object.keys(data).filter(k => k.includes("partner"));
