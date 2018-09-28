@@ -135,7 +135,7 @@ const countryDataFilter = new carto.filter.Category('country1', { in: getCountry
 				 			claim_style.setContent(`
 				 				#layer {
 									line-width: 4;
-									line-color: ramp([country], (#084d38, #1b3559, #492151, #405e2c, #795b00, #83203f), ("Vietnam", "China", "Malaysia", "Indonesia", "Brunei", "Philippines"), "=");
+									line-color: ramp([country], (#12eba9, #98c1ff, #e671ff, #405e2c, #fdc006, #83203f), ("Vietnam", "China", "Malaysia", "Indonesia", "Brunei", "Philippines"), "=");
 				 				}
 				 			`);
 				 		}
