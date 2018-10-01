@@ -179,17 +179,13 @@ const countryDataFilter = new carto.filter.Category('country1', { in: getCountry
 
 					  let stakeholderString;
 
-					  stakeholderArray = stakeholderArray.filter(s => !!s);
-
+					  stakeholderArray = stakeholderArray.filter(s => !!s.trim());
 					  switch (true) {
 					    case stakeholderArray.length > 0 && stakeholderArray.length < 3:
 					      return stakeholderArray.join(" <em>and</em> ");
 					      break;
-					    case stakeholderArray.length > 3:
-					    	stakeholderArray.splice(stakeholderArray.length-1, 0, ", ")
-								stakeholderString = stakeholderArray.slice(0, stakeholderArray.length-1).join(", ")
-								stakeholderString += stakeholderArray[stakeholderArray.length-1]
-								return stakeholderString
+					    case stakeholderArray.length > 2:
+								return stakeholderArray.join(", ")
 					      break;
 					    default:
 					      return "N/A";
