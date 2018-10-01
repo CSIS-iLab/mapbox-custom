@@ -39,7 +39,8 @@ const map = L.map('map', {
 	scrollWheelZoom: false,
 	minZoom: 7,
 	zoomControl: false,
-	layers: [basemap]
+	layers: [basemap],
+	attributionControl: false
 });
 
 const baseLayers = {
@@ -49,6 +50,8 @@ const baseLayers = {
 
 L.control.layers(baseLayers, null, {collapsed: false, autoZIndex: false}).setPosition('topleft').addTo(map);
 L.control.zoomslider().addTo(map);
+// L.control.removeAttribution();
+
 // L.control.zoom({zoomInText: "Zoom In +", zoomOutText: "Zoom Out -"}).addTo(map);
 
 // API connection information
