@@ -55,15 +55,15 @@
       <header>
         <h1>South China Sea Energy Exploration and Development</h1>
         <a href="https://amti.csis.org/" target="_blank"><button class="mobile-toggle" id="logo"></button></a>
-        <p id="mobile-only">This map shows resources in the South China Sea.</p>
+        <!-- <p id="mobile-only">This map shows resources in the South China Sea.</p> -->
       </header>
 
-      <section class="mobile-toggle">
-        <p class="description open-sans">The South China Sea holds an estimated 190 trillion cubic feet of natural gas and 11 billion barrels of oil in proved and probable reserves, with much more potentially undiscovered.</p>
-        <div class="separator"></div>
+      <section>
+        <p class="description open-sans mobile-toggle">The South China Sea holds an estimated 190 trillion cubic feet of natural gas and 11 billion barrels of oil in proved and probable reserves, with much more potentially undiscovered.</p>
+        <div class="separator mobile-toggle"></div>
         <div id="controls">
           <div id="info">
-            <h3>Oil and Gas Blocks</h3>
+            <h3 class="mobile-toggle">Oil and Gas Blocks</h3>
             <p class="open-sans">
               Sort oil and gas licensing blocks by country.
             </p>
@@ -105,30 +105,32 @@
               <div class="colorKey" style="background-color: #CCC;"></div>
             </li>
           </ul>
-          <div id="searchbox">
+          <div id="searchbox" class="mobile-toggle">
             <div id="info">
               <h3>Search</h3>
             </div>
             <input type="text" name="ad" value="" id="query" size="10" />
             <button type="button" id="resetButton">Reset</button>
           </div>
-          <div class="separator"></div>
-          <div id="info">
-            <h3>Claim Lines</h3>
-            <p class="open-sans">
-              See where blocks lie in relation to regional continental shelf claims and China’s nine-dash line.
-            </p>
+          <div class="claims mobile-toggle">
+            <div class="separator"></div>
+            <div id="info">
+              <h3>Claim Lines</h3>
+              <p class="open-sans">
+                See where blocks lie in relation to regional continental shelf claims and China’s nine-dash line.
+              </p>
+            </div>
+            <ul>
+              <li onclick="setClaims()">
+                <input type="radio" name="linedata" id="claims">
+                <label for="claims">Show claim lines</label>
+              </li>
+              <li onclick="setNone()">
+                <input type="radio" name="linedata" checked id="none">
+                <label for="none">Hide claim lines</label>
+              </li>
+            </ul>
           </div>
-          <ul>
-            <li onclick="setClaims()">
-              <input type="radio" name="linedata" id="claims">
-              <label for="claims">Show claim lines</label>
-            </li>
-            <li onclick="setNone()">
-              <input type="radio" name="linedata" checked id="none">
-              <label for="none">Hide claim lines</label>
-            </li>
-          </ul>
         </div>
       </section>
       <footer class="js-footer"></footer>
