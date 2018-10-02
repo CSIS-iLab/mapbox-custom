@@ -13,9 +13,16 @@ function applyFilters() {
 }
 
 function registerListeners() {
-  document
-    .querySelectorAll("#controls input")
-    .forEach(input => input.addEventListener("click", () => applyFilters()));
+  document.querySelectorAll("#controls input").forEach(input =>
+    input.addEventListener("click", () => {
+      document.querySelector("#query").value = "";
+      resources
+        .getFilters()
+        .slice(1)
+        .forEach(f => resources.removeFilter(f));
+      applyFilters();
+    })
+  );
 }
 
 // Layer switcher
@@ -167,7 +174,7 @@ function setClaims() {
   claim_style.setContent(`
 				 				#layer {
 									line-width: 4;
-									line-color: ramp([country], (#12eba9, #98c1ff, #e671ff, #405e2c, #fdc006, #83203f), ("Vietnam", "China", "Malaysia", "Indonesia", "Brunei", "Philippines"), "=");
+									line-color: ramp([country], (#12eba9, #98c1ff, #e671ff, #405e2c, #fdc006, #83203f), ("Vietnam", "China", "Malaysia", "Indonesia", "Brunei", "Philisppines"), "=");
 				 				}
 				 			`);
 }
@@ -229,18 +236,42 @@ const formatStakeholders = data => {
 registerListeners();
 
 document.querySelector("#query").addEventListener("keyup", () => {
-  let input = document.querySelector("#query").value;
-  let query = input.charAt(0).toUpperCase() + input.slice(1);
+  let q = document.querySelector("#query").value;
   let columnArray = resourceLayer["_featureClickColumns"];
-  columnArray[8] = "country1";
-  const filterArray = columnArray.map(
-    c => new carto.filter.Category(c, { similarTo: `%${query}%` })
-  );
+  columnArray.push("country1");
+  let filterArray = [];
+  columnArray.map(c => {
+    filterArray.push(capital(c, q), lower(c, q), upper(c, q));
+  });
   const filters = new carto.filter.OR(filterArray);
-  resources.getFilters().forEach(f => resources.removeFilter(f));
+  resources
+    .getFilters()
+    .slice(1)
+    .forEach(f => resources.removeFilter(f));
   resources.addFilter(filters);
 });
 
+const capital = (c, q) => {
+  return new carto.filter.Category(c, {
+    like: `%${q.charAt(0).toUpperCase() + q.slice(1)}%`
+  });
+};
+const lower = (c, q) => {
+  return new carto.filter.Category(c, {
+    like: `%${q.toLowerCase()}%`
+  });
+};
+const upper = (c, q) => {
+  return new carto.filter.Category(c, {
+    like: `%${q.toUpperCase()}%`
+  });
+};
+
 document.querySelector("#resetButton").addEventListener("click", e => {
   document.querySelector("#query").value = "";
+  resources
+    .getFilters()
+    .slice(1)
+    .forEach(f => resources.removeFilter(f));
+  applyFilters();
 });
