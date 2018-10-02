@@ -1,144 +1,153 @@
 body {
-	font-family: 'Open Sans Condensed', sans-serif;
+  font-family: "Open Sans Condensed", sans-serif;
+}
+
+div#searchbox input {
+  width: 75%;
+}
+
+div#results {
+  background: #fff;
 }
 
 .box header h1 {
-    display: inline-block;
-    color: #2E3C43;
-    line-height: 32px;
-    font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-    font-size: 20px;
-    font-weight: 600;
-    margin: 0;
-    width: calc(100% - 67px);
+  display: inline-block;
+  color: #2e3c43;
+  line-height: 32px;
+  font-family: "Montserrat", Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+  width: calc(100% - 67px);
 }
 
 #logo {
-	position: absolute;
-	top: 20px;
-	right: 20px;
-	width: 50px;
-	height: 50px;
-	border: 0;
-	padding: 0;
-	background-image: url('../images/logo.jpg');
-	background-repeat:no-repeat;
-	background-color: transparent;
-	cursor: pointer;
-	}
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border: 0;
+  padding: 0;
+  background-image: url("../images/logo.jpg");
+  background-repeat: no-repeat;
+  background-color: transparent;
+  cursor: pointer;
+}
 
-	.colorKey {
-		height: 10px;
-		width: 10px;
-		display: inline-block;
-		margin: 3px 5px 0 5px;
-		vertical-align: middle;
-		border-radius: 20px;
-		border: black solid .5px;
-	}
+.colorKey {
+  height: 10px;
+  width: 10px;
+  display: inline-block;
+  margin: 3px 5px 0 5px;
+  vertical-align: middle;
+  border-radius: 20px;
+  border: black solid 0.5px;
+}
 
 .popupHeaderStyle {
-	font-family: 'Open Sans Condensed', sans-serif;
-	font-weight: 300;
+  font-family: "Open Sans Condensed", sans-serif;
+  font-weight: 300;
 }
 
 .popupEntryStyle {
-	font-weight: 600;
-	font-family: 'Open Sans', sans-serif;
-	margin: 0;
-	padding: 0;
+  font-weight: 600;
+  font-family: "Open Sans", sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 #copyright_bug {
-	font-family: 'Open Sans', sans-serif;
-	position: absolute;
-	background: rgba(255,255,255,.7);
-	font-size: 11px;
-	bottom: 0;
-	width: 200px;
-	height: 16px;
-	padding: 0 0 0 10px;
-	border-radius: 3px;
+  font-family: "Open Sans", sans-serif;
+  position: absolute;
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 11px;
+  bottom: 0;
+  width: 200px;
+  height: 16px;
+  padding: 0 0 0 10px;
+  border-radius: 3px;
 }
 
 .box {
-	padding: 24px;
-	background-color: #fffdfd;
+  padding: 24px;
+  background-color: #fffdfd;
 }
 
-.leaflet-popup-content-wrapper, .leaflet-popup-tip {
-	background-color: #e4e3e3;
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background-color: #e4e3e3;
 }
 
 .js-price-placeholder {
-	font-weight: 700;
-	color: #000;
+  font-weight: 700;
+  color: #000;
 }
 
 .box header h1 {
-	font-family: 'Open Sans Condensed', sans-serif;
-	font-weight: 700;
-	font-size: 24px;
-	line-height: 28px;
+  font-family: "Open Sans Condensed", sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 28px;
 }
 
 #controls #info h3 {
-	font-family: 'Open Sans Condensed', sans-serif;
-	font-weight: 700;
-	text-transform: uppercase;
-	font-size: 20px;
-	line-height: 24px;
+  font-family: "Open Sans Condensed", sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 20px;
+  line-height: 24px;
 }
 
 /* FOR DISPLAYS ≤ 425px */
 
 #mobile-only {
-	visibility: hidden;
-	height: 0;
-	margin: 0;
-	padding: 0;
+  visibility: hidden;
+  height: 0;
+  margin: 0;
+  padding: 0;
 }
 
 @media (max-width: 425px) {
- #mobile-only {
- visibility: visible;
- height: 50px;
- color: #747D82;
-font-size: 12px;
-line-height: 16px;
-font-family: 'Open Sans', Arial, Helvetica, sans-serif;
-font-weight: 400;
- }
+  #mobile-only {
+    visibility: visible;
+    height: 50px;
+    color: #747d82;
+    font-size: 12px;
+    line-height: 16px;
+    font-family: "Open Sans", Arial, Helvetica, sans-serif;
+    font-weight: 400;
+  }
 }
 
 @media (max-width: 425px) {
- .mobile-toggle {
- display: none;
- }
+  .mobile-toggle {
+    display: none;
+  }
 }
 
 @media (max-width: 425px) {
- .box {
- padding: 12px;
- }
+  .box {
+    padding: 12px;
+  }
 }
 
 @media (max-width: 425px) {
-aside.toolbox {
+  aside.toolbox {
     position: absolute;
     top: 12px;
     right: 24px;
     max-width: 200px;
-		min-width: 200px;
+    min-width: 200px;
     z-index: 2;
-}
+  }
 }
 
 @media (max-width: 425px) {
-.box header h1 {
-    font-family: 'Open Sans Condensed', sans-serif;
+  .box header h1 {
+    font-family: "Open Sans Condensed", sans-serif;
     font-weight: 700;
     font-size: 20px;
     line-height: 22px;
-}
+  }
 }
