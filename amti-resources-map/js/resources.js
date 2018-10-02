@@ -15,11 +15,6 @@ function applyFilters() {
 function registerListeners() {
   document.querySelectorAll("#controls input").forEach(input =>
     input.addEventListener("click", () => {
-      document.querySelector("#query").value = "";
-      resources
-        .getFilters()
-        .slice(1)
-        .forEach(f => resources.removeFilter(f));
       applyFilters();
     })
   );
@@ -222,11 +217,12 @@ const formatStakeholders = data => {
 
   stakeholderArray = stakeholderArray.filter(s => !!s.trim());
   switch (true) {
-    case stakeholderArray.length > 0 && stakeholderArray.length < 3:
-      return stakeholderArray.join(" <em>and</em> ");
+    case stakeholderArray.length === 1:
+      return stakeholderArray[0];
       break;
-    case stakeholderArray.length > 2:
-      return stakeholderArray.join(", ");
+    case stakeholderArray.length > 1:
+      stakeholderLIs = stakeholderArray.map(s => `<li>${s}</li>`);
+      return `<ul>${stakeholderLIs.join("")}</ul>`;
       break;
     default:
       return "N/A";

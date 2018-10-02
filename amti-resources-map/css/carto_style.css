@@ -57,13 +57,17 @@ div#results {
   padding: 0;
 }
 
+.popupEntryStyle ul {
+  padding-left: 15px;
+  margin: 0;
+}
+
 #copyright_bug {
   font-family: "Open Sans", sans-serif;
   position: absolute;
   background: rgba(255, 255, 255, 0.7);
   font-size: 11px;
   bottom: 0;
-  width: 200px;
   height: 16px;
   padding: 0 0 0 10px;
   border-radius: 3px;
