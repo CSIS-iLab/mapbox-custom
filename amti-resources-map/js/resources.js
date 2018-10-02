@@ -237,12 +237,36 @@ registerListeners();
 
 document.querySelector("#query").addEventListener("keyup", () => {
   let q = document.querySelector("#query").value;
-  let columnArray = resourceLayer["_featureClickColumns"];
-  columnArray.push("country1");
   let filterArray = [];
-  columnArray.map(c => {
-    filterArray.push(capital(c, q), lower(c, q), upper(c, q));
-  });
+
+  if (q.toLowerCase().includes("prod") && !q.toLowerCase().includes("non")) {
+    filterArray.push(
+      new carto.filter.Category("production", {
+        eq: "Producing"
+      })
+    );
+    filterArray.push(
+      new carto.filter.Category("production", {
+        eq: "producing"
+      })
+    );
+  } else if (
+    q.toLowerCase().includes("non ") ||
+    q.toLowerCase().includes("non-p")
+  ) {
+    filterArray.push(
+      capital("production", q),
+      lower("production", q),
+      upper("production", q)
+    );
+  } else {
+    let columnArray = resourceLayer["_featureClickColumns"];
+    columnArray.push("country1");
+    columnArray.map(c => {
+      filterArray.push(capital(c, q), lower(c, q), upper(c, q));
+    });
+  }
+
   const filters = new carto.filter.OR(filterArray);
   resources
     .getFilters()
