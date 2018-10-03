@@ -113,7 +113,7 @@ resourceLayer.on(carto.layer.events.FEATURE_CLICKED, blockFeatureEvent => {
         data.production +
         "</div><br /><div class='popupHeaderStyle'>OPERATOR</div><div class='popupEntryStyle'>" +
         data.operator +
-        "</div><br /><div class='popupHeaderStyle'>OTHER STAKEHOLDERS</div><div class='popupEntryStyle'>" +
+        "</div><br /><div class='popupHeaderStyle'>STAKEHOLDERS</div><div class='popupEntryStyle'>" +
         formatStakeholders(data) +
         "</div>"
     );
@@ -225,7 +225,7 @@ const formatStakeholders = data => {
       return `<ul>${stakeholderLIs.join("")}</ul>`;
       break;
     default:
-      return "N/A";
+      return "";
   }
 };
 
