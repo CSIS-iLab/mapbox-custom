@@ -40,7 +40,7 @@
         transparent 0
       )
       no-repeat 0 45% / 100% 40%;
-    --range-color: hsl(190, 80%, 40%);
+    --range-color: #000;
   }
 
   input[type="range"].multirange.ghost::-webkit-slider-runnable-track {

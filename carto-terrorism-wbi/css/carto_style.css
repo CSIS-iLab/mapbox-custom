@@ -3,12 +3,16 @@ body {
 }
 .labels {
   display: flex;
+  margin: 6px -18px auto;
   justify-content: space-between;
 }
 .labels > div {
   white-space: nowrap;
-  font-size: 10px;
+  text-align: center;
+  font-size: 12px;
   font-weight: bold;
+  border: 1px transparent solid;
+  flex-basis: 16.66667%;
 }
 #logo {
   position: absolute;
@@ -27,6 +31,7 @@ body {
 .popupHeaderStyle {
   font-family: "Open Sans Condensed", sans-serif;
   font-weight: 300;
+  font-size: 18px;
 }
 
 .popupEntryStyle {

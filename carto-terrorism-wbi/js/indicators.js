@@ -22,6 +22,7 @@ const getInput = () => {
 
   let filters = new carto.filter.AND(filterArray);
 
+  console.log(filterArray);
   wbi.getFilters().forEach(f => wbi.removeFilter(f));
 
   wbi.addFilter(filters);
@@ -96,7 +97,7 @@ L.control
 L.control.zoomslider().addTo(map);
 
 const client = new carto.Client({
-  apiKey: "pe2UlJrfPag8Vqs6S5suHA",
+  apiKey: "po5YQCunzcTlkL-jU6mUEg",
   username: "csis"
 });
 
@@ -107,7 +108,7 @@ getInput();
 
 const wbiStyle = new carto.style.CartoCSS(`
 	#layer {
-	  polygon-fill: ramp([govern_rating], (#c9dcda, #98c3c4, #68abb8, #45829b, #2a5674), quantiles);
+	  polygon-fill: ramp([govern_rating], ( #2a5674, #45829b, #68abb8, #98c3c4, #c9dcda), quantiles);
 	  polygon-opacity: 1;
 	  polygon-comp-op: overlay;
 	}
@@ -115,19 +116,6 @@ const wbiStyle = new carto.style.CartoCSS(`
 	  line-width: 1;
 	  line-color: #FFFFFF;
 	  line-opacity: 0.5;
-	}
-	#layer::labels {
-	  text-name: [country];
-	  text-face-name: 'Open Sans Regular';
-	  text-size: 13;
-	  text-fill: #ffffff;
-	  text-label-position-tolerance: 0;
-	  text-halo-radius: 1.5;
-	  text-halo-fill: #3c5a72;
-	  text-dy: 0;
-	  text-allow-overlap: false;
-	  text-placement: point;
-	  text-placement-type: dummy;
 	}
 `);
 
@@ -138,7 +126,7 @@ client.getLeafletLayer().addTo(map);
 
 // Load the province and county datasets
 
-const attacks = new carto.source.SQL("SELECT * FROM startdata_aqiattacks");
+const attacks = new carto.source.SQL("SELECT * FROM governance_wbi_attacks");
 const attacks_style = new carto.style.CartoCSS(`
 #layer {
 	marker-width: 7;
@@ -152,7 +140,7 @@ const attacks_style = new carto.style.CartoCSS(`
 `);
 
 const attacksLayer = new carto.layer.Layer(attacks, attacks_style, {
-  featureClickColumns: ["city", "country_txt"]
+  featureClickColumns: ["city", "country_txt", "gname", "summary"]
 });
 
 // Add provinces and counties
@@ -189,6 +177,34 @@ const setNone = () => {
 				}
 			`);
 };
+
+const attackInfo = L.popup({ closeButton: false });
+
+attacksLayer.on(carto.layer.events.FEATURE_CLICKED, e => {
+  attackInfo.setLatLng(e.latLng);
+  if (!attackInfo.isOpen()) {
+    let data = e.data;
+    attackInfo.setContent(
+      "<div class='popupHeaderStyle'>" +
+        data.gname +
+        "</div><div class='popupEntryStyle'>" +
+        data.summary +
+        "</div>"
+    );
+
+    attackInfo.openOn(map);
+  }
+});
+
+document.addEventListener("mousemove", e => {
+  // attacksLayer.trigger("featureOver", {
+  //   latlng: null,
+  //   pos: null,
+  //   data: null,
+  //   subLayerIndex: null
+  // });
+  attackInfo.removeFrom(map);
+});
 
 window.addEventListener("DOMContentLoaded", () => {
   registerListeners();
