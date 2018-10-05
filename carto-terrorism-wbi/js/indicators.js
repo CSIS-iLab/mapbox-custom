@@ -1,26 +1,64 @@
-function getCountryData() {
+const inputControl = document.querySelector("input[type='range']");
+
+const getInput = () => {
+  let filterArray = [];
+
+  //// This whole mess is because 0 values aren't being accepted
+  if (getCountryData()[0] > 0) {
+    filterArray[0] = new carto.filter.Range("govern_rating", {
+      gte: getCountryData()[0]
+    });
+  } else {
+    // filterArray.push(
+    //   new carto.filter.Range("govern_rating", {
+    //     gte: 0
+    //   })
+    // );
+  }
+
+  filterArray[1] = new carto.filter.Range("govern_rating", {
+    lte: getCountryData()[1]
+  });
+
+  let filters = new carto.filter.AND(filterArray);
+
+  wbi.getFilters().forEach(f => wbi.removeFilter(f));
+
+  wbi.addFilter(filters);
+};
+
+const getCountryData = () => {
   const inputControls = document.querySelectorAll(
     "#controls input[type='checkbox']"
   );
 
-  const values = [];
+  const checkedFields = [...inputControls].filter(input => input.checked);
+  // const values = checkedFields.map(input => parseInt(input.value), 10);
 
-  [...inputControls]
-    .filter(input => input.checked)
-    .map(input => values.push(parseInt(input.value), 10));
+  let valueLow = parseInt(inputControl.valueLow, 10) || 0;
+
+  let valueHigh = parseInt(inputControl.valueHigh, 10) || 6;
+
+  const values = [valueLow, valueHigh];
 
   return values;
-}
+};
 
-function applyFilters() {
-  countryDataFilter.set("in", getCountryData());
-}
+const applyFilters = () => {
+  getInput();
+};
 
-function registerListeners() {
+const registerListeners = () => {
   document
     .querySelectorAll("#controls input")
     .forEach(input => input.addEventListener("click", () => applyFilters()));
-}
+
+  document.querySelectorAll("input[type='range']").forEach(input => {
+    input.addEventListener("change", e => {
+      applyFilters();
+    });
+  });
+};
 
 // Layer switcher
 
@@ -64,12 +102,8 @@ const client = new carto.Client({
 
 // Add WBI basemap
 
-const countryDataFilter = new carto.filter.Category("govern_rating", {
-  in: getCountryData()
-});
-
 const wbi = new carto.source.SQL("SELECT * FROM governance_wbi");
-wbi.addFilter(countryDataFilter);
+getInput();
 
 const wbiStyle = new carto.style.CartoCSS(`
 	#layer {
@@ -128,7 +162,7 @@ client
   .bringToFront()
   .addTo(map);
 
-function setAttacks() {
+const setAttacks = () => {
   attacks_style.setContent(`
 	 				#layer {
 						marker-width: 7;
@@ -140,9 +174,9 @@ function setAttacks() {
 						marker-line-opacity: 1;
 	 				}
 	 			`);
-}
+};
 
-function setNone() {
+const setNone = () => {
   attacks_style.setContent(`
 				#layer {
 					marker-width: 1;
@@ -154,6 +188,8 @@ function setNone() {
 					marker-line-opacity: 1;
 				}
 			`);
-}
+};
 
-registerListeners();
+window.addEventListener("DOMContentLoaded", () => {
+  registerListeners();
+});
