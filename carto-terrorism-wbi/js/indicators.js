@@ -117,6 +117,20 @@ const wbiStyle = new carto.style.CartoCSS(`
 	  line-color: #FFFFFF;
 	  line-opacity: 0.5;
 	}
+
+  #layer::labels {
+  text-name: [country];
+  text-face-name: 'Open Sans Regular';
+  text-size: 13;
+  text-fill: #ffffff;
+  text-label-position-tolerance: 0;
+  text-halo-radius: 1.5;
+  text-halo-fill: #3c5a72;
+  text-dy: 0;
+  text-allow-overlap: false;
+  text-placement: point;
+  text-placement-type: dummy;
+  }
 `);
 
 const wbiLayer = new carto.layer.Layer(wbi, wbiStyle);
