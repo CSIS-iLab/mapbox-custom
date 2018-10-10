@@ -16,7 +16,7 @@ L.tileLayer(
 // }).addTo(map);
 
 map.attributionControl.addAttribution(
-  '<a href="https://defense360.csis.org">CSIS Defense360</a>'
+  '<a href="https://www.csis.org/programs/international-security-program/project-nuclear-issues">Project on Nuclear Issues</a>'
 );
 
 var client = new carto.Client({
