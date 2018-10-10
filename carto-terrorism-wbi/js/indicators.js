@@ -4,17 +4,9 @@ const getInput = () => {
   let filterArray = [];
 
   //// This whole mess is because 0 values aren't being accepted
-  if (getCountryData()[0] > 0) {
-    filterArray[0] = new carto.filter.Range("govern_rating", {
-      gte: getCountryData()[0]
-    });
-  } else {
-    // filterArray.push(
-    //   new carto.filter.Range("govern_rating", {
-    //     gte: 0
-    //   })
-    // );
-  }
+  filterArray[0] = new carto.filter.Range("govern_rating", {
+    gte: getCountryData()[0] + 0.1
+  });
 
   filterArray[1] = new carto.filter.Range("govern_rating", {
     lte: getCountryData()[1]
@@ -22,7 +14,6 @@ const getInput = () => {
 
   let filters = new carto.filter.AND(filterArray);
 
-  console.log(filterArray);
   wbi.getFilters().forEach(f => wbi.removeFilter(f));
 
   wbi.addFilter(filters);
@@ -108,8 +99,15 @@ getInput();
 
 const wbiStyle = new carto.style.CartoCSS(`
 	#layer {
-	  polygon-fill: ramp([govern_rating], ( #2a5674, #45829b, #68abb8, #98c3c4, #c9dcda), quantiles);
-	  polygon-opacity: 1;
+    polygon-fill: ramp([govern_rating], ("#c9dcda"), (5),=);
+    polygon-fill: ramp([govern_rating], ("#98c3c4"), (4),=);
+    polygon-fill: ramp([govern_rating], ("#68abb8"), (3),=);
+    polygon-fill: ramp([govern_rating], ("#45829b"), (2),=);
+    polygon-fill: ramp([govern_rating], ("#2a5674"), (1),=);
+    polygon-fill: ramp([govern_rating], ("#204157"), (0),=);
+
+
+    polygon-opacity: 1;
 	  polygon-comp-op: overlay;
 	}
 	#layer::outline {
