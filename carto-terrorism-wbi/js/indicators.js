@@ -118,11 +118,11 @@ const wbiStyle = new carto.style.CartoCSS(`
 
   #layer::labels {
   text-name: [country];
-  text-face-name: 'Open Sans Regular';
-  text-size: 13;
+  text-face-name: 'Open Sans Bold';
+  text-size: 14;
   text-fill: #ffffff;
   text-label-position-tolerance: 0;
-  text-halo-radius: 1.5;
+  text-halo-radius: 1;
   text-halo-fill: #3c5a72;
   text-dy: 0;
   text-allow-overlap: false;
