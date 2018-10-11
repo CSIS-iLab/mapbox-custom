@@ -4,15 +4,15 @@ let values = [];
 
 let inputControl;
 
-const getInput = (low, high) => {
+const getInput = values => {
   let filterArray = [];
 
   filterArray[0] = new carto.filter.Range("govern_rating", {
-    gte: low
+    gte: values[0]
   });
 
   filterArray[1] = new carto.filter.Range("govern_rating", {
-    lte: high
+    lte: values[1]
   });
 
   let filters = new carto.filter.AND(filterArray);
@@ -28,19 +28,16 @@ const getCountryData = () => {
   );
 
   const checkedFields = [...inputControls].filter(input => input.checked);
-  // const values = checkedFields.map(input => parseInt(input.value), 10);
 
   valueLow = parseInt(inputControl.valueLow, 10) || 1;
 
   valueHigh = parseInt(inputControl.valueHigh, 10) || 2;
 
-  values = [valueLow, valueHigh];
-
-  return values;
+  return [valueLow, valueHigh];
 };
 
 const applyFilters = () => {
-  getInput(getCountryData()[0], getCountryData()[1]);
+  getInput(getCountryData());
 };
 
 const registerListeners = () => {
@@ -55,15 +52,8 @@ const registerListeners = () => {
   });
 };
 
-// Layer switcher
-
 const basemap = L.tileLayer(
   "https://api.mapbox.com/styles/v1/ilabmedia/cjmqo72pevtii2smvg4ww2r52/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
-  {}
-);
-
-const satellite = L.tileLayer(
-  "https://api.mapbox.com/styles/v1/ilabmedia/cjkjzuir10v132rq8qqxefi6g/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
   {}
 );
 
@@ -219,5 +209,6 @@ window.addEventListener("DOMContentLoaded", () => {
   valueHigh = parseInt(inputControl.valueHigh, 10) || 6;
   values = [valueLow, valueHigh];
   getInput(values[0], values[1]);
+
   registerListeners();
 });
