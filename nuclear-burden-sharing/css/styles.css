@@ -84,6 +84,7 @@ p {
 #legend-max,
 .not-applicable-text {
   text-align: right;
+  font-size: 12px;
 }
 
 #legend-bar,
