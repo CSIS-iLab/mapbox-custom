@@ -76,15 +76,6 @@ const map = L.map("map", {
   layers: [basemap]
 });
 
-const baseLayers = {
-  "Street Map": basemap,
-  "Satellite Image": satellite
-};
-
-L.control
-  .layers(baseLayers, null, { collapsed: false, autoZIndex: false })
-  .setPosition("topleft")
-  .addTo(map);
 L.control.zoomslider().addTo(map);
 
 const client = new carto.Client({
