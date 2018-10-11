@@ -105,8 +105,6 @@ const wbiStyle = new carto.style.CartoCSS(`
     polygon-fill: ramp([govern_rating], ("#45829b"), (2),=);
     polygon-fill: ramp([govern_rating], ("#2a5674"), (1),=);
     polygon-fill: ramp([govern_rating], ("#204157"), (0),=);
-
-
     polygon-opacity: 1;
 	  polygon-comp-op: overlay;
 	}
@@ -119,11 +117,12 @@ const wbiStyle = new carto.style.CartoCSS(`
   #layer::labels {
   text-name: [country];
   text-face-name: 'Open Sans Bold';
-  text-size: 14;
+  text-transform: uppercase;
+  text-size: 12;
   text-fill: #ffffff;
   text-label-position-tolerance: 0;
-  text-halo-radius: 1;
-  text-halo-fill: #3c5a72;
+  text-halo-radius: 1.25;
+  text-halo-fill: #504e4e;
   text-dy: 0;
   text-allow-overlap: false;
   text-placement: point;
