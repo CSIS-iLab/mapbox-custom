@@ -76,6 +76,9 @@ const map = L.map("map", {
   layers: [basemap]
 });
 
+map.attributionControl.addAttribution(
+  '<a href="https://www.csis.org/programs/transnational-threats-project" target="_blank">CSIS Transnational Threats</a>'
+);
 L.control.zoomslider().addTo(map);
 
 const client = new carto.Client({
