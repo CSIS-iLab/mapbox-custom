@@ -1,15 +1,18 @@
-const inputControl = document.querySelector("input[type='range']");
+let valueLow;
+let valueHigh;
+let values = [];
 
-const getInput = () => {
+let inputControl;
+
+const getInput = (low, high) => {
   let filterArray = [];
 
-  //// This whole mess is because 0 values aren't being accepted
   filterArray[0] = new carto.filter.Range("govern_rating", {
-    gte: getCountryData()[0] + 0.1
+    gte: low
   });
 
   filterArray[1] = new carto.filter.Range("govern_rating", {
-    lte: getCountryData()[1]
+    lte: high
   });
 
   let filters = new carto.filter.AND(filterArray);
@@ -27,17 +30,17 @@ const getCountryData = () => {
   const checkedFields = [...inputControls].filter(input => input.checked);
   // const values = checkedFields.map(input => parseInt(input.value), 10);
 
-  let valueLow = parseInt(inputControl.valueLow, 10) || 0;
+  valueLow = parseInt(inputControl.valueLow, 10) || 0.1;
 
-  let valueHigh = parseInt(inputControl.valueHigh, 10) || 6;
+  valueHigh = parseInt(inputControl.valueHigh, 10) || 1;
 
-  const values = [valueLow, valueHigh];
+  values = [valueLow, valueHigh];
 
   return values;
 };
 
 const applyFilters = () => {
-  getInput();
+  getInput(getCountryData()[0], getCountryData()[1]);
 };
 
 const registerListeners = () => {
@@ -89,7 +92,6 @@ const client = new carto.Client({
 // Add WBI basemap
 
 const wbi = new carto.source.SQL("SELECT * FROM governance_wbi");
-getInput();
 
 const wbiStyle = new carto.style.CartoCSS(`
 	#layer {
@@ -212,5 +214,10 @@ document.addEventListener("mousemove", e => {
 });
 
 window.addEventListener("DOMContentLoaded", () => {
+  inputControl = document.querySelector("input[type='range']");
+  valueLow = parseInt(inputControl.valueLow, 10) || 0.1;
+  valueHigh = parseInt(inputControl.valueHigh, 10) || 5;
+  values = [valueLow, valueHigh];
+  getInput(values[0], values[1]);
   registerListeners();
 });
