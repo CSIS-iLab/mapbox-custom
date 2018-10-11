@@ -1,19 +1,6 @@
 body {
   font-family: "Open Sans Condensed", sans-serif;
 }
-.labels {
-  display: flex;
-  margin: 3px -18px auto;
-  justify-content: space-between;
-}
-.labels > div {
-  white-space: nowrap;
-  text-align: center;
-  font-size: 12px;
-  font-weight: bold;
-  border: 1px transparent solid;
-  flex-basis: 16.6666666667%;
-}
 #logo {
   position: absolute;
   top: 20px;
@@ -79,8 +66,14 @@ body {
   font-family: "Open Sans Condensed", sans-serif;
   font-weight: 700;
   text-transform: uppercase;
-  font-size: 20px;
-  line-height: 24px;
+  font-size: 18px;
+  line-height: 21px;
+  text-align: center;
+}
+
+#controls ul {
+  display: flex;
+  justify-content: space-between;
 }
 
 /* FOR DISPLAYS ≤ 425px */

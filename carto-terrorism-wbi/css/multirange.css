@@ -1,9 +1,37 @@
 @supports (--css: variables) {
   input[type="range"].multirange {
     padding: 0;
-    margin: 0;
+    margin: 6px 0 0;
     display: inline-block;
     vertical-align: top;
+  }
+
+  .labels,
+  .ticks {
+    display: flex;
+    justify-content: space-between;
+    min-height: 6px;
+  }
+
+  .labels {
+    margin: 0 -18px auto;
+  }
+  .ticks {
+    margin: 0 8px auto;
+  }
+
+  .labels > .value {
+    white-space: nowrap;
+    text-align: center;
+    font: 11px/16px "Open Sans";
+    flex-basis: 16.6666666667%;
+    font-weight: 600;
+  }
+
+  .ticks > .tick {
+    border-right: 1px #ccc solid;
+    border-left: 1px #ccc solid;
+    flex-basis: 20%;
   }
 
   input[type="range"] {
