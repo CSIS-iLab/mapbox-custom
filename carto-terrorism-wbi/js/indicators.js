@@ -30,9 +30,9 @@ const getCountryData = () => {
   const checkedFields = [...inputControls].filter(input => input.checked);
   // const values = checkedFields.map(input => parseInt(input.value), 10);
 
-  valueLow = parseInt(inputControl.valueLow, 10) || 0.1;
+  valueLow = parseInt(inputControl.valueLow, 10) || 1;
 
-  valueHigh = parseInt(inputControl.valueHigh, 10) || 1;
+  valueHigh = parseInt(inputControl.valueHigh, 10) || 2;
 
   values = [valueLow, valueHigh];
 
@@ -85,22 +85,22 @@ map.attributionControl.addAttribution(
 L.control.zoomslider().addTo(map);
 
 const client = new carto.Client({
-  apiKey: "po5YQCunzcTlkL-jU6mUEg",
+  apiKey: "IVD3C3WS2Ht6R2JMyde3hQ",
   username: "csis"
 });
 
 // Add WBI basemap
 
-const wbi = new carto.source.SQL("SELECT * FROM governance_wbi");
+const wbi = new carto.source.SQL("SELECT * FROM wbi_governance");
 
 const wbiStyle = new carto.style.CartoCSS(`
 	#layer {
-    polygon-fill: ramp([govern_rating], ("#c9dcda"), (5),=);
-    polygon-fill: ramp([govern_rating], ("#98c3c4"), (4),=);
-    polygon-fill: ramp([govern_rating], ("#68abb8"), (3),=);
-    polygon-fill: ramp([govern_rating], ("#45829b"), (2),=);
-    polygon-fill: ramp([govern_rating], ("#2a5674"), (1),=);
-    polygon-fill: ramp([govern_rating], ("#204157"), (0),=);
+    polygon-fill: ramp([govern_rating], ("#c9dcda"), (6),=);
+    polygon-fill: ramp([govern_rating], ("#98c3c4"), (5),=);
+    polygon-fill: ramp([govern_rating], ("#68abb8"), (4),=);
+    polygon-fill: ramp([govern_rating], ("#45829b"), (3),=);
+    polygon-fill: ramp([govern_rating], ("#2a5674"), (2),=);
+    polygon-fill: ramp([govern_rating], ("#204157"), (1),=);
     polygon-opacity: 1;
 	  polygon-comp-op: overlay;
 	}
@@ -215,8 +215,8 @@ document.addEventListener("mousemove", e => {
 
 window.addEventListener("DOMContentLoaded", () => {
   inputControl = document.querySelector("input[type='range']");
-  valueLow = parseInt(inputControl.valueLow, 10) || 0.1;
-  valueHigh = parseInt(inputControl.valueHigh, 10) || 5;
+  valueLow = parseInt(inputControl.valueLow, 10) || 1;
+  valueHigh = parseInt(inputControl.valueHigh, 10) || 6;
   values = [valueLow, valueHigh];
   getInput(values[0], values[1]);
   registerListeners();
