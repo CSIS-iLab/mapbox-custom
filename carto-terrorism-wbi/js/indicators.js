@@ -1,8 +1,7 @@
-let valueLow;
-let valueHigh;
-let values = [];
-
-let inputControl;
+let valueLow,
+  valueHigh,
+  inputControl,
+  values = [];
 
 const getInput = (low, high) => {
   let filterArray = [];
