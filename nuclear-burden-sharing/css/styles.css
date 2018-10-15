@@ -56,7 +56,6 @@ p {
   font-weight: 700;
   text-transform: uppercase;
   margin-bottom: 6px;
-  text-align: center;
   color: #636d72;
 }
 .filter-label {
@@ -65,6 +64,7 @@ p {
 
 .country-name {
   font-size: 14px;
+  text-align: center;
 }
 
 .selection {
@@ -162,7 +162,7 @@ p {
 }
 
 .name {
-  border-bottom: 1px solid #bbb;
+  /* border-bottom: 1px solid #bbb; */
   font-weight: 400;
   text-transform: uppercase;
   font-size: 11px;
@@ -197,15 +197,16 @@ p {
   padding: 0;
 }
 
-.ranking {
+/* .ranking {
   display: flex;
   flex-wrap: wrap;
-}
+} */
+
 .ranking > div {
   margin-bottom: 6px;
-  flex-basis: 47%;
-  min-height: 50px;
-  text-align: center;
+  /* flex-basis: 47%; */
+  /* min-height: 50px; */
+  /* text-align: center; */
 }
 .ranking > div:nth-child(odd) {
   margin-right: 12px;
@@ -214,10 +215,10 @@ p {
   font-size: 10px;
   font-style: italic;
 }
-input[type="radio"] {
+/* input[type="radio"] {
   display: block;
   margin: auto;
-}
+} */
 
 .box .separator {
   min-height: 1px;

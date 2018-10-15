@@ -43,9 +43,7 @@ const featureColumns = [
   "host_troops_commentary",
   "efp_troops_commentary",
   "iaea_budget",
-  "security_summit",
-  "iran_trade_adjusted",
-  "iran_trade"
+  "security_summit"
 ];
 
 const natoCountriesLayer = new carto.layer.Layer(
@@ -59,11 +57,10 @@ const natoCountriesLayer = new carto.layer.Layer(
 const basesData = new carto.source.Dataset("bases");
 const basesStyles = new carto.style.CartoCSS(`
   #layer {
-    marker-width: 10;
+    marker-width: 12;
     marker-fill: #fa0;
     marker-line-color: #fff;
-
-
+    marker-allow-overlap: true;
   }
 `);
 
@@ -90,7 +87,9 @@ natoCountriesLayer.on(carto.layer.events.FEATURE_OVER, featureEvent => {
     <span class='popupEntryStyle'>${
       data.host_troops_commentary
         ? data.host_troops_commentary
-        : data.host_troops ? "Yes" : "No"
+        : data.host_troops
+          ? "Yes"
+          : "No"
     }</span></div>
 
   <div><span class='popupHeaderStyle'>Troop Contribution:</span>
@@ -110,8 +109,6 @@ natoCountriesLayer.on(carto.layer.events.FEATURE_OVER, featureEvent => {
         : data.security_summit
     } </span></div>
 
-  <div><span class='popupHeaderStyle'>Trade with Iran:</span>
-    <span class='popupEntryStyle'>${data.iran_trade}%</span></div>
 
   `);
   if (!popup.isOpen()) {
@@ -165,10 +162,6 @@ const layerStyles = {
   security_summit: {
     field: "security_summit",
     max: 40
-  },
-  iran_trade_adjusted: {
-    field: "iran_trade_adjusted",
-    max: 7
   }
 };
 
@@ -179,6 +172,13 @@ rankingSelector.addEventListener("change", function(e) {
   currentLayer = layerStyles[e.target.value];
   updateLayerStyles(currentLayer.field);
   // updateLegend(currentLayer.max)
+  if (currentLayer.field === "basing" || currentLayer.field === "host_troops") {
+    document.querySelector("#legend-min").textContent = "No";
+    document.querySelector("#legend-max").textContent = "Yes";
+  } else {
+    document.querySelector("#legend-min").textContent = "Low";
+    document.querySelector("#legend-max").textContent = "High";
+  }
 });
 
 const colors = "#c9dcda, #98c3c4, #68abb8, #45829b, #2a5674";
