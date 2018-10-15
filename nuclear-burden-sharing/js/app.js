@@ -1,19 +1,20 @@
 let mixStyle, intstyle;
-const map = L.map("map").setView([55, -10], 4);
+const basemap = L.tileLayer(
+  "https://api.mapbox.com/styles/v1/ilabmedia/cjn7g1kec05k42smgqowtooaj/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
+  {}
+);
 
-L.tileLayer(
-  "https://api.mapbox.com/styles/v1/ilabmedia/cjj5wwc2o0x3o2so08xb67sgz/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
-  {
-    maxZoom: 10
-  }
-).addTo(map);
+const map = L.map("map", {
+  center: [50, -9.9504314],
+  zoom: 3,
+  maxZoom: 18,
+  scrollWheelZoom: true,
+  minZoom: 1,
+  zoomControl: false,
+  layers: [basemap]
+});
 
-// Labels only: https://api.mapbox.com/styles/v1/ilabmedia/cjj6498ou13z82spse1nx57jv/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw
-// Vorager labels only: https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}.png
-// L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}.png', {
-//   maxZoom: 18,
-//   zIndex: 50
-// }).addTo(map);
+L.control.zoomslider().addTo(map);
 
 map.attributionControl.addAttribution(
   '<a href="https://www.csis.org/programs/international-security-program/project-nuclear-issues">Project on Nuclear Issues</a>'
@@ -25,6 +26,8 @@ var client = new carto.Client({
 });
 
 const natoCountriesData = new carto.source.Dataset("nato_trilat");
+
+console.log(natoCountriesData);
 const natoCountriesStyles = new carto.style.CartoCSS(`
   #layer {
     polygon-opacity: 0.5;
@@ -57,8 +60,8 @@ const basesData = new carto.source.Dataset("bases");
 const basesStyles = new carto.style.CartoCSS(`
   #layer {
     marker-width: 10;
-    marker-fill: #D05F4C;
-    marker-line-color: #FFFFFF;
+    marker-fill: #fa0;
+    marker-line-color: #fff;
 
 
   }
@@ -77,38 +80,38 @@ natoCountriesLayer.on(carto.layer.events.FEATURE_OVER, featureEvent => {
   popup.setLatLng(featureEvent.latLng);
   popup.setContent(`
     <div class="country-name">${data.country}</div>
-    <div class='popupHeaderStyle'>Joined:</div>
-    <div class='popupEntryStyle'>${data.year_joined}</div>
+    <div><span class='popupHeaderStyle'>Joined:</span>
+    <span class='popupEntryStyle'>${data.year_joined}</span></div>
 
-    <div class='popupHeaderStyle'>Basing Country Y/N:</div>
-    <div class='popupEntryStyle'>${data.basing ? "Yes" : "No"}</div>
+    <div><span class='popupHeaderStyle'>Basing:</span>
+    <span class='popupEntryStyle'>${data.basing ? "Yes" : "No"}</span></div>
 
-    <div class='popupHeaderStyle'>Host EFP/Tripwire Forces (Y/N):</div>
-    <div class='popupEntryStyle'>${
+    <div><span class='popupHeaderStyle'>Host Troops:</span>
+    <span class='popupEntryStyle'>${
       data.host_troops_commentary
         ? data.host_troops_commentary
-        : data.host_troops
-          ? "Yes"
-          : "No"
-    }</div>
+        : data.host_troops ? "Yes" : "No"
+    }</span></div>
 
-    <div class='popupHeaderStyle'>EFP Contributions (# of troops):</div>
-    <div class='popupEntryStyle'>${
-      data.efp_troops_commentary ? data.efp_troops_commentary : data.efp_troops
-    } troops</div>
+  <div><span class='popupHeaderStyle'>Troop Contribution:</span>
+    <span class='popupEntryStyle'>${
+      data.efp_troops_commentary
+        ? data.efp_troops_commentary
+        : `${data.efp_troops} troops`
+    }</span></div>
 
-    <div class='popupHeaderStyle'>Base Rate % (percent of IAEAs regular budget that the country contributes to.:</div>
-    <div class='popupEntryStyle'>${data.iaea_budget}%</div>
+  <div><span class='popupHeaderStyle'>IAEA Budget:</span>
+    <span class='popupEntryStyle'>${data.iaea_budget}%</span></div>
 
-    <div class='popupHeaderStyle'>Nuclear Security Summit: Gift baskets:</div>
-    <div class='popupEntryStyle'>${
+    <div><span class='popupHeaderStyle'>Gift Baskets:</span>
+    <span class='popupEntryStyle'>${
       parseInt(data.security_summit, 10)
         ? data.security_summit + " baskets"
         : data.security_summit
-    } </div>
+    } </span></div>
 
-    <div class='popupHeaderStyle'>Response to U.S. Sanctions against Iran (% change in trade) (2009-2016):</div>
-    <div class='popupEntryStyle'>${data.iran_trade}%</div>
+  <div><span class='popupHeaderStyle'>Trade with Iran:</span>
+    <span class='popupEntryStyle'>${data.iran_trade}%</span></div>
 
   `);
   if (!popup.isOpen()) {
@@ -178,7 +181,7 @@ rankingSelector.addEventListener("change", function(e) {
   // updateLegend(currentLayer.max)
 });
 
-const colors = "#fbe4a3, #d0d197, #96b586, #4ba292,#008e9d";
+const colors = "#c9dcda, #98c3c4, #68abb8, #45829b, #2a5674";
 
 function updateLayerStyles(layer) {
   let baseStyle = `
@@ -186,19 +189,19 @@ function updateLayerStyles(layer) {
       line-color: #dfe5e7;
       line-width: 1;
       }
-    ::labels {
+    #layer::labels {
       text-name: [country];
-      text-face-name: 'Open Sans Regular';
-      text-size: 11;
-      text-fill: #FFFFFF;
+      text-face-name: 'Open Sans Bold';
+      text-transform: uppercase;
+      text-size: 12;
+      text-fill: #fff;
       text-label-position-tolerance: 0;
-      text-halo-radius: 1;
-      text-halo-fill: #6F808D;
-      text-dy: -10;
-      text-allow-overlap: true;
+      text-halo-radius: 1.25;
+      text-halo-fill: #504e4e;
+      text-dy: 0;
+      text-allow-overlap: false;
       text-placement: point;
       text-placement-type: dummy;
-      text-transform: uppercase;
     }
   `;
 
@@ -206,24 +209,22 @@ function updateLayerStyles(layer) {
 
   mixStyle = `
   [security_summit = 'Not in attendance']{
-    polygon-fill: ramp([security_summit], ("#f00"), ("20"),=);
-    polygon-fill:#ccc;
-    comp-op: screen;
+    comp-op: multiply;
     polygon-pattern-file: url(https://i.imgur.com/k3J0pnR.png);
     }
     `;
 
   for (i = 5; i <= 40; i++) {
     if (i >= 33) {
-      customRamp(i, "#008e9d");
+      customRamp(i, "#2a5674");
     } else if (i >= 26) {
-      customRamp(i, "#4ba292");
+      customRamp(i, "#45829b");
     } else if (i >= 19) {
-      customRamp(i, "#96b586");
+      customRamp(i, "#68abb8");
     } else if (i >= 12) {
-      customRamp(i, "#d0d197");
+      customRamp(i, "#98c3c4");
     } else if (i >= 5) {
-      customRamp(i, "#fbe4a3");
+      customRamp(i, "#c9dcda");
     }
   }
 

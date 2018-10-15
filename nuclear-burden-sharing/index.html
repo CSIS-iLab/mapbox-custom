@@ -11,6 +11,9 @@
   <!-- Include CARTO.js -->
   <script src="https://cartodb-libs.global.ssl.fastly.net/carto.js/v4.0.2/carto.min.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,600" rel="stylesheet">
+  <link href="zoom_slider/zoomslider.css" rel="stylesheet">
+  <script src="zoom_slider/zoomslider.js"></script>
+
   <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 
@@ -42,20 +45,33 @@
         <div class="filter-label">Rank by</div>
         <div name="ranking" id="ranking" class="ranking selection">
           <div>
-            <input type="radio" name="metric" value="basing" checked> Basing Country Y/N</div>
+            <div class="name"><input type="radio" name="metric" value="basing" checked> Basing
+            </div>
+            <div class="desc">Basing Country Y/N</div>
+          </div>
           <div>
-            <input type="radio" name="metric" value="host_troops">Host EFP/Tripwire Forces (Y/N)</div>
+            <div class="name"><input type="radio" name="metric" value="host_troops"> Host Troops</div>
+            <div class="desc">Host EFP/Tripwire Forces (Y/N)</div>
+          </div>
           <div>
-            <input type="radio" name="metric" value="efp_troops"> EFP Contributions (# of troops)</div>
+            <div class="name"><input type="radio" name="metric" value="efp_troops"> Contribute Troops</div>
+            <div class="desc">EFP Contributions (# of troops)</div>
+          </div>
           <div>
-            <input type="radio" name="metric" value="iaea_budget"> Base Rate % (percent of IAEAs regular budget that the country contributes to.</div>
+            <div class="name"><input type="radio" name="metric" value="iaea_budget"> IAEA budget</div>
+            <div class="desc">Base Rate % (percent of IAEAs regular budget that the country contributes to.</div>
+          </div>
           <div>
-            <input type="radio" name="metric" value="security_summit"> Nuclear Security Summit: Gift baskets</div>
+            <div class="name"><input type="radio" name="metric" value="security_summit"> Gift Baskets</div>
+            <div class="desc"> Nuclear Security Summit gift basket statements</div>
+          </div>
           <div>
-            <input type="radio" name="metric" value="iran_trade_adjusted"> Response to U.S. Sanctions against Iran (% change in trade) (2009-2016)</div>
+
+            <div class="name"><input type="radio" name="metric" value="iran_trade_adjusted">Trade with Iran</div>
+            <div class="desc">Response to U.S. Sanctions against Iran (% change in trade) (2009-2016)</div>
+          </div>
         </div>
         <div class="separator"></div>
-        <div class="filter-label">Key</div>
 
         <div class="legend-bar-container legend">
           <div class="range">
@@ -72,7 +88,7 @@
         </div>
 
 
-        <div class="filter-label label-base base-us">U.S. Bases</div>
+        <div class="legend-label label-base base-us">U.S. Bases</div>
 
       </section>
       <footer class="js-footer"></footer>
