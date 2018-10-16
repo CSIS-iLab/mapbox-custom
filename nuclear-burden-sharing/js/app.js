@@ -80,7 +80,7 @@ natoCountriesLayer.on(carto.layer.events.FEATURE_OVER, featureEvent => {
     <div><span class='popupHeaderStyle'>Joined:</span>
     <span class='popupEntryStyle'>${data.year_joined}</span></div>
 
-    <div><span class='popupHeaderStyle'>Basing:</span>
+    <div><span class='popupHeaderStyle'>Basing Country:</span>
     <span class='popupEntryStyle'>${data.basing ? "Yes" : "No"}</span></div>
 
     <div><span class='popupHeaderStyle'>Host Troops:</span>
@@ -92,7 +92,7 @@ natoCountriesLayer.on(carto.layer.events.FEATURE_OVER, featureEvent => {
           : "No"
     }</span></div>
 
-  <div><span class='popupHeaderStyle'>Troop Contribution:</span>
+  <div><span class='popupHeaderStyle'>Contribute Troops:</span>
     <span class='popupEntryStyle'>${
       data.efp_troops_commentary
         ? data.efp_troops_commentary
