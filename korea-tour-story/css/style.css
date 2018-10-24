@@ -1,0 +1,45 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+#map {
+  position: fixed;
+  /* width: 50%; */
+}
+
+#features {
+  width: 33%;
+  margin-left: 67%;
+  font-family: sans-serif;
+  overflow-y: scroll;
+  position: absolute;
+  top: 0;
+}
+
+article {
+  background-color: #fafafa;
+  padding: 25px 50px;
+  border-bottom: 1px solid #ddd;
+  font-size: 1.5vw;
+}
+
+section {
+  opacity: 0.25;
+  min-height: 75vh;
+}
+
+section.active {
+  opacity: 1;
+}
+
+section:last-child {
+  border-bottom: none;
+  /* margin-bottom: 200px; */
+}
