@@ -3,14 +3,13 @@ mapboxgl.accessToken =
 
 var map;
 var radius = 20;
-let popup = new mapboxgl.Popup();
 
 document.addEventListener("DOMContentLoaded", function(event) {
   map = new mapboxgl.Map({
     container: "map",
-    style: "mapbox://styles/ilabmedia/cjk40a37x21ha2skptjecv1j0",
-    center: [129.859511, 41.805677],
-    zoom: 10,
+    style: "mapbox://styles/ilabmedia/cjkjzuir10v132rq8qqxefi6g",
+    center: [127.41332, 40],
+    zoom: 7,
     bearing: 0,
     pitch: 0,
     scrollZoom: false
@@ -28,15 +27,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
       type: "circle",
       source: {
         type: "vector",
-        url: "mapbox://ilabmedia.cjnugd5m000lm31pizx5mvdpp-9dxbu"
+        url: "mapbox://ilabmedia.cjnui951u38au2qqeqctdtk2i-5gipt"
       },
-      "source-layer": "cheongjin_markets",
+      "source-layer": "korea_railway_crossings",
       paint: {
         "circle-color": "#ff0",
-        "circle-radius": 4
+        "circle-radius": initialRadius
       }
     });
-
     // Add a source and layer displaying a point which will be animated in a circle.
     map.addSource("point", {
       type: "geojson",
@@ -63,28 +61,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
         "circle-radius": initialRadius,
         "circle-color": "#ff0"
       }
-    });
-
-    map.on("click", "point", function(e) {
-      popup.remove();
-      debugger;
-      var coordinates = e.lngLat;
-      var description = e.properties.name;
-
-      popup = new mapboxgl.Popup()
-        .setLngLat(coordinates)
-        .setHTML(description)
-        .addTo(map);
-    });
-
-    // Change the cursor to a pointer when the mouse is over the places layer.
-    map.on("mouseenter", "point", function() {
-      map.getCanvas().style.cursor = "pointer";
-    });
-
-    // Change it back to a pointer when it leaves.
-    map.on("mouseleave", "point", function() {
-      map.getCanvas().style.cursor = "";
     });
 
     function animateMarker(timestamp) {
@@ -120,48 +96,54 @@ document.addEventListener("DOMContentLoaded", function(event) {
 var chapters = {
   start: {
     bearing: 0,
-    center: [129.859511, 41.805677],
+    center: [127.41332, 40],
     zoom: 10,
     pitch: 0
   },
-  "Haebang Market": {
+  "Sino-Korean": {
     bearing: 90,
-    center: [129.8058056, 41.79161667],
+    center: [124.391598, 40.115854],
     zoom: 15,
     pitch: 20
   },
-  "Nagyang Market": {
+  "Chongsu-Shanghekou": {
     duration: 6000,
-    center: [129.8007278, 41.79493056],
+    center: [124.879666, 40.458481],
     bearing: 150,
     zoom: 15,
     pitch: 0
   },
-  "Munhwa Market": {
+  "Manpo-Jian": {
     bearing: 90,
-    center: [129.78095, 41.80859722],
+    center: [126.273323, 41.154935],
     zoom: 15,
     pitch: 40
   },
-  "Yeonjin Market": {
+  "Namyang-Tomun": {
     bearing: 120,
-    center: [129.9180611, 41.91596667],
+    center: [129.849236, 42.94905],
     zoom: 12
   },
-  "Gwanhae Market": {
+  Kumgang: {
     bearing: -90,
-    center: [130.0973694, 42.09296667],
+    center: [128.342333, 38.62928],
     zoom: 15,
     pitch: 20
   },
-  "Suwon Market": {
+  Kaesong: {
     bearing: 180,
-    center: [129.7850528, 41.78736667],
+    center: [126.678975, 37.910026],
     zoom: 12
+  },
+  "Korean-Russian": {
+    bearing: 90,
+    center: [130.619033, 42.417751],
+    zoom: 15,
+    pitch: 40
   },
   end: {
     bearing: 0,
-    center: [129.859511, 41.805677],
+    center: [127.41332, 40],
     zoom: 10,
     pitch: 0
   }
@@ -183,7 +165,7 @@ window.onscroll = function() {
   }
 };
 
-var activeChapterName = "Haebang Market";
+var activeChapterName = "Sino-Korean";
 
 function setActiveChapter(chapterName) {
   // if (chapterName === activeChapterName) return;
@@ -200,7 +182,7 @@ function setActiveChapter(chapterName) {
 function isElementOnScreen(id) {
   var element = document.getElementById(id).parentElement;
   var bounds = element.getBoundingClientRect();
-  return bounds.top - 10 < window.innerHeight && bounds.bottom > 0;
+  return bounds.top - 20 < window.innerHeight && bounds.bottom > 0;
 }
 
 function pointOnCircle(angle) {

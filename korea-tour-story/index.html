@@ -7,6 +7,12 @@
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
   <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.js'></script>
   <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css' rel='stylesheet' />
+  <!-- Include Leaflet -->
+  <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+  <link href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" rel="stylesheet">
+  <!-- Include CARTO.js -->
+  <script src="https://libs.cartocdn.com/carto.js/v4.1.1/carto.min.js"></script>
+  <link href="https://carto.com/developers/carto-js/examples/maps/public/style.css" rel="stylesheet">
   <link href='./css/style.css' rel='stylesheet' />
   <script src='./js/tour.js' rel='stylesheet'></script>
 
@@ -16,57 +22,57 @@
 
   <div id='map'></div>
   <div id='features'>
-    <section id='start'>
-
+    <section>
+      <article id='start'>
+      </article>
     </section>
     <section>
-      <article id='Sino-Korean'>
-        <h3>Sino-Korean Friendship Bridge</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam rutrum mauris sit amet ante fermentum scelerisque. Aenean at gravida sem. Pellentesque malesuada orci sit amet enim fringilla hendrerit. Phasellus quam ipsum, imperdiet eget sollicitudin vel, luctus vitae sapien. Praesent eget leo eu orci ultricies fringilla. Praesent diam mi, convallis scelerisque lacus in, sodales scelerisque orci. Curabitur nec tellus eleifend, sagittis arcu quis, volutpat ipsum. Suspendisse sit amet sollicitudin lacus. Integer consequat arcu eu ex fermentum, vel pharetra nunc dictum.</p>
+      <article id='Haebang Market'>
+        <h3>Haebang Market</h3>
+        <p>A 50-year old man working as a laborer at a construction company. He reports more than 75 percent of his household income is derived from the jangmadang. Forced labor mobilization, so-called "non-tax payments," and insufficient wages causes him to feel great animosity toward the North Korean regime.</p>
       </article>
     </section>
 
     <section>
-      <article id='Chongsu-Shanghekou'>
-        <h3>Chongsu-Shanghekou Rail Bridge</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam rutrum mauris sit amet ante fermentum scelerisque. Aenean at gravida sem. Pellentesque malesuada orci sit amet enim fringilla hendrerit. Phasellus quam ipsum, imperdiet eget sollicitudin vel, luctus vitae sapien. Praesent eget leo eu orci ultricies fringilla. Praesent diam mi, convallis scelerisque lacus in, sodales scelerisque orci. Curabitur nec tellus eleifend, sagittis arcu quis, volutpat ipsum. Suspendisse sit amet sollicitudin lacus. Integer consequat arcu eu ex fermentum, vel pharetra nunc dictum. </p>
+      <article id='Nagyang Market'>
+        <h3>Nagyang Market</h3>
+        <p>A 45-year old man working as a printing factory worker. He reports almost all of his household income is derived from the jangmadang. He values freedom and equality and says the suppression of human rights causes him to feel the greatest animosity toward the North Korean regime. </p>
       </article>
     </section>
 
     <section>
-      <article id='Manpo-Jian'>
-        <h3>Manpo-Jian Rail Bridge </h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam rutrum mauris sit amet ante fermentum scelerisque. Aenean at gravida sem. Pellentesque malesuada orci sit amet enim fringilla hendrerit. Phasellus quam ipsum, imperdiet eget sollicitudin vel, luctus vitae sapien. Praesent eget leo eu orci ultricies fringilla. Praesent diam mi, convallis scelerisque lacus in, sodales scelerisque orci. Curabitur nec tellus eleifend, sagittis arcu quis, volutpat ipsum. Suspendisse sit amet sollicitudin lacus. Integer consequat arcu eu ex fermentum, vel pharetra nunc dictum.</p>
+      <article id='Munhwa Market'>
+        <h3>Munhwa Market</h3>
+        <p>A 48-year old women working in pubic at the Chongjin Women's and Children's Factory. She reports almost all of her household income is derived from the jangmadang. “The whole society is built to sustain the cadres. The three generations of Kim rule has wrecked havoc on the lives of ordinary people,” she says.</p>
       </article>
     </section>
 
     <section>
-      <article id='Namyang-Tomun'>
+      <article id='Yeonjin Market'>
         <h3>Namyang-Tomun Rail Bridge</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam rutrum mauris sit amet ante fermentum scelerisque. Aenean at gravida sem. Pellentesque malesuada orci sit amet enim fringilla hendrerit. Phasellus quam ipsum, imperdiet eget sollicitudin vel, luctus vitae sapien. Praesent eget leo eu orci ultricies fringilla. Praesent diam mi, convallis scelerisque lacus in, sodales scelerisque orci. Curabitur nec tellus eleifend, sagittis arcu quis, volutpat ipsum. Suspendisse sit amet sollicitudin lacus. Integer consequat arcu eu ex fermentum, vel pharetra nunc dictum.</p>
+        <p>A 48-year old gentlemen working in the trade sector. He earned a high school degree. When asked which would he would rather have:  More nuclear weapons or more goods in the markets, he replied more goods. He looks to the United States as the country who’s help is most necessary to achieve unification.</p>
       </article>
     </section>
 
     <section>
-      <article id='Kumgang'>
-        <h3>Kumgang Rail Border Crossing</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam rutrum mauris sit amet ante fermentum scelerisque. Aenean at gravida sem. Pellentesque malesuada orci sit amet enim fringilla hendrerit. Phasellus quam ipsum, imperdiet eget sollicitudin vel, luctus vitae sapien. Praesent eget leo eu orci ultricies fringilla. Praesent diam mi, convallis scelerisque lacus in, sodales scelerisque orci. Curabitur nec tellus eleifend, sagittis arcu quis, volutpat ipsum. Suspendisse sit amet sollicitudin lacus. Integer consequat arcu eu ex fermentum, vel pharetra nunc dictum.</p>
+      <article id='Gwanhae Market'>
+        <h3>Gwanhae Market</h3>
+        <p>A 49-year old women working as a supervisor of foreign currency earning company. She graduated from a vocational school. “By establishing the principles of democracy and freedom of movement [with unification] , our country will be able to achieve balanced economic development,” she says.</p>
       </article>
     </section>
 
     <section>
-      <article id='Kaesong'>
-        <h3>Kaesong Rail Border Crossing</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam rutrum mauris sit amet ante fermentum scelerisque. Aenean at gravida sem. Pellentesque malesuada orci sit amet enim fringilla hendrerit. Phasellus quam ipsum, imperdiet eget sollicitudin vel, luctus vitae sapien. Praesent eget leo eu orci ultricies fringilla. Praesent diam mi, convallis scelerisque lacus in, sodales scelerisque orci. Curabitur nec tellus eleifend, sagittis arcu quis, volutpat ipsum. Suspendisse sit amet sollicitudin lacus. Integer consequat arcu eu ex fermentum, vel pharetra nunc dictum.</p>
+      <article id='Suwon Market'>
+        <h3>Suwon Market</h3>
+        <p>A 54-year old man working as a supervisor at the provincial Department of Propaganda and Agitation. He earned a degree from  Chongjin University of Mining and Metallurgy. He says that through unification “the economic success of the South will help the North develop its economy, and of course then we'll all live better.”</p>
+      </article>
+    </section>
+    <section>
+      <article id='end'>
       </article>
     </section>
 
-    <section>
-      <article id='Korean-Russian'>
-        <h3>Korean-Russian Friendship Bridge </h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam rutrum mauris sit amet ante fermentum scelerisque. Aenean at gravida sem. Pellentesque malesuada orci sit amet enim fringilla hendrerit. Phasellus quam ipsum, imperdiet eget sollicitudin vel, luctus vitae sapien. Praesent eget leo eu orci ultricies fringilla. Praesent diam mi, convallis scelerisque lacus in, sodales scelerisque orci. Curabitur nec tellus eleifend, sagittis arcu quis, volutpat ipsum. Suspendisse sit amet sollicitudin lacus. Integer consequat arcu eu ex fermentum, vel pharetra nunc dictum.</p>
-      </article>
-    </section>
+
 
   </div>
 
