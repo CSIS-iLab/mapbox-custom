@@ -28,18 +28,22 @@ article {
   padding: 25px 50px;
   border-bottom: 1px solid #ddd;
   font-size: 1.5vw;
-}
-
-section {
   opacity: 0.25;
-  min-height: 75vh;
 }
 
-section.active {
+section:not(:first-of-type) {
+  min-height: calc(99vh - 25px);
+}
+
+section:first-of-type {
+  margin-top: 25px;
+}
+
+article.active {
   opacity: 1;
 }
 
 section:last-child {
   border-bottom: none;
-  /* margin-bottom: 200px; */
+  margin-bottom: 50px;
 }
