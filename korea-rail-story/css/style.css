@@ -27,14 +27,14 @@ body {
 }
 
 section article {
-  padding: 25px 50px;
+  padding: 2vw 4vw;
   font-size: 1.5vw;
 }
 
 section:not(:first-of-type):not(:last-of-type) article {
   background-color: #fafafa;
   opacity: 0.25;
-  padding: 25px 50px;
+  padding: 2vw 4vw;
   border-bottom: 1px solid #ddd;
   font-size: 1.5vw;
 }

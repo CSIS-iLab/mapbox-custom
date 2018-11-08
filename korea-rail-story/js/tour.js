@@ -7,7 +7,7 @@ var radius = 20;
 document.addEventListener("DOMContentLoaded", function(event) {
   map = new mapboxgl.Map({
     container: "map",
-    style: "mapbox://styles/ilabmedia/cjkjzuir10v132rq8qqxefi6g",
+    style: "mapbox://styles/ilabmedia/cjk40a37x21ha2skptjecv1j0",
     center: [127.41332, 40],
     zoom: 7,
     bearing: 0,
@@ -97,8 +97,9 @@ var chapters = {
   start: {
     bearing: 0,
     center: [127.41332, 40],
-    zoom: 10,
-    pitch: 0
+    zoom: 7,
+    pitch: 0,
+    speed: 5
   },
   "Sino-Korean": {
     bearing: 90,
@@ -152,15 +153,28 @@ var chapters = {
 // On every scroll event, check which element is on screen
 window.onscroll = function() {
   var chapterNames = Object.keys(chapters);
+
+  chapterNames.forEach(chapterName => {
+    var element = document.getElementById(chapterName);
+    var bounds = element.parentElement.getBoundingClientRect();
+
+    if (bounds.top < window.innerHeight / 2) {
+      element.setAttribute("class", "active");
+    } else {
+      element.setAttribute("class", "");
+    }
+  });
+
   for (var i = 0; i < chapterNames.length; i++) {
     var chapterName = chapterNames[i];
+
     if (isElementOnScreen(chapterName)) {
       setActiveChapter(chapterName);
+      if (window.scrollY < 80) map.flyTo(chapters["start"]);
+
       break;
     } else {
       let activeElement = document.getElementById(activeChapterName);
-
-      if (activeElement) activeElement.setAttribute("class", "");
     }
   }
 };
@@ -168,21 +182,14 @@ window.onscroll = function() {
 var activeChapterName = "Sino-Korean";
 
 function setActiveChapter(chapterName) {
-  // if (chapterName === activeChapterName) return;
-
-  map.flyTo(chapters[chapterName]);
-
-  document.getElementById(chapterName).setAttribute("class", "active");
-  // if (activeChapterName)
-  //   document.getElementById(activeChapterName).setAttribute("class", "");
-
+  map.flyTo(chapters[activeChapterName]);
   activeChapterName = chapterName;
 }
 
 function isElementOnScreen(id) {
   var element = document.getElementById(id).parentElement;
   var bounds = element.getBoundingClientRect();
-  return bounds.top - 20 < window.innerHeight && bounds.bottom > 0;
+  return bounds.top + 10 < window.innerHeight && bounds.bottom > 0;
 }
 
 function pointOnCircle(angle) {
