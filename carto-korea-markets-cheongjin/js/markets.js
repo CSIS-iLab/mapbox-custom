@@ -35,7 +35,7 @@ L.control
 // API connection information
 
 const client = new carto.Client({
-  apiKey: "x7lYoKiO_PYZPd5fwTmeMQ",
+  apiKey: "YJbdzC64tX7cF5Fp0kCjmQ",
   username: "csis"
 });
 
@@ -48,6 +48,10 @@ client
 
 const markets = new carto.source.SQL(
   "SELECT * FROM cheongjin_station_to_market_distance"
+);
+
+const marketDistances = new carto.source.SQL(
+  "SELECT ST_Buffer(the_geom,0.001) FROM cheongjin_station"
 );
 
 const style_markets = new carto.style.CartoCSS(`
@@ -63,13 +67,33 @@ const style_markets = new carto.style.CartoCSS(`
 			}
 		`);
 
+const style_distance = new carto.style.CartoCSS(`
+			#layer {
+				marker-width: 7;
+				marker-fill: #f2c730;
+				marker-fill-opacity: .2;
+				marker-allow-overlap: true;
+				marker-line-width: 1;
+				marker-line-color: #000000;
+				marker-line-opacity: 1;
+				marker-comp-op: screen;
+			}
+		`);
+
 const layer_markets = new carto.layer.Layer(markets, style_markets, {
   featureOverColumns: ["name"]
 });
 
+const layer_distance = new carto.layer.Layer(
+  marketDistances,
+  style_distance,
+  {}
+);
+
 // Add markets point data
 
 client.addLayer(layer_markets);
+client.addLayer(layer_distance);
 client
   .getLeafletLayer()
   .bringToFront()
@@ -90,32 +114,3 @@ layer_markets.on(carto.layer.events.FEATURE_CLICKED, featureEvent => {
     popup.openOn(map);
   }
 });
-
-let query =
-  "INSERT INTO cheongjin_station_to_market_distance (the_geom) SELECT the_geom FROM cdb_isodistance('POINT(129.7985972 41.79309444)'::geometry, 'walk', ARRAY[300, 600, 900]::integer[], ARRAY['quality=3']::text[])";
-const distance = new carto.source.SQL("query");
-const layer_distances = new carto.layer.Layer(
-  distance,
-  new carto.style.CartoCSS(`#layer {}`),
-  {}
-);
-client.addLayer(layer_distances);
-
-var sql = new cartodb.SQL({ user: "csis" });
-sql
-  .execute(
-    `http://csis.carto.com/api/v2/sql?q=${query}&api_key=x7lYoKiO_PYZPd5fwTmeMQ`
-  )
-  .done(function(data) {
-    console.log(data.rows);
-  })
-  .error(function(errors) {
-    // errors contains a list of errors
-    console.log("errors:" + errors);
-  });
-
-fetch(
-  `http://csis.carto.com/api/v2/sql?q=${query}&api_key=x7lYoKiO_PYZPd5fwTmeMQ`
-)
-  .then(resp => resp.json())
-  .then(json => console.log(json));
