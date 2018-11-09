@@ -115,7 +115,7 @@ client.getLeafletLayer().addTo(map);
 const attacks = new carto.source.SQL("SELECT * FROM governance_wbi_attacks");
 const attacks_style = new carto.style.CartoCSS(`
   #layer {
-    marker-width: 20;
+    marker-width: 10;
     marker-fill: #FFFFFF;
     marker-fill-opacity: 1;
     marker-allow-overlap: true;
@@ -129,7 +129,7 @@ const attacksLayer = new carto.layer.Layer(attacks, attacks_style, {
 const attacks2 = new carto.source.SQL("SELECT * FROM governance_wbi_attacks");
 const attacks2_style = new carto.style.CartoCSS(`
   #layer {
-    marker-width: 20;
+    marker-width: 10;
     marker-fill: #ffdd00;
     marker-fill-opacity: 0.5;
     marker-allow-overlap: true;
