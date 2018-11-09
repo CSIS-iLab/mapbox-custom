@@ -115,12 +115,11 @@ client.getLeafletLayer().addTo(map);
 const attacks = new carto.source.SQL("SELECT * FROM governance_wbi_attacks");
 const attacks_style = new carto.style.CartoCSS(`
   #layer {
-    marker-width: 8;
+    marker-width: 20;
     marker-fill: #FFFFFF;
-    marker-fill-opacity: 0.9;
+    marker-fill-opacity: 1;
     marker-allow-overlap: true;
     marker-line-width: 0;
-    marker-line-opacity: 1;
   }
 `);
 
@@ -130,12 +129,11 @@ const attacksLayer = new carto.layer.Layer(attacks, attacks_style, {
 const attacks2 = new carto.source.SQL("SELECT * FROM governance_wbi_attacks");
 const attacks2_style = new carto.style.CartoCSS(`
   #layer {
-    marker-width: 8;
+    marker-width: 20;
     marker-fill: #ffdd00;
-    marker-fill-opacity: 0.9;
+    marker-fill-opacity: 0.5;
     marker-allow-overlap: true;
     marker-line-width: 0;
-    marker-line-opacity: 1;
     marker-comp-op: multiply;
   }
 `);
