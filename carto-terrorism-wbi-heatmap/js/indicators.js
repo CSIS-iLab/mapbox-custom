@@ -93,7 +93,7 @@ const wbiStyle = new carto.style.CartoCSS(`
     polygon-fill: ramp([govern_rating], ("#9f4a82"), (4),=);
     polygon-fill: ramp([govern_rating], ("#65284e"), (3),=);
     polygon-fill: ramp([govern_rating], ("#3f0d34"), (2),=);
-    polygon-fill: ramp([govern_rating], ("#190514"), (1),=);
+    polygon-fill: ramp([govern_rating], ("#320A29"), (1),=);
     polygon-opacity: 1;
 	  polygon-comp-op: overlay;
 	}
