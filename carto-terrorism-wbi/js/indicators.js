@@ -60,6 +60,7 @@ const basemap = L.tileLayer(
   "https://api.mapbox.com/styles/v1/ilabmedia/cjmqo72pevtii2smvg4ww2r52/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
   {}
 );
+// "https://api.mapbox.com/styles/v1/ilabmedia/cjoaczvkt063o2smqtcexvq24/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
 
 const satellite = L.tileLayer(
   "https://api.mapbox.com/styles/v1/ilabmedia/cjkjzuir10v132rq8qqxefi6g/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
@@ -108,6 +109,14 @@ const wbiStyle = new carto.style.CartoCSS(`
 	  line-color: #FFFFFF;
 	  line-opacity: 0.5;
 	}
+
+`);
+
+const wbiLayer = new carto.layer.Layer(wbi, wbiStyle);
+const wbi2 = new carto.source.SQL("SELECT * FROM wbi_governance");
+
+const wbi2Style = new carto.style.CartoCSS(`
+
     #layer::labels {
     text-name: [country];
     text-face-name: 'Open Sans Bold';
@@ -124,10 +133,7 @@ const wbiStyle = new carto.style.CartoCSS(`
   }
 `);
 
-const wbiLayer = new carto.layer.Layer(wbi, wbiStyle);
-
-client.addLayer(wbiLayer);
-client.getLeafletLayer().addTo(map);
+const wbi2Layer = new carto.layer.Layer(wbi2, wbi2Style);
 
 const attacks = new carto.source.SQL("SELECT * FROM governance_wbi_attacks");
 const attacks2 = new carto.source.SQL("SELECT * FROM governance_wbi_attacks");
@@ -157,43 +163,17 @@ const attacks2_style = new carto.style.CartoCSS(`
   }
 `);
 
-const attacks2Layer = new carto.layer.Layer(attacks2, attacks2_style, {});
+const attacks2Layer = new carto.layer.Layer(attacks2, attacks2_style);
 
+client.addLayer(wbiLayer);
 client.addLayer(attacksLayer);
 client.addLayer(attacks2Layer);
+client.addLayer(wbi2Layer);
 
 client
   .getLeafletLayer()
   .bringToFront()
   .addTo(map);
-
-const setAttacks = () => {
-  attacks_style.setContent(`
-	 				#layer {
-						marker-width: 7;
-						marker-fill: #d13a46;
-						marker-fill-opacity: 0.9;
-						marker-allow-overlap: true;
-						marker-line-width: 1;
-						marker-line-color: #FFFFFF;
-						marker-line-opacity: 1;
-	 				}
-	 			`);
-};
-
-const setNone = () => {
-  attacks_style.setContent(`
-				#layer {
-					marker-width: 1;
-					marker-fill: #ffffff;
-					marker-fill-opacity: 0;
-					marker-allow-overlap: true;
-					marker-line-width: 0;
-					marker-line-color: #FFFFFF;
-					marker-line-opacity: 1;
-				}
-			`);
-};
 
 const attackInfo = L.popup({ closeButton: false });
 
@@ -224,6 +204,9 @@ document.addEventListener("mousemove", e => {
 });
 
 window.addEventListener("DOMContentLoaded", () => {
+  // document.querySelector(".leaflet-control-attribution").remove();
+  // document.querySelector("aside").style.display = "none"
+  // document.querySelector(".leaflet-control-container").style.display = "none"
   inputControl = document.querySelector("input[type='range']");
   valueLow = parseInt(inputControl.valueLow, 10) || 1;
   valueHigh = parseInt(inputControl.valueHigh, 10) || 6;
