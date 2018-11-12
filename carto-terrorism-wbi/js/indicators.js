@@ -1,18 +1,17 @@
-let valueLow;
-let valueHigh;
-let values = [];
+let valueLow,
+  valueHigh,
+  inputControl,
+  values = [];
 
-let inputControl;
-
-const getInput = values => {
+const getInput = (low, high) => {
   let filterArray = [];
 
   filterArray[0] = new carto.filter.Range("govern_rating", {
-    gte: values[0]
+    gte: low
   });
 
   filterArray[1] = new carto.filter.Range("govern_rating", {
-    lte: values[1]
+    lte: high
   });
 
   let filters = new carto.filter.AND(filterArray);
@@ -28,16 +27,19 @@ const getCountryData = () => {
   );
 
   const checkedFields = [...inputControls].filter(input => input.checked);
+  // const values = checkedFields.map(input => parseInt(input.value), 10);
 
   valueLow = parseInt(inputControl.valueLow, 10) || 1;
 
   valueHigh = parseInt(inputControl.valueHigh, 10) || 2;
 
-  return [valueLow, valueHigh];
+  values = [valueLow, valueHigh];
+
+  return values;
 };
 
 const applyFilters = () => {
-  getInput(getCountryData());
+  getInput(getCountryData()[0], getCountryData()[1]);
 };
 
 const registerListeners = () => {
@@ -52,8 +54,15 @@ const registerListeners = () => {
   });
 };
 
+// Layer switcher
+
 const basemap = L.tileLayer(
   "https://api.mapbox.com/styles/v1/ilabmedia/cjmqo72pevtii2smvg4ww2r52/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
+  {}
+);
+
+const satellite = L.tileLayer(
+  "https://api.mapbox.com/styles/v1/ilabmedia/cjkjzuir10v132rq8qqxefi6g/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
   {}
 );
 
@@ -85,12 +94,12 @@ const wbi = new carto.source.SQL("SELECT * FROM wbi_governance");
 
 const wbiStyle = new carto.style.CartoCSS(`
 	#layer {
-    polygon-fill: ramp([govern_rating], ("#c9dcda"), (6),=);
-    polygon-fill: ramp([govern_rating], ("#98c3c4"), (5),=);
-    polygon-fill: ramp([govern_rating], ("#68abb8"), (4),=);
-    polygon-fill: ramp([govern_rating], ("#45829b"), (3),=);
-    polygon-fill: ramp([govern_rating], ("#2a5674"), (2),=);
-    polygon-fill: ramp([govern_rating], ("#204157"), (1),=);
+    polygon-fill: ramp([govern_rating], ("#eed5e7"), (6),=);
+    polygon-fill: ramp([govern_rating], ("#df9dc6"), (5),=);
+    polygon-fill: ramp([govern_rating], ("#9f4a82"), (4),=);
+    polygon-fill: ramp([govern_rating], ("#65284e"), (3),=);
+    polygon-fill: ramp([govern_rating], ("#3f0d34"), (2),=);
+    polygon-fill: ramp([govern_rating], ("#320A29"), (1),=);
     polygon-opacity: 1;
 	  polygon-comp-op: overlay;
 	}
@@ -99,20 +108,19 @@ const wbiStyle = new carto.style.CartoCSS(`
 	  line-color: #FFFFFF;
 	  line-opacity: 0.5;
 	}
-
-  #layer::labels {
-  text-name: [country];
-  text-face-name: 'Open Sans Bold';
-  text-transform: uppercase;
-  text-size: 12;
-  text-fill: #ffffff;
-  text-label-position-tolerance: 0;
-  text-halo-radius: 1.25;
-  text-halo-fill: #504e4e;
-  text-dy: 0;
-  text-allow-overlap: false;
-  text-placement: point;
-  text-placement-type: dummy;
+    #layer::labels {
+    text-name: [country];
+    text-face-name: 'Open Sans Bold';
+    text-transform: uppercase;
+    text-size: 12;
+    text-fill: #ffffff;
+    text-label-position-tolerance: 0;
+    text-halo-radius: 1.25;
+    text-halo-fill: #504e4e;
+    text-dy: 0;
+    text-allow-overlap: false;
+    text-placement: point;
+    text-placement-type: dummy;
   }
 `);
 
@@ -121,27 +129,39 @@ const wbiLayer = new carto.layer.Layer(wbi, wbiStyle);
 client.addLayer(wbiLayer);
 client.getLeafletLayer().addTo(map);
 
-// Load the province and county datasets
-
 const attacks = new carto.source.SQL("SELECT * FROM governance_wbi_attacks");
+const attacks2 = new carto.source.SQL("SELECT * FROM governance_wbi_attacks");
+
 const attacks_style = new carto.style.CartoCSS(`
-#layer {
-	marker-width: 7;
-  marker-fill: #d13a46;
-  marker-fill-opacity: 0.9;
-  marker-allow-overlap: true;
-  marker-line-width: 1;
-  marker-line-color: #FFFFFF;
-  marker-line-opacity: 1;
-}
+  #layer {
+    marker-width: 10;
+    marker-fill: #FFFFFF;
+    marker-fill-opacity: 1;
+    marker-allow-overlap: true;
+    marker-line-width: 0;
+  }
 `);
 
 const attacksLayer = new carto.layer.Layer(attacks, attacks_style, {
   featureClickColumns: ["city", "country_txt", "gname", "summary"]
 });
 
-// Add provinces and counties
+const attacks2_style = new carto.style.CartoCSS(`
+  #layer {
+    marker-width: 10;
+    marker-fill: #ffdd00;
+    marker-fill-opacity: 0.5;
+    marker-allow-overlap: true;
+    marker-line-width: 0;
+    marker-comp-op: multiply;
+  }
+`);
+
+const attacks2Layer = new carto.layer.Layer(attacks2, attacks2_style, {});
+
 client.addLayer(attacksLayer);
+client.addLayer(attacks2Layer);
+
 client
   .getLeafletLayer()
   .bringToFront()
@@ -209,6 +229,5 @@ window.addEventListener("DOMContentLoaded", () => {
   valueHigh = parseInt(inputControl.valueHigh, 10) || 6;
   values = [valueLow, valueHigh];
   getInput(values[0], values[1]);
-
   registerListeners();
 });
