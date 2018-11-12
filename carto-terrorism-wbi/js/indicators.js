@@ -75,7 +75,7 @@ map.attributionControl.addAttribution(
 L.control.zoomslider().addTo(map);
 
 const client = new carto.Client({
-  apiKey: "IVD3C3WS2Ht6R2JMyde3hQ",
+  apiKey: "wFc6cVixWBJwkvfKfqIOdA",
   username: "csis"
 });
 
