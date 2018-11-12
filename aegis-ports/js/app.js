@@ -68,7 +68,7 @@ client.getLeafletLayer().addTo(map);
 const popup = L.popup({ closeButton: false });
 
 const popupBases = L.popup({ closeButton: false });
-aegisLayer.on(carto.layer.events.FEATURE_OVER, featureEvent => {
+aegisLayer.on(carto.layer.events.FEATURE_CLICKED, featureEvent => {
   let data = featureEvent.data;
   popupBases.setLatLng(featureEvent.latLng);
 
@@ -99,11 +99,11 @@ aegisLayer.on(carto.layer.events.FEATURE_OVER, featureEvent => {
   }
 });
 
-aegisLayer.on(carto.layer.events.FEATURE_OUT, featureEvent => {
-  popupBases.removeFrom(map);
-});
+// aegisLayer.on(carto.layer.events.FEATURE_OUT, featureEvent => {
+//   popupBases.removeFrom(map);
+// });
 
-nsaptsLayer.on(carto.layer.events.FEATURE_OVER, featureEvent => {
+nsaptsLayer.on(carto.layer.events.FEATURE_CLICKED, featureEvent => {
   let data = featureEvent.data;
   popupBases.setLatLng(featureEvent.latLng);
 
