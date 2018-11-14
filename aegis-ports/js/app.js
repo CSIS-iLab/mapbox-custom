@@ -80,9 +80,9 @@ const otherLayer = new carto.layer.Layer(otherData, otherStyles, {
 client.addLayers([aegisLayer, nsaptsLayer, otherLayer]);
 client.getLeafletLayer().addTo(map);
 
-const popup = L.popup({ closeButton: false });
+const popup = L.popup({ closeButton: true });
 
-const popupBases = L.popup({ closeButton: false });
+const popupBases = L.popup({ closeButton: true });
 aegisLayer.on(carto.layer.events.FEATURE_CLICKED, featureEvent => {
   let data = featureEvent.data;
   popupBases.setLatLng(featureEvent.latLng);
