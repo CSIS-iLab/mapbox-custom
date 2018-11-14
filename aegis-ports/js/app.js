@@ -22,17 +22,16 @@ map.attributionControl.addAttribution(
 );
 
 var client = new carto.Client({
-  apiKey: "iriA91dq0OQWfXcT1v8M0w",
+  apiKey: "lrj5H0OrkDllGK_aUddbZw",
   username: "csis"
 });
 
 const aegisData = new carto.source.Dataset("aegis_ports");
 const aegisStyles = new carto.style.CartoCSS(`
   #layer {
-    marker-width: 18;
-    marker-fill: transparent;
-    marker-line-color: #73d6fd;
-    marker-line-width:4;
+    marker-width: 24;
+    marker-fill: #73d6fd;
+    marker-line-color: #0a3446;
     marker-allow-overlap: true;
   }
 `);
@@ -54,7 +53,7 @@ const aegisLayer = new carto.layer.Layer(aegisData, aegisStyles, {
 const nsaptsData = new carto.source.Dataset("nsapts");
 const nsaptsStyles = new carto.style.CartoCSS(`
   #layer {
-    marker-width: 12;
+    marker-width: 18;
     marker-fill: #99c356;
     marker-line-color: #0a3446;
     marker-allow-overlap: true;
@@ -64,11 +63,11 @@ const nsaptsLayer = new carto.layer.Layer(nsaptsData, nsaptsStyles, {
   featureOverColumns: ["name"]
 });
 
-const otherData = new carto.source.Dataset("aegisashorepts");
+const otherData = new carto.source.Dataset("other_key_facilities");
 const otherStyles = new carto.style.CartoCSS(`
   #layer {
-    marker-width: 12;
-    marker-fill: #76a;
+    marker-width: 18;
+    marker-fill: #fc0;
     marker-line-color: #0a3446;
     marker-allow-overlap: true;
   }
@@ -76,8 +75,24 @@ const otherStyles = new carto.style.CartoCSS(`
 const otherLayer = new carto.layer.Layer(otherData, otherStyles, {
   featureOverColumns: ["name"]
 });
+const aegisashoreData = new carto.source.Dataset("aegisashorepts");
+const aegisashoreStyles = new carto.style.CartoCSS(`
+  #layer {
+    marker-width: 18;
+    marker-fill: #76a;
+    marker-line-color: #0a3446;
+    marker-allow-overlap: true;
+  }
+`);
+const aegisashoreLayer = new carto.layer.Layer(
+  aegisashoreData,
+  aegisashoreStyles,
+  {
+    featureOverColumns: ["name"]
+  }
+);
 
-client.addLayers([aegisLayer, nsaptsLayer, otherLayer]);
+client.addLayers([aegisLayer, nsaptsLayer, otherLayer, aegisashoreLayer]);
 client.getLeafletLayer().addTo(map);
 
 const popup = L.popup({ closeButton: true });
@@ -100,7 +115,7 @@ aegisLayer.on(carto.layer.events.FEATURE_CLICKED, featureEvent => {
       data.total_ddg
     }</div>
 
-    <div><span class='popupHeaderStyle'>BMD-Capable Flight I:</span>
+    <div><span class='popupHeaderStyle'>BMD-Capable:</span>
     <span class='popupEntryStyle'>${data.num_bmdddg}</span></div>
 
     `);
@@ -128,6 +143,19 @@ nsaptsLayer.on(carto.layer.events.FEATURE_CLICKED, featureEvent => {
 });
 
 otherLayer.on(carto.layer.events.FEATURE_CLICKED, featureEvent => {
+  let data = featureEvent.data;
+  popupBases.setLatLng(featureEvent.latLng);
+
+  popupBases.setContent(`
+    <div class="country-name">${data.name}</div>
+    `);
+
+  if (!popupBases.isOpen()) {
+    popupBases.openOn(map);
+  }
+});
+
+aegisashoreLayer.on(carto.layer.events.FEATURE_CLICKED, featureEvent => {
   let data = featureEvent.data;
   popupBases.setLatLng(featureEvent.latLng);
 

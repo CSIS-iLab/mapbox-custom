@@ -147,17 +147,20 @@ p {
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  background-color: #76a;
+  background-color: #fc0;
   border: 1px solid #0a3446;
 }
 
 .label-base.base-aegis::before {
-  background-color: transparent;
-  border: none;
-  box-shadow: 0 0 0 4px #73d6fd;
+  background-color: #73d6fd;
+  border: 1px solid #0a3446;
 }
 .label-base.base-nsapts::before {
   background-color: #99c356;
+  border: 1px solid #0a3446;
+}
+.label-base.base-aegisashore::before {
+  background-color: #76a;
   border: 1px solid #0a3446;
 }
 
