@@ -5,7 +5,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 #map {
@@ -38,14 +38,15 @@ aside.toolbox {
 .title {
   color: #000;
   font-size: 1.5rem;
-  font-family: "Source Sans Pro", "Arial", sans-serif;
-  font-weight: 700;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 100;
+  transform: scaleX(0.9);
   margin: 0 0 0.5rem 0;
 }
 
 p {
   margin: 0 0 1rem;
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-size: 0.9rem;
   line-height: 1.67;
   color: #000;
@@ -54,10 +55,8 @@ p {
 .filter-label,
 .country-name,
 .secondary-header {
-  font-weight: 700;
   text-transform: uppercase;
   margin-bottom: 6px;
-  color: #636d72;
 }
 .filter-label {
   font-size: 18px;
@@ -72,6 +71,7 @@ p {
 .country-name {
   font-size: 16px;
   text-align: center;
+  color: #636d72;
 }
 
 .selection {
@@ -85,7 +85,7 @@ p {
 .legend-label {
   flex: 1 0 auto;
   flex-basis: 50%;
-  font-family: "Source Sans Pro", "Arial", sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-size: 12px;
   padding: 0 3px 5px;
 }
@@ -147,14 +147,18 @@ p {
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  background-color: #75657a;
+  background-color: #76a;
+  border: 1px solid #0a3446;
 }
 
 .label-base.base-aegis::before {
-  background-color: #fa0;
+  background-color: transparent;
+  border: none;
+  box-shadow: 0 0 0 4px #73d6fd;
 }
 .label-base.base-nsapts::before {
-  background-color: #6d0;
+  background-color: #99c356;
+  border: 1px solid #0a3446;
 }
 
 .leaflet-popup-content-wrapper,
@@ -163,37 +167,36 @@ p {
 }
 
 .leaflet-popup-content-wrapper {
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.85);
   box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
+  border: 2px solid #fff;
   border-radius: 12px;
-  font-family: "Source Sans Pro", "Arial", sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-size: 16px;
-  font-weight: bold;
 }
 
 .name {
   /* border-bottom: 1px solid #bbb; */
-  font-weight: 400;
   text-transform: uppercase;
   font-size: 13px;
 }
 
 .country-name {
-  border-bottom: 1px solid #bbb;
+  /* border-bottom: 1px solid #bbb; */
+  font-weight: 700;
   display: block;
   text-align: center;
   margin-bottom: 0.25rem;
 }
+
 .label {
   font-size: 14px;
-  font-weight: 400;
   line-height: 1;
   text-transform: uppercase;
   color: #636d72;
 }
 .popupHeaderStyle {
   font-size: 13px;
-  font-weight: 400;
 }
 
 .popupHeaderStyle {
@@ -201,7 +204,6 @@ p {
 }
 
 .popupEntryStyle {
-  font-weight: 400;
   margin: 0;
   padding: 0;
 }
@@ -268,9 +270,9 @@ aside.toolbox .ui {
 }
 
 .hamburger .menu {
-  font-family: "Open Sans Condensed", sans-serif;
-  color: black;
-  font-weight: 700;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 100;
+  transform: scaleX(0.9);
   font-size: 16px;
   line-height: 16px;
   margin: 0 0 0 12px;
@@ -324,7 +326,8 @@ aside.toolbox .ui:checked ~ .hamburger span:nth-child(3) {
     height: 50px;
     font-size: 12px;
     line-height: 16px;
-    font-weight: 400;
+
+    font-weight: 700;
   }
 
   .mobile-toggle {
@@ -339,8 +342,9 @@ aside.toolbox .ui:checked ~ .hamburger span:nth-child(3) {
   }
 
   .box header h1 {
-    font-family: "Open Sans Condensed", sans-serif;
-    font-weight: 700;
+    font-family: "Open Sans", sans-serif;
+    font-weight: 100;
+    transform: scaleX(0.9);
     font-size: 20px;
     line-height: 22px;
   }

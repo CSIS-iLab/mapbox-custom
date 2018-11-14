@@ -1,7 +1,7 @@
 let mixStyle, intstyle;
 
 const basemap = L.tileLayer(
-  "https://api.mapbox.com/styles/v1/ilabmedia/cjeitb2bn10kx2skafzusd536/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
+  "https://api.mapbox.com/styles/v1/ilabmedia/civ8lck9u000b2jmh4y4i5xgz/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
   {}
 );
 
@@ -22,16 +22,17 @@ map.attributionControl.addAttribution(
 );
 
 var client = new carto.Client({
-  apiKey: "Tb5UKi3ornrfwKvLSAgTLg",
+  apiKey: "iriA91dq0OQWfXcT1v8M0w",
   username: "csis"
 });
 
 const aegisData = new carto.source.Dataset("aegis_ports");
 const aegisStyles = new carto.style.CartoCSS(`
   #layer {
-    marker-width: 12;
-    marker-fill: #fa0;
-    marker-line-color: #fff;
+    marker-width: 18;
+    marker-fill: transparent;
+    marker-line-color: #73d6fd;
+    marker-line-width:4;
     marker-allow-overlap: true;
   }
 `);
@@ -40,29 +41,43 @@ const aegisLayer = new carto.layer.Layer(aegisData, aegisStyles, {
   featureOverColumns: [
     "name",
     "total_cg",
-    "num_bmd",
-    "total_ddg",
-    "num_bmd_i",
-    "num_bmd_ii",
-    "num_bmd_iia",
-    "num_bmd_iii"
+    "num_bmdcg",
+    "num_bmdddg",
+    "total_ddg"
+    // "num_bmd_i",
+    // "num_bmd_ii",
+    // "num_bmd_iia",
+    // "num_bmd_iii"
   ]
 });
+
 const nsaptsData = new carto.source.Dataset("nsapts");
 const nsaptsStyles = new carto.style.CartoCSS(`
   #layer {
     marker-width: 12;
-    marker-fill: #6d0;
-    marker-line-color: #fff;
+    marker-fill: #99c356;
+    marker-line-color: #0a3446;
     marker-allow-overlap: true;
   }
 `);
-
 const nsaptsLayer = new carto.layer.Layer(nsaptsData, nsaptsStyles, {
   featureOverColumns: ["name"]
 });
 
-client.addLayers([aegisLayer, nsaptsLayer]);
+const otherData = new carto.source.Dataset("aegisashorepts");
+const otherStyles = new carto.style.CartoCSS(`
+  #layer {
+    marker-width: 12;
+    marker-fill: #76a;
+    marker-line-color: #0a3446;
+    marker-allow-overlap: true;
+  }
+`);
+const otherLayer = new carto.layer.Layer(otherData, otherStyles, {
+  featureOverColumns: ["name"]
+});
+
+client.addLayers([aegisLayer, nsaptsLayer, otherLayer]);
 client.getLeafletLayer().addTo(map);
 
 const popup = L.popup({ closeButton: false });
@@ -74,24 +89,20 @@ aegisLayer.on(carto.layer.events.FEATURE_CLICKED, featureEvent => {
 
   popupBases.setContent(`
     <div class="country-name">${data.name}</div>
-    <div class="secondary-header">Total cruisers: ${data.total_cg}</div>
+    <div class="secondary-header">Guided Missile Cruisers: ${
+      data.total_cg
+    }</div>
 
     <div><span class='popupHeaderStyle'>BMD-Capable:</span>
-    <span class='popupEntryStyle'>${data.num_bmd}</span></div>
+    <span class='popupEntryStyle'>${data.num_bmdcg}</span></div>
 
-    <div class="secondary-header">Total destroyers: ${data.total_ddg}</div>
+    <div class="secondary-header">Guided Missile Destroyers: ${
+      data.total_ddg
+    }</div>
 
     <div><span class='popupHeaderStyle'>BMD-Capable Flight I:</span>
-    <span class='popupEntryStyle'>${data.num_bmd_i}</span></div>
+    <span class='popupEntryStyle'>${data.num_bmdddg}</span></div>
 
-    <div><span class='popupHeaderStyle'>BMD-Capable Flight II:</span>
-    <span class='popupEntryStyle'>${data.num_bmd_ii}</span></div>
-
-    <div><span class='popupHeaderStyle'>BMD-Capable Flight IIA:</span>
-    <span class='popupEntryStyle'>${data.num_bmd_iia}</span></div>
-
-    <div><span class='popupHeaderStyle'>BMD-Capable Flight III:</span>
-    <span class='popupEntryStyle'>${data.num_bmd_iii}</span></div>
     `);
 
   if (!popupBases.isOpen()) {
@@ -104,6 +115,19 @@ aegisLayer.on(carto.layer.events.FEATURE_CLICKED, featureEvent => {
 // });
 
 nsaptsLayer.on(carto.layer.events.FEATURE_CLICKED, featureEvent => {
+  let data = featureEvent.data;
+  popupBases.setLatLng(featureEvent.latLng);
+
+  popupBases.setContent(`
+    <div class="country-name">${data.name}</div>
+    `);
+
+  if (!popupBases.isOpen()) {
+    popupBases.openOn(map);
+  }
+});
+
+otherLayer.on(carto.layer.events.FEATURE_CLICKED, featureEvent => {
   let data = featureEvent.data;
   popupBases.setLatLng(featureEvent.latLng);
 
