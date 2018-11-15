@@ -64,6 +64,7 @@ p {
 
 .secondary-header {
   font-size: 14px;
+  font-style: italic;
   text-align: left;
   margin: 6px 0 0;
 }
@@ -71,7 +72,7 @@ p {
 .country-name {
   font-size: 16px;
   text-align: center;
-  color: #636d72;
+  color: #fff;
 }
 
 .selection {
@@ -148,34 +149,48 @@ p {
   height: 15px;
   border-radius: 50%;
   background-color: #fc0;
-  border: 1px solid #0a3446;
+  border: 1px solid #eaeaea;
 }
 
 .label-base.base-aegis::before {
-  background-color: #73d6fd;
-  border: 1px solid #0a3446;
+  background-image: url(../img/aegis.svg);
+  background-color: transparent;
+  width: 25px;
+  height: 25px;
+  top: -5px;
+  left: -5px;
+  border: 0;
 }
 .label-base.base-nsapts::before {
-  background-color: #99c356;
-  border: 1px solid #0a3446;
+  background-color: #73d6fd;
+  border: 1px solid #eaeaea;
 }
 .label-base.base-aegisashore::before {
-  background-color: #76a;
-  border: 1px solid #0a3446;
+  background-color: #99c356;
+  border: 1px solid #eaeaea;
 }
 
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
   box-shadow: 0 0px 16px rgba(0, 0, 0, 0.24);
+  color: #fff;
+}
+
+.leaflet-popup-content {
+  margin: 14px 28px 14px 14px;
 }
 
 .leaflet-popup-content-wrapper {
-  background-color: rgba(255, 255, 255, 0.85);
   box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
-  border: 2px solid #fff;
+  border: 0;
   border-radius: 12px;
   font-family: "Open Sans", sans-serif;
   font-size: 16px;
+}
+
+.leaflet-popup-tip,
+.leaflet-popup-content-wrapper {
+  background-color: rgba(47, 82, 98, 0.85);
 }
 
 .name {
@@ -196,7 +211,7 @@ p {
   font-size: 14px;
   line-height: 1;
   text-transform: uppercase;
-  color: #636d72;
+  color: #fff;
 }
 .popupHeaderStyle {
   font-size: 13px;

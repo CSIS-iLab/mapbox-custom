@@ -1,9 +1,11 @@
 let mixStyle, intstyle;
 
 const basemap = L.tileLayer(
-  "https://api.mapbox.com/styles/v1/ilabmedia/civ8lck9u000b2jmh4y4i5xgz/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
+  "https://api.mapbox.com/styles/v1/ilabmedia/cjoiv6dmo29kh2rsd2z5qda2p/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
   {}
 );
+
+// civ8lck9u000b2jmh4y4i5xgz
 
 const map = L.map("map", {
   center: [50, 0],
@@ -22,16 +24,28 @@ map.attributionControl.addAttribution(
 );
 
 var client = new carto.Client({
-  apiKey: "lrj5H0OrkDllGK_aUddbZw",
+  apiKey: "I70L4xAKQof6MjZVGUf0cg",
   username: "csis"
+});
+
+const cruisingData = new carto.source.Dataset("cruising_times");
+const cruisingStyles = new carto.style.CartoCSS(`
+  #layer {
+    line-width: 0;
+
+  }
+
+`);
+
+const cruisingLayer = new carto.layer.Layer(cruisingData, cruisingStyles, {
+  featureOverColumns: ["from_to", "distance", "time"]
 });
 
 const aegisData = new carto.source.Dataset("aegis_ports");
 const aegisStyles = new carto.style.CartoCSS(`
   #layer {
-    marker-width: 24;
-    marker-fill: #73d6fd;
-    marker-line-color: #0a3446;
+    marker-file: url(https://csis-ilab.github.io/mapbox-custom/aegis-ports/img/aegis.svg);
+    marker-width: 30;
     marker-allow-overlap: true;
   }
 `);
@@ -54,8 +68,8 @@ const nsaptsData = new carto.source.Dataset("nsapts");
 const nsaptsStyles = new carto.style.CartoCSS(`
   #layer {
     marker-width: 18;
-    marker-fill: #99c356;
-    marker-line-color: #0a3446;
+    marker-fill: #73d6fd;
+    marker-line-color: #eaeaea;
     marker-allow-overlap: true;
   }
 `);
@@ -68,7 +82,7 @@ const otherStyles = new carto.style.CartoCSS(`
   #layer {
     marker-width: 18;
     marker-fill: #fc0;
-    marker-line-color: #0a3446;
+    marker-line-color: #eaeaea;
     marker-allow-overlap: true;
   }
 `);
@@ -79,8 +93,8 @@ const aegisashoreData = new carto.source.Dataset("aegisashorepts");
 const aegisashoreStyles = new carto.style.CartoCSS(`
   #layer {
     marker-width: 18;
-    marker-fill: #76a;
-    marker-line-color: #0a3446;
+    marker-fill: #99c356;
+    marker-line-color: #eaeaea;
     marker-allow-overlap: true;
   }
 `);
@@ -92,7 +106,13 @@ const aegisashoreLayer = new carto.layer.Layer(
   }
 );
 
-client.addLayers([aegisLayer, nsaptsLayer, otherLayer, aegisashoreLayer]);
+client.addLayers([
+  cruisingLayer,
+  nsaptsLayer,
+  otherLayer,
+  aegisashoreLayer,
+  aegisLayer
+]);
 client.getLeafletLayer().addTo(map);
 
 const popup = L.popup({ closeButton: true });
@@ -102,75 +122,62 @@ aegisLayer.on(carto.layer.events.FEATURE_CLICKED, featureEvent => {
   let data = featureEvent.data;
   popupBases.setLatLng(featureEvent.latLng);
 
-  popupBases.setContent(`
-    <div class="country-name">${data.name}</div>
-    <div class="secondary-header">Guided Missile Cruisers: ${
+  popupBases.setContent(`<div class="country-name">${data.name}</div>
+
+    ${
       data.total_cg
-    }</div>
-
+        ? `<div class="secondary-header">Guided Missile Cruisers: ${
+            data.total_cg
+          }</div>
     <div><span class='popupHeaderStyle'>BMD-Capable:</span>
-    <span class='popupEntryStyle'>${data.num_bmdcg}</span></div>
-
-    <div class="secondary-header">Guided Missile Destroyers: ${
-      data.total_ddg
-    }</div>
-
-    <div><span class='popupHeaderStyle'>BMD-Capable:</span>
-    <span class='popupEntryStyle'>${data.num_bmdddg}</span></div>
-
-    `);
+    <span class='popupEntryStyle'>${data.num_bmdcg}</span></div>`
+        : ""
+    }
+${
+    data.num_bmdddg
+      ? `<div class="secondary-header">Guided Missile Destroyers: ${
+          data.total_ddg
+        }</div>
+<div><span class='popupHeaderStyle'>BMD-Capable:</span>
+<span class='popupEntryStyle'>${data.num_bmdddg}</span></div>`
+      : ""
+  }`);
 
   if (!popupBases.isOpen()) {
     popupBases.openOn(map);
   }
 });
 
-// aegisLayer.on(carto.layer.events.FEATURE_OUT, featureEvent => {
-//   popupBases.removeFrom(map);
-// });
+[nsaptsLayer, otherLayer, aegisashoreLayer].forEach(layer => {
+  layer.on(carto.layer.events.FEATURE_CLICKED, featureEvent => {
+    let data = featureEvent.data;
+    popupBases.setLatLng(featureEvent.latLng);
 
-nsaptsLayer.on(carto.layer.events.FEATURE_CLICKED, featureEvent => {
+    popupBases.setContent(`
+      <div class="country-name">${data.name}</div>
+      `);
+
+    if (!popupBases.isOpen()) {
+      popupBases.openOn(map);
+    }
+  });
+});
+
+cruisingLayer.on(carto.layer.events.FEATURE_CLICKED, featureEvent => {
   let data = featureEvent.data;
   popupBases.setLatLng(featureEvent.latLng);
 
-  popupBases.setContent(`
-    <div class="country-name">${data.name}</div>
-    `);
+  popupBases.setContent(`<div class="country-name">${data.from_to}</div>
+  <div class="secondary-header">Distance (km):</div>
+  <span class='popupEntryStyle'>${data.distance}</span></div>
+  <div class="secondary-header">Time (30 knots):</div>
+  <span class='popupEntryStyle'>${data.time}</span></div>
+  `);
 
   if (!popupBases.isOpen()) {
     popupBases.openOn(map);
   }
 });
-
-otherLayer.on(carto.layer.events.FEATURE_CLICKED, featureEvent => {
-  let data = featureEvent.data;
-  popupBases.setLatLng(featureEvent.latLng);
-
-  popupBases.setContent(`
-    <div class="country-name">${data.name}</div>
-    `);
-
-  if (!popupBases.isOpen()) {
-    popupBases.openOn(map);
-  }
-});
-
-aegisashoreLayer.on(carto.layer.events.FEATURE_CLICKED, featureEvent => {
-  let data = featureEvent.data;
-  popupBases.setLatLng(featureEvent.latLng);
-
-  popupBases.setContent(`
-    <div class="country-name">${data.name}</div>
-    `);
-
-  if (!popupBases.isOpen()) {
-    popupBases.openOn(map);
-  }
-});
-
-// nsaptsLayer.on(carto.layer.events.FEATURE_OUT, featureEvent => {
-//   popupBases.removeFrom(map);
-// });
 
 function validatePopupValue(value, prefix = "", suffix = "") {
   if (!value) {
@@ -178,3 +185,40 @@ function validatePopupValue(value, prefix = "", suffix = "") {
   }
   return prefix + value + suffix;
 }
+
+window.addEventListener("DOMContentLoaded", () => {
+  document.querySelector(".cruising").addEventListener("click", e => {
+    let checkbox = e.target || e.target.querySelector("input");
+
+    if (checkbox.checked) {
+      cruisingStyles.setContent(`
+      #layer {
+        line-width: 3;
+        line-color: ramp([from_to],(#D98880,#C39BD3,#A9CCE3,#A3E4D7,#A9DFBF,#FAD7A0,#EDBB99,#641E16,#512E5F,#154360,#0E6251,#186A3B,#7D6608,#784212,#CB4335,#7D3C98,#2E86C1,#148F77,#138D75,#2ECC71,#F39C12),("Darwin to Guam","Yokosuka to Guam","Pearl Harbor to Guam","San Diego to Guam","Darwin to Sea of Japan","Yokosuka to Sea of Japan","Pearl Harbor to Sea of Japan","San Diego to Sea of Japan","Darwin to South China Sea","Yokosuka to South China Sea","Pearl Harbor to South China Sea","San Diego to South China Sea","Norfolk to Arabian Gulf","Rota to Arabian Gulf","Darwin to Arabian Gulf","Norfolk to Baltic Sea","Rota to Baltic Sea","Norfolk to Eastern Mediterranean","Rota to Eastern Mediterranean","Norfolk to Black Sea","Rota to Black Sea"),"=");
+        line-comp-op: multiply;
+        line-cap: butt;
+        line-join: round;
+        line-smooth: 1;
+        line-dasharray: 7,3;
+      }
+      #layer::labels {
+        text-name: [from_to];
+        text-face-name: 'Open Sans Regular';
+        text-size: 9;
+        text-fill: #000;
+        text-label-position-tolerance: 0;
+        text-halo-radius:0;
+        text-dy: -10;
+        text-allow-overlap: false;
+        text-placement: point;
+        text-placement-type: dummy;
+      }
+    `);
+    } else {
+      cruisingStyles.setContent(`
+    #layer {
+      line-width: 0;}
+      `);
+    }
+  });
+});
