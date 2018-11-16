@@ -197,8 +197,9 @@ window.addEventListener("DOMContentLoaded", () => {
       #layer {
         line-width: 3;
         line-color: ramp([from_to],(#D98880,#C39BD3,#A9CCE3,#A3E4D7,#A9DFBF,#FAD7A0,#EDBB99,#641E16,#512E5F,#154360,#0E6251,#186A3B,#7D6608,#784212,#CB4335,#7D3C98,#2E86C1,#148F77,#138D75,#2ECC71,#F39C12),("Darwin to Guam","Yokosuka to Guam","Pearl Harbor to Guam","San Diego to Guam","Darwin to Sea of Japan","Yokosuka to Sea of Japan","Pearl Harbor to Sea of Japan","San Diego to Sea of Japan","Darwin to South China Sea","Yokosuka to South China Sea","Pearl Harbor to South China Sea","San Diego to South China Sea","Norfolk to Arabian Gulf","Rota to Arabian Gulf","Darwin to Arabian Gulf","Norfolk to Baltic Sea","Rota to Baltic Sea","Norfolk to Eastern Mediterranean","Rota to Eastern Mediterranean","Norfolk to Black Sea","Rota to Black Sea"),"=");
-        line-comp-op: multiply;
+        line-comp-op: overlay;
         line-cap: butt;
+        line-opacity:.9;
         line-join: round;
         line-smooth: 1;
         line-dasharray: 7,3;
