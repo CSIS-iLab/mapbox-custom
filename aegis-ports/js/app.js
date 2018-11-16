@@ -44,9 +44,11 @@ const cruisingLayer = new carto.layer.Layer(cruisingData, cruisingStyles, {
 const aegisData = new carto.source.Dataset("aegis_ports");
 const aegisStyles = new carto.style.CartoCSS(`
   #layer {
-    marker-file: url(https://csis-ilab.github.io/mapbox-custom/aegis-ports/img/aegis.svg);
+    marker-file: url(https://csis-ilab.github.io/mapbox-custom/aegis-ports/img/aegis_marker.svg);
     marker-width: 30;
     marker-allow-overlap: true;
+    marker-line-color: #eaeaea;
+    marker-line-width: .5;
   }
 `);
 
