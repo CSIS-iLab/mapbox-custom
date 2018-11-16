@@ -24,7 +24,7 @@ map.attributionControl.addAttribution(
 );
 
 var client = new carto.Client({
-  apiKey: "I70L4xAKQof6MjZVGUf0cg",
+  apiKey: "YhyUHpP8_I1l-uFeIwhNjA",
   username: "csis"
 });
 
@@ -168,10 +168,10 @@ cruisingLayer.on(carto.layer.events.FEATURE_CLICKED, featureEvent => {
   popupBases.setLatLng(featureEvent.latLng);
 
   popupBases.setContent(`<div class="country-name">${data.from_to}</div>
-  <div class="secondary-header">Distance (km):</div>
-  <span class='popupEntryStyle'>${data.distance}</span></div>
+  <div class="secondary-header">Distance:</div>
+  <span class='popupEntryStyle'>${data.distance}km</span></div>
   <div class="secondary-header">Time (30 knots):</div>
-  <span class='popupEntryStyle'>${data.time}</span></div>
+  <span class='popupEntryStyle'>${data.time} days</span></div>
   `);
 
   if (!popupBases.isOpen()) {
@@ -200,18 +200,6 @@ window.addEventListener("DOMContentLoaded", () => {
         line-join: round;
         line-smooth: 1;
         line-dasharray: 7,3;
-      }
-      #layer::labels {
-        text-name: [from_to];
-        text-face-name: 'Open Sans Regular';
-        text-size: 9;
-        text-fill: #000;
-        text-label-position-tolerance: 0;
-        text-halo-radius:0;
-        text-dy: -10;
-        text-allow-overlap: false;
-        text-placement: point;
-        text-placement-type: dummy;
       }
     `);
     } else {
