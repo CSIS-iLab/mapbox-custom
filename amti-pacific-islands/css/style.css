@@ -1,0 +1,65 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+.mapboxgl-popup {
+  max-width: 400px;
+}
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+#map {
+  position: fixed;
+  /* width: 50%; */
+}
+
+#features {
+  font-family: sans-serif;
+  overflow-y: scroll;
+  position: absolute;
+  top: 0;
+}
+
+section article {
+  padding: 1vw 2vw;
+  font-size: 1rem;
+}
+
+@media (min-width: 625px) {
+  #features {
+    width: 33%;
+    margin-left: 67%;
+  }
+  section article {
+    padding: 2vw 4vw;
+    font-size: 1.5vw;
+  }
+}
+
+section:not(:first-of-type):not(:last-of-type) article {
+  background-color: #fafafa;
+  opacity: 0;
+  border-bottom: 1px solid #ddd;
+  transition: opacity 0.3s ease-in-out;
+}
+
+section:not(:first-of-type) {
+  min-height: calc(99vh - 25px);
+}
+
+section:first-of-type {
+  margin-top: 25px;
+}
+
+section:not(:first-of-type) article.active {
+  opacity: 1;
+}
+
+section:last-child {
+  border-bottom: none;
+  margin-bottom: 50px;
+}
