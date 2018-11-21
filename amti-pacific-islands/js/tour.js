@@ -65,8 +65,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
         chapterList = parseChapterData(json.feed.entry);
 
         document.querySelector(".loader").remove();
-        document.querySelector(".title").innerText = chapterList[0].name;
-        document.querySelector(".story").innerText = chapterList[0].text;
 
         countryColors = chapterList
           .filter(c => !exclude.includes(c.name))
@@ -305,7 +303,9 @@ function setActiveChapter(i) {
 
   if (i === 0) {
     document.querySelector("button.scroll-up").style.display = "none";
+    document.querySelector("button.scroll-down").style.display = "block";
   } else if (i === 6) {
+    document.querySelector("button.scroll-up").style.display = "block";
     document.querySelector("button.scroll-down").style.display = "none";
   } else if (window.screen.availWidth > 425) {
     document.querySelector("button.scroll-up").style.display = "block";

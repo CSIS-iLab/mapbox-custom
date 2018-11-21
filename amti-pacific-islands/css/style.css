@@ -54,12 +54,12 @@ button.scroll-down {
 }
 
 button.scroll-down {
-  padding: 6px 0 0 6px;
+  padding: 6px 0 0 3px;
 }
 
 button.scroll-up {
   display: none;
-  padding: 0 0 6px 6px;
+  padding: 0 0 6px 3px;
 }
 
 button.scroll-up:hover,
