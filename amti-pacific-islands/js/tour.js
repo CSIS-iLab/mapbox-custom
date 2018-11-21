@@ -10,7 +10,7 @@ let state,
     closeButton: false
   }),
   activeChapterName = "",
-  steps = [0, 0.22, 0.44, 0.66, 0.88, 1.1, 1.32, 1.54],
+  steps = [-1, 0.22, 0.44, 0.66, 0.88, 1.1, 1.32, 1.54],
   framesPerSecond = 30,
   initialOpacity = 1,
   opacity = initialOpacity,
@@ -325,13 +325,21 @@ function handleScroll(e) {
   getProgress();
 
   steps.forEach((step, i) => {
-    if (progress > step && progress < steps[i + 1]) {
+    let makingProgress = progress > step && progress < steps[i + 1];
+    // let atZero = progress >= 0 && progress < steps[1];
+
+    if (makingProgress) {
       if (activeChapterName !== chapterList[i].name) {
         map.flyTo(chapterList[i]);
         activeChapterName = chapterList[i].name;
         setActiveChapter(i);
       }
     }
+    // else if (atZero) {
+    //   map.flyTo(chapterList[0]);
+    //   activeChapterName = chapterList[0].name;
+    //   setActiveChapter(0);
+    // }
   });
 }
 
