@@ -307,7 +307,7 @@ function setActiveChapter(i) {
     document.querySelector("button.scroll-up").style.display = "none";
   } else if (i === 6) {
     document.querySelector("button.scroll-down").style.display = "none";
-  } else {
+  } else if (window.screen.availWidth > 425) {
     document.querySelector("button.scroll-up").style.display = "block";
     document.querySelector("button.scroll-down").style.display = "block";
   }

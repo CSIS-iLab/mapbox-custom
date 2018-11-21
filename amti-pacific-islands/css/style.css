@@ -107,6 +107,11 @@ button .text {
   .box {
     top: 24px;
   }
+
+  button.scroll-up,
+  button.scroll-down {
+    display: none;
+  }
 }
 /*============================
 =         Animation         =
