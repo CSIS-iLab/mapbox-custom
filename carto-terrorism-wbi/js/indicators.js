@@ -57,7 +57,7 @@ const registerListeners = () => {
 // Layer switcher
 
 const basemap = L.tileLayer(
-  "https://api.mapbox.com/styles/v1/ilabmedia/cjmqo72pevtii2smvg4ww2r52/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
+  "https://api.mapbox.com/styles/v1/ilabmedia/cjoaczvkt063o2smqtcexvq24/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
   {}
 );
 // "https://api.mapbox.com/styles/v1/ilabmedia/cjoaczvkt063o2smqtcexvq24/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
@@ -67,11 +67,15 @@ const satellite = L.tileLayer(
   {}
 );
 
+const labels = L.tileLayer(
+  "https://api.mapbox.com/styles/v1/ilabmedia/cjokd6u383nxq2rsd6hhf5mjx/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
+  {}
+);
 // Intitiate the map container parameters
 
 const map = L.map("map", {
   center: [28.0002832, -9.9504314],
-  zoom: 3,
+  zoom: 4,
   maxZoom: 18,
   scrollWheelZoom: false,
   minZoom: 1,
@@ -116,20 +120,7 @@ const wbiLayer = new carto.layer.Layer(wbi, wbiStyle);
 const wbi2 = new carto.source.SQL("SELECT * FROM wbi_governance");
 
 const wbi2Style = new carto.style.CartoCSS(`
-
-    #layer::labels {
-    text-name: [country];
-    text-face-name: 'Open Sans Bold';
-    text-transform: uppercase;
-    text-size: 12;
-    text-fill: #ffffff;
-    text-label-position-tolerance: 0;
-    text-halo-radius: 1.25;
-    text-halo-fill: #504e4e;
-    text-dy: 0;
-    text-allow-overlap: false;
-    text-placement: point;
-    text-placement-type: dummy;
+    #layer {
   }
 `);
 
@@ -175,6 +166,8 @@ client
   .bringToFront()
   .addTo(map);
 
+labels.bringToFront().addTo(map);
+
 const attackInfo = L.popup({ closeButton: false });
 
 attacksLayer.on(carto.layer.events.FEATURE_CLICKED, e => {
@@ -204,9 +197,9 @@ document.addEventListener("mousemove", e => {
 });
 
 window.addEventListener("DOMContentLoaded", () => {
-  // document.querySelector(".leaflet-control-attribution").remove();
-  // document.querySelector("aside").style.display = "none"
-  // document.querySelector(".leaflet-control-container").style.display = "none"
+  document.querySelector(".leaflet-control-attribution").remove();
+  document.querySelector("aside").style.display = "none";
+  document.querySelector(".leaflet-control-container").style.display = "none";
   inputControl = document.querySelector("input[type='range']");
   valueLow = parseInt(inputControl.valueLow, 10) || 1;
   valueHigh = parseInt(inputControl.valueHigh, 10) || 6;

@@ -3,73 +3,49 @@ mapboxgl.accessToken =
 
 let state,
   map,
-  scrollHeight,
+  scrollY,
+  featurePosition,
+  progress,
+  popup = new mapboxgl.Popup({
+    closeButton: false
+  }),
+  activeChapterName = "",
+  steps = [0, 0.22, 0.44, 0.66, 0.88, 1.1, 1.32, 1.54],
   framesPerSecond = 30,
   initialOpacity = 1,
   opacity = initialOpacity,
   initialRadius = 8,
   radius = initialRadius,
   maxRadius = 18,
-  activeChapterName = "start",
-  exclude = ["start", "end"];
+  exclude = ["Introduction", "Conclusion"],
+  chapterList = [],
+  countryColors,
+  paintMap;
 
-let chapters = {
-  start: {
-    center: [195, -11.9602541],
-    zoom: 2,
-    pitch: 0,
-    speed: 3
-  },
-  "United States": {
-    center: [166.431640625, 14.689881366618762],
-    zoom: 3,
-    pitch: 40,
-    color: "#6688b9"
-  },
-  France: {
-    duration: 6000,
-    center: [-169.24609375, -22.268764039073968],
+const spreadsheetID = "115eMJVfot0DDYcv7nhsVM4X5Djihr2ygpMdMYzBSsdc";
 
-    zoom: 2,
-    pitch: 40,
-    color: "#e1782c"
-  },
-  Australia: {
-    center: [153.28125, -22.67484735118852],
-    zoom: 3,
-    pitch: 40,
-    color: "#9869a3"
-  },
-  "New Zealand": {
-    center: [170.595703125, -38.61687046392973],
-    zoom: 5,
-    pitch: 40,
-    color: "#46b394"
-  },
-  China: {
-    center: [174.77050781249997, -12.554563528593656],
-    zoom: 4,
-    pitch: 40,
-    color: "#e06b91"
-  },
-  end: {
-    center: [195, -11.9602541],
-    zoom: 2,
-    pitch: 0
-  }
-};
+const islandURL =
+  "https://spreadsheets.google.com/feeds/list/" +
+  spreadsheetID +
+  "/1/public/values?alt=json";
 
-let countryColors = Object.keys(chapters)
-  .filter(c => !exclude.includes(c))
-  .map(c => [c, chapters[c].color])
-  .reduce((a, b) => a.concat(b));
-
-let paintMap = ["match", ["get", "country"]]
-  .concat(countryColors)
-  .concat(["#fff"]);
+const chapterURL =
+  "https://spreadsheets.google.com/feeds/list/" +
+  spreadsheetID +
+  "/2/public/values?alt=json";
 
 document.addEventListener("DOMContentLoaded", function(event) {
-  let state = history.state || {};
+  window.addEventListener("resize", getProgress);
+
+  document
+    .querySelector("button.scroll-up")
+    .addEventListener("click", () => handleClick("up"));
+
+  document
+    .querySelector("button.scroll-down")
+    .addEventListener("click", () => handleClick("down"));
+
+  state = history.state || {};
 
   map = new mapboxgl.Map({
     container: "map",
@@ -83,167 +59,231 @@ document.addEventListener("DOMContentLoaded", function(event) {
   });
 
   map.on("load", function() {
-    map.addControl(new mapboxgl.NavigationControl(), "top-left");
+    fetch(chapterURL)
+      .then(resp => resp.json())
+      .then(json => {
+        chapterList = parseChapterData(json.feed.entry);
 
-    /////// Data Layer
-    map.addSource("islands", {
-      type: "vector",
-      url: "mapbox://ilabmedia.cjopvtk471zt92vlnsy7yv3b5-5ezl4"
-    });
+        document.querySelector(".loader").remove();
+        document.querySelector(".title").innerText = chapterList[0].name;
+        document.querySelector(".story").innerText = chapterList[0].text;
 
-    map.addLayer({
-      id: "islands",
-      type: "circle",
-      source: "islands", //ilabmedia.cjopvtk471zt92vlnsy7yv3b5-5ezl4
-      "source-layer": "Pacific_Islands",
-      paint: {
-        "circle-color": paintMap,
-        "circle-stroke-width": 2,
-        "circle-stroke-color": "#fff",
-        "circle-radius": initialRadius
-      }
-    });
+        countryColors = chapterList
+          .filter(c => !exclude.includes(c.name))
+          .map(c => [c.name, c.color])
+          .reduce((a, b) => a.concat(b));
 
-    /////// Highlighted Points
-    map.addLayer({
-      id: "islands-highlighted",
-      type: "circle",
-      source: "islands",
-      "source-layer": "Pacific_Islands",
-      paint: {
-        "circle-color": "#ff0",
-        "circle-stroke-width": 2,
-        "circle-stroke-color": "#fff",
-        "circle-radius": initialRadius
-      },
-      filter: ["in", "country", ""]
-    });
+        paintMap = ["match", ["get", "country"]]
+          .concat(countryColors)
+          .concat(["#fff"]);
 
-    /////// Animated Points
-    map.addSource(`point`, {
-      type: "geojson",
-      data: pointOnCircle(0)
-    });
+        window.addEventListener("scroll", handleScroll);
+      })
+      .then(x =>
+        fetch(islandURL)
+          .then(resp => resp.json())
+          .then(json => {
+            let data = parseIslandData(json.feed.entry);
 
-    map.addLayer({
-      id: "point",
-      source: "point",
-      type: "circle",
-      paint: {
-        "circle-color": "transparent",
-        "circle-radius": initialRadius,
-        "circle-stroke-width": 2,
-        "circle-stroke-color": "transparent",
-        "circle-radius-transition": { duration: 0 },
-        "circle-opacity-transition": { duration: 0 }
-      }
-    });
-
-    map.addLayer({
-      id: "point1",
-      source: "point",
-      type: "circle",
-      paint: {
-        "circle-radius": initialRadius,
-        "circle-color": "transparent"
-      }
-    });
-
-    /////// Click Event
-    let popup = new mapboxgl.Popup();
-    map.on("click", "islands", function(e) {
-      var coordinates = e.features[0].geometry.coordinates.slice();
-      let properties = e.features[0].properties;
-      var description = Object.keys(properties)
-        .map(p => {
-          return `<h3>${p}</h3><p>${properties[p]}</p>`;
-        })
-        .join("");
-
-      popup
-        .setLngLat(coordinates)
-        .setHTML(description)
-        .addTo(map);
-    });
-
-    /////// Hover Event
-    map.on("mouseenter", "islands", function(e) {
-      map.getCanvas().style.cursor = "pointer";
-      map.setFilter("islands-highlighted", [
-        "in",
-        "country",
-        e.features[0].properties.country
-      ]);
-    });
-
-    map.on("mouseleave", "islands", function() {
-      map.getCanvas().style.cursor = "";
-      map.setFilter("islands-highlighted", ["in", "country", ""]);
-      // popup.remove();
-    });
-
-    // Start the animation.
-    animateMarker(0);
-
-    // Object.keys(chapters)
-    //   .filter(c => !["start", "end"].includes(c))
-    //   .forEach(c => {
-    //     new mapboxgl.Marker({ color: "#fff" })
-    //       .setLngLat(chapters[c].center)
-    //       .addTo(map);
-    //   });
+            handleScroll();
+            initIslands(data);
+          })
+      );
   });
 });
 
-window.onscroll = function() {
-  var chapterNames = Object.keys(chapters);
-
-  for (var i = 0; i < chapterNames.length; i++) {
-    var chapterName = chapterNames[i];
-
-    if (map._loaded) {
-      if (isElementOnScreen(chapterName)) {
-        map.flyTo(chapters[chapterName]);
-        document.getElementById(chapterName).setAttribute("class", "active");
-        setActiveChapter(chapterName);
-        break;
-      } else {
-        document.getElementById(chapterName).setAttribute("class", "");
+function parseChapterData(rawData) {
+  let d = rawData.map(r => {
+    let row = r;
+    let chapterData = {};
+    Object.keys(row).forEach(c => {
+      let column = c;
+      if (column.includes("gsx$")) {
+        let columnName = column.replace("gsx$", "");
+        chapterData[columnName] = row[column]["$t"];
       }
-    }
+    });
+    chapterData.center = [
+      parseFloat(chapterData.latitude),
+      parseFloat(chapterData.longitude)
+    ];
+    return chapterData;
+  });
+  return d;
+}
 
-    scrollHeight = document.querySelector("#features").offsetHeight;
-
-    let atTop = window.scrollY / scrollHeight < 0.015;
-
-    let atBottom = window.scrollY / scrollHeight > 0.75;
-
-    if (atTop) {
-      document.getElementById("United States").setAttribute("class", "");
-      map.flyTo(chapters["start"]);
-    }
-    if (atBottom) {
-      document.getElementById("China").setAttribute("class", "");
-      map.flyTo(chapters["end"]);
-    }
-
-    if (atTop || atBottom) {
-      if (map._loaded) {
-        map.setPaintProperty("islands", "circle-color", paintMap);
-        map.setPaintProperty("islands", "circle-stroke-color", "#fff");
+function parseIslandData(rawData) {
+  featureData = rawData.map(r => {
+    let row = r;
+    let islandData = {};
+    Object.keys(row).forEach(c => {
+      let column = c;
+      if (column.includes("gsx$")) {
+        let columnName = column.replace("gsx$", "");
+        islandData[columnName] = row[column]["$t"];
       }
-    }
-  }
-};
+    });
 
-function setActiveChapter(chapterName) {
-  activeChapterName = chapterName;
+    let islandDataSansCoordinates = Object.assign({}, islandData);
+    delete islandDataSansCoordinates.latitude;
+    delete islandDataSansCoordinates.longitude;
+
+    let feature = {
+      type: "Feature",
+      properties: islandDataSansCoordinates,
+      geometry: {
+        type: "Point",
+        coordinates: [
+          parseFloat(islandData.longitude),
+          parseFloat(islandData.latitude)
+        ]
+      }
+    };
+
+    return feature;
+  });
+
+  return {
+    type: "FeatureCollection",
+    features: featureData
+  };
+}
+
+function initIslands(data) {
+  popup
+    .setLngLat(chapterList[0].center)
+    .setHTML(
+      `<div class="leaflet-popup-content-wrapper">YOU CAN CALL ATTENTION TO A STORY WITH A POPUP</div>`
+    )
+    .addTo(map);
+
+  map.addControl(new mapboxgl.NavigationControl(), "top-left");
+
+  /////// Data Layer
+  map.addSource("islands", {
+    type: "geojson",
+    data: data
+  });
+
+  map.addLayer({
+    id: "islands",
+    type: "circle",
+    source: "islands",
+    paint: {
+      "circle-color": paintMap,
+      "circle-stroke-width": 2,
+      "circle-stroke-color": "#fff",
+      "circle-radius": initialRadius
+    }
+  });
+
+  /////// Highlighted Points
+  map.addLayer({
+    id: "islands-highlighted",
+    type: "circle",
+    source: "islands",
+    paint: {
+      "circle-color": "#ff0",
+      "circle-stroke-width": 2,
+      "circle-stroke-color": "#fff",
+      "circle-radius": initialRadius
+    },
+    filter: ["in", "country", ""]
+  });
+
+  /////// Animated Points
+  map.addSource(`point`, {
+    type: "geojson",
+    data: pointOnCircle(0)
+  });
+
+  map.addLayer({
+    id: "point",
+    source: "point",
+    type: "circle",
+    paint: {
+      "circle-color": "transparent",
+      "circle-radius": initialRadius,
+      "circle-stroke-width": 2,
+      "circle-stroke-color": "transparent",
+      "circle-radius-transition": { duration: 0 },
+      "circle-opacity-transition": { duration: 0 }
+    }
+  });
+
+  map.addLayer({
+    id: "point1",
+    source: "point",
+    type: "circle",
+    paint: {
+      "circle-radius": initialRadius,
+      "circle-color": "transparent"
+    }
+  });
+
+  /////// Click Event
+
+  map.on("click", "islands", function(e) {
+    let details = new mapboxgl.Popup();
+    let coordinates = e.features[0].geometry.coordinates.slice();
+    let properties = e.features[0].properties;
+    let description = Object.keys(properties)
+      .map(p => {
+        if (properties[p])
+          return `<div class=
+        "popupHeaderStyle"
+        >${p
+          .toUpperCase()
+          .replace(/-/g, " ")}</div><div class="popupEntryStyle">${
+            properties[p]
+          }</div>`;
+      })
+      .filter(p => p)
+      .join("");
+
+    details
+      .setLngLat(coordinates)
+      .setHTML(
+        `<div class="leaflet-popup-content-wrapper">${description}</div>`
+      )
+      .addTo(map);
+  });
+
+  /////// Hover Event
+  map.on("mouseenter", "islands", function(e) {
+    map.getCanvas().style.cursor = "pointer";
+    map.setFilter("islands-highlighted", [
+      "in",
+      "country",
+      e.features[0].properties.country
+    ]);
+  });
+
+  map.on("mouseleave", "islands", function() {
+    map.getCanvas().style.cursor = "";
+    map.setFilter("islands-highlighted", ["in", "country", ""]);
+    // popup.remove();
+  });
+
+  // Start the animation.
+  animateMarker(0);
+
+  // Object.keys(chapters)
+  //   .filter(c => !["Introduction", "Conclusion"].includes(c))
+  //   .forEach(c => {
+  //     new mapboxgl.Marker({ color: "#fff" })
+  //       .setLngLat(chapters[c].center)
+  //       .addTo(map);
+  //   });
+}
+
+function highlightChapter(activeChapterName) {
   if (!exclude.includes(activeChapterName)) {
     map.setPaintProperty("islands", "circle-color", [
       "match",
       ["get", "country"],
       `${activeChapterName}`,
-      `${chapters[activeChapterName].color}`,
+      `${chapterList.find(c => c.name === activeChapterName).color}`,
       "transparent"
     ]);
     map.setPaintProperty("islands", "circle-stroke-color", [
@@ -253,36 +293,72 @@ function setActiveChapter(chapterName) {
       "#fff",
       "transparent"
     ]);
+  } else {
+    map.setPaintProperty("islands", "circle-color", paintMap);
+    map.setPaintProperty("islands", "circle-stroke-color", " #fff");
   }
 }
 
-function isElementOnScreen(id) {
-  let element = document.getElementById(id);
-  let elementBounds = element.getBoundingClientRect();
-  let parent = document.getElementById(id).parentElement;
-  let parentBounds = parent.getBoundingClientRect();
-  scrollHeight = document.querySelector("#features").offsetHeight;
+function setActiveChapter(i) {
+  document.querySelector(".title").innerText = activeChapterName;
+  document.querySelector(".story").innerText = chapterList[i].text;
 
-  let isOnScreen =
-    parentBounds.top > -200 && elementBounds.bottom < window.innerHeight * 0.67;
+  if (i === 0) {
+    document.querySelector("button.scroll-up").style.display = "none";
+  } else if (i === 6) {
+    document.querySelector("button.scroll-down").style.display = "none";
+  } else {
+    document.querySelector("button.scroll-up").style.display = "block";
+    document.querySelector("button.scroll-down").style.display = "block";
+  }
+  if (map.getLayer("islands")) highlightChapter(activeChapterName);
+}
 
-  let isInStory = window.scrollY / scrollHeight < 0.75;
+function getProgress() {
+  featurePosition = document.querySelector("#features").offsetHeight / 2;
+  scrollY = window.scrollY;
+  progress = scrollY / featurePosition;
+}
 
-  let excluded = exclude.includes(id);
+function handleScroll(e) {
+  if (window.scrollY > 500) popup.remove();
+  getProgress();
 
-  let atTop = window.scrollY / scrollHeight < 0.005;
-  // if (id === "start") console.log(id, isOnScreen, isInStory, notExcluded);
-  // if (id === "United States")
-  // console.log(id, isOnScreen, isInStory, notExcluded);
+  steps.forEach((step, i) => {
+    if (progress > step && progress < steps[i + 1]) {
+      if (activeChapterName !== chapterList[i].name) {
+        map.flyTo(chapterList[i]);
+        activeChapterName = chapterList[i].name;
+        setActiveChapter(i);
+      }
+    }
+  });
+}
 
-  return isOnScreen && isInStory && !excluded && !atTop;
+function handleClick(direction) {
+  let activeChapter = chapterList.find(c => c.name === activeChapterName);
+
+  let i =
+    direction === "up"
+      ? chapterList.indexOf(activeChapter) - 1
+      : chapterList.indexOf(activeChapter) + 1;
+
+  i;
+
+  let scrollPosition = steps[i] * featurePosition * 1.1;
+
+  window.scrollTo({
+    top: scrollPosition,
+    left: 0,
+    behavior: "smooth"
+  });
 }
 
 function pointOnCircle(angle) {
   //turn into function that returns array of animated points
   return {
     type: "Point",
-    coordinates: chapters[activeChapterName].center
+    coordinates: chapterList.find(c => c.name === activeChapterName).center
   };
 }
 
@@ -303,9 +379,9 @@ function animateMarker(timestamp) {
     }
   }, 1000 / framesPerSecond);
 
-  let atTop = window.scrollY / scrollHeight < 0.015;
+  let atTop = progress < steps[1];
 
-  let atBottom = window.scrollY / scrollHeight > 0.75;
+  let atBottom = progress > steps[6];
 
   if (!atTop && !atBottom) {
     map.setPaintProperty("point", "circle-color", "#ff0");

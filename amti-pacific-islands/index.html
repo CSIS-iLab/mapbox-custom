@@ -3,10 +3,29 @@
 
 <head>
   <meta charset='utf-8' />
-  <title>Fly to a location based on scroll position</title>
+  <title>Pacific Islands - Asia Maritime Transparency Initiative</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Pacific Islands - Asia Maritime Transparency Initiative" />
+  <meta property="og:description" content="Description."
+  />
+  <meta property="og:image" content="" />
+  <meta property="og:image:width" content="2000" />
+  <meta property="og:image:height" content="1333" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:description" content="Description."
+  />
+  <meta name="twitter:title" content="Pacific Islands - Asia Maritime Transparency Initiative" />
+  <meta name="twitter:image" content="" />
+
   <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.js'></script>
   <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css' rel='stylesheet' />
+  <link href="https://carto.com/developers/carto-js/examples/maps/public/style.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700" rel="stylesheet">
+
+  <link href="./css/carto_style.css" rel="stylesheet">
   <link href='./css/style.css' rel='stylesheet' />
   <script src='./js/tour.js' rel='stylesheet'></script>
 
@@ -15,53 +34,55 @@
 <body>
 
   <div id='map'></div>
-  <div id='features'>
-    <section>
-      <article id='start'>
-      </article>
-    </section>
-    <section>
-      <article id='United States'>
-        <h3>United States</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam rutrum mauris sit amet ante fermentum scelerisque. Aenean at gravida sem. Pellentesque malesuada orci sit amet enim fringilla hendrerit. Phasellus quam ipsum, imperdiet eget sollicitudin vel, luctus vitae sapien. Praesent eget leo eu orci ultricies fringilla. Praesent diam mi, convallis scelerisque lacus in, sodales scelerisque orci. Curabitur nec tellus eleifend, sagittis arcu quis, volutpat ipsum. Suspendisse sit amet sollicitudin lacus. Integer consequat arcu eu ex fermentum, vel pharetra nunc dictum.</p>
-      </article>
-    </section>
+  <aside id="features" class="toolbox">
 
-    <section>
-      <article id='France'>
-        <h3>France</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam rutrum mauris sit amet ante fermentum scelerisque. Aenean at gravida sem. Pellentesque malesuada orci sit amet enim fringilla hendrerit. Phasellus quam ipsum, imperdiet eget sollicitudin vel, luctus vitae sapien. Praesent eget leo eu orci ultricies fringilla. Praesent diam mi, convallis scelerisque lacus in, sodales scelerisque orci. Curabitur nec tellus eleifend, sagittis arcu quis, volutpat ipsum. Suspendisse sit amet sollicitudin lacus. Integer consequat arcu eu ex fermentum, vel pharetra nunc dictum. </p>
-      </article>
-    </section>
 
-    <section>
-      <article id='Australia'>
-        <h3>Australia</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam rutrum mauris sit amet ante fermentum scelerisque. Aenean at gravida sem. Pellentesque malesuada orci sit amet enim fringilla hendrerit. Phasellus quam ipsum, imperdiet eget sollicitudin vel, luctus vitae sapien. Praesent eget leo eu orci ultricies fringilla. Praesent diam mi, convallis scelerisque lacus in, sodales scelerisque orci. Curabitur nec tellus eleifend, sagittis arcu quis, volutpat ipsum. Suspendisse sit amet sollicitudin lacus. Integer consequat arcu eu ex fermentum, vel pharetra nunc dictum.</p>
-      </article>
-    </section>
+      <input type="checkbox" checked class="ui mobile-only">
+      <div class="hamburger mobile-only">
+        <div class="icon">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="menu">
+          Pacific Islands
+        </div>
+      </div>
 
-    <section>
-      <article id='New Zealand'>
-        <h3>New Zealand</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam rutrum mauris sit amet ante fermentum scelerisque. Aenean at gravida sem. Pellentesque malesuada orci sit amet enim fringilla hendrerit. Phasellus quam ipsum, imperdiet eget sollicitudin vel, luctus vitae sapien. Praesent eget leo eu orci ultricies fringilla. Praesent diam mi, convallis scelerisque lacus in, sodales scelerisque orci. Curabitur nec tellus eleifend, sagittis arcu quis, volutpat ipsum. Suspendisse sit amet sollicitudin lacus. Integer consequat arcu eu ex fermentum, vel pharetra nunc dictum.</p>
-      </article>
-    </section>
+      <div class="box">
+        <header class="mobile-toggle">
+          <h1>Pacific Islands</h1>
+          <a href="https://amti.csis.org/" target="_blank"><button class="mobile-toggle" id="logo"></button></a>
+          <!-- <p id="mobile-only">This map shows resources in the South China Sea.</p> -->
+        </header>
 
-    <section>
-      <article id='China'>
-        <h3>China</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam rutrum mauris sit amet ante fermentum scelerisque. Aenean at gravida sem. Pellentesque malesuada orci sit amet enim fringilla hendrerit. Phasellus quam ipsum, imperdiet eget sollicitudin vel, luctus vitae sapien. Praesent eget leo eu orci ultricies fringilla. Praesent diam mi, convallis scelerisque lacus in, sodales scelerisque orci. Curabitur nec tellus eleifend, sagittis arcu quis, volutpat ipsum. Suspendisse sit amet sollicitudin lacus. Integer consequat arcu eu ex fermentum, vel pharetra nunc dictum.</p>
-      </article>
-    </section>
+        <section>
+          <p class="description open-sans">Map Description.</p>
+          <div class="separator mobile-toggle"></div>
+          <div id="controls">
+            <div id="info" class="mobile-toggle">
+              <button class="scroll-up" aria-label="scroll-up"><span class="text">scroll up</span><span class="symbol">&LessLess;</span></button>
+              <div class="loader"></div>
+              <h3 class="title"></h3>
+              <p class="open-sans story"></p>
+              <button class="scroll-down" aria-label="scroll-down"><span class="text">scroll down</span><span class="symbol">&GreaterGreater;</span></button>
+            </div>
+        <footer class="js-footer"></footer>
+      </div>
 
-    <section>
-      <article id='end'>
-      </article>
-    </section>
+    </aside>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-55717458-1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
 
-  </div>
+    function gtag() {
+    dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
 
+    gtag("config", "UA-55717458-1");
+    </script>
 </body>
 
 </html>
