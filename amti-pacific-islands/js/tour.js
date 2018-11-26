@@ -10,7 +10,7 @@ let state,
     closeButton: false
   }),
   activeChapterName = "",
-  steps = [-1, 0.22, 0.44, 0.66, 0.88, 1.1, 1.32, 1.54],
+  steps = [],
   framesPerSecond = 30,
   initialOpacity = 1,
   opacity = initialOpacity,
@@ -35,6 +35,8 @@ const chapterURL =
   "/2/public/values?alt=json";
 
 document.addEventListener("DOMContentLoaded", function(event) {
+  document.querySelector("body").style.overflow = "hidden";
+
   window.addEventListener("resize", getProgress);
 
   document
@@ -49,13 +51,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   map = new mapboxgl.Map({
     container: "map",
-    style: "mapbox://styles/ilabmedia/cjoq3wuhd0ufd2ro5rag49zvi",
-    // style: "mapbox://styles/ilabmedia/cj84s9bet10f52ro2lrna50yg",
+    // style: "mapbox://styles/ilabmedia/cjoq3wuhd0ufd2ro5rag49zvi",
+    style: "mapbox://styles/ilabmedia/cj84s9bet10f52ro2lrna50yg",
     center: [195, -11.9602541],
     zoom: 2,
     bearing: 0,
     pitch: 0,
-    scrollZoom: false
+    scrollZoom: false,
+    attributionControl: false
   });
 
   map.on("load", function() {
@@ -63,6 +66,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
       .then(resp => resp.json())
       .then(json => {
         chapterList = parseChapterData(json.feed.entry);
+
+        for (let i = 0; i < chapterList.length + 1; i++) {
+          steps[i] = (i * 1.54) / chapterList.length - 0.001;
+        }
 
         document.querySelector(".loader").remove();
 
@@ -73,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
         paintMap = ["match", ["get", "country"]]
           .concat(countryColors)
-          .concat(["#fff"]);
+          .concat(["#e06b91"]);
 
         window.addEventListener("scroll", handleScroll);
       })
@@ -151,12 +158,16 @@ function initIslands(data) {
   popup
     .setLngLat(chapterList[0].center)
     .setHTML(
-      `<div class="leaflet-popup-content-wrapper">YOU CAN CALL ATTENTION TO A STORY WITH A POPUP</div>`
+      `<div class="leaflet-popup-content-wrapper">YOU CAN CALL ATTENTION WITH A POPUP <br>OR WITH A FLASHING YELLOW DOT</div>`
     )
     .addTo(map);
 
   map.addControl(new mapboxgl.NavigationControl(), "top-left");
-
+  map.addControl(
+    new mapboxgl.AttributionControl({
+      customAttribution: "CSIS"
+    })
+  );
   /////// Data Layer
   map.addSource("islands", {
     type: "geojson",
@@ -277,20 +288,37 @@ function initIslands(data) {
 
 function highlightChapter(activeChapterName) {
   if (!exclude.includes(activeChapterName)) {
-    map.setPaintProperty("islands", "circle-color", [
-      "match",
-      ["get", "country"],
-      `${activeChapterName}`,
-      `${chapterList.find(c => c.name === activeChapterName).color}`,
-      "transparent"
-    ]);
-    map.setPaintProperty("islands", "circle-stroke-color", [
-      "match",
-      ["get", "country"],
-      `${activeChapterName}`,
-      "#fff",
-      "transparent"
-    ]);
+    let newFillMap =
+      activeChapterName !== "China"
+        ? [
+            "match",
+            ["get", "country"],
+            `${activeChapterName}`,
+            `${chapterList.find(c => c.name === activeChapterName).color}`,
+            "transparent"
+          ]
+        : [
+            "match",
+            ["get", "chinese-involvement"],
+            "",
+            "transparent",
+            "#e06b91"
+          ];
+
+    let newStrokeMap =
+      activeChapterName !== "China"
+        ? [
+            "match",
+            ["get", "country"],
+            `${activeChapterName}`,
+            "#fff",
+            "transparent"
+          ]
+        : ["match", ["get", "chinese-involvement"], "", "transparent", "#fff"];
+
+    map.setPaintProperty("islands", "circle-color", newFillMap);
+
+    map.setPaintProperty("islands", "circle-stroke-color", newStrokeMap);
   } else {
     map.setPaintProperty("islands", "circle-color", paintMap);
     map.setPaintProperty("islands", "circle-stroke-color", " #fff");
@@ -298,18 +326,21 @@ function highlightChapter(activeChapterName) {
 }
 
 function setActiveChapter(i) {
-  document.querySelector(".title").innerText = activeChapterName;
+  document.querySelector(".title").innerText = chapterList[i].title;
   document.querySelector(".story").innerText = chapterList[i].text;
 
-  if (i === 0) {
+  if (i === 0 && window.screen.availWidth > 768) {
     document.querySelector("button.scroll-up").style.display = "none";
-    document.querySelector("button.scroll-down").style.display = "block";
-  } else if (i === 6) {
-    document.querySelector("button.scroll-up").style.display = "block";
+    document.querySelector("button.scroll-down").style.display = "inline-block";
+  } else if (i === 6 && window.screen.availWidth > 768) {
+    document.querySelector("button.scroll-up").style.display = "inline-block";
     document.querySelector("button.scroll-down").style.display = "none";
-  } else if (window.screen.availWidth > 425) {
-    document.querySelector("button.scroll-up").style.display = "block";
-    document.querySelector("button.scroll-down").style.display = "block";
+  } else if (window.screen.availWidth < 768) {
+    document.querySelector("button.scroll-up").style.display = "none";
+    document.querySelector("button.scroll-down").style.display = "none";
+  } else {
+    document.querySelector("button.scroll-up").style.display = "inline-block";
+    document.querySelector("button.scroll-down").style.display = "inline-block";
   }
   if (map.getLayer("islands")) highlightChapter(activeChapterName);
 }
