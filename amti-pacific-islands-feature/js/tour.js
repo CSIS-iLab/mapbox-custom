@@ -20,7 +20,42 @@ let state,
   exclude = ["Introduction", "Conclusion"],
   chapterList = [],
   countryColors,
-  paintMap;
+  paintMap,
+  basemapId;
+
+const nationsLayer = {
+  id: "nations",
+  type: "fill",
+  source: "nations",
+  "source-layer": "pacific_islands_nations",
+  paint: {
+    "fill-color": [
+      "match",
+      ["get", "iso"],
+      ["FJ"],
+      "hsl(323, 87%, 88%)",
+      ["CK"],
+      "hsl(314, 65%, 64%)",
+      ["FR"],
+      "hsl(25, 75%, 53%)",
+      ["NZ"],
+      "hsl(163, 44%, 49%)",
+      ["AU"],
+      "hsl(289, 24%, 53%)",
+      ["PG"],
+      "hsl(0, 72%, 37%)",
+      ["TO"],
+      "hsla(332, 96%, 32%, 0.83)",
+      ["WS"],
+      "hsl(0, 57%, 69%)",
+      ["US"],
+      "hsl(215, 37%, 56%)",
+      ["VU"],
+      "hsl(0, 100%, 76%)",
+      "#000000"
+    ]
+  }
+};
 
 const spreadsheetID = "115eMJVfot0DDYcv7nhsVM4X5Djihr2ygpMdMYzBSsdc";
 
@@ -168,7 +203,8 @@ function initIslands(data) {
       customAttribution: "CSIS"
     })
   );
-  /////// Data Layer
+
+  /////// Islands Data Layer
   map.addSource("islands", {
     type: "geojson",
     data: data
@@ -179,9 +215,9 @@ function initIslands(data) {
     type: "circle",
     source: "islands",
     paint: {
-      "circle-color": paintMap,
+      "circle-color": "transparent",
       "circle-stroke-width": 2,
-      "circle-stroke-color": "#fff",
+      "circle-stroke-color": "transparent",
       "circle-radius": initialRadius
     }
   });
@@ -229,6 +265,25 @@ function initIslands(data) {
       "circle-color": "transparent"
     }
   });
+
+  if (map.getLayer("point1")) {
+    var layers = map.getStyle().layers;
+    for (var i = 0; i < layers.length; i++) {
+      if (layers[i].type === "symbol") {
+        basemapId = layers[i].id;
+        break;
+      }
+    }
+  }
+
+  /////// Nations Data Layer
+  map.addSource("nations", {
+    type: "vector",
+    url: "mapbox://ilabmedia.cjp08e3dj07cl31nsne6hjhxz-60h26"
+  });
+
+  if (activeChapterName === "Introduction")
+    map.addLayer(nationsLayer, basemapId);
 
   /////// Click Event
 
@@ -311,9 +366,18 @@ function highlightChapter(activeChapterName) {
     map.setPaintProperty("islands", "circle-color", newFillMap);
 
     map.setPaintProperty("islands", "circle-stroke-color", newStrokeMap);
+
+    if (map.getLayer("nations")) map.removeLayer("nations");
+  } else if (activeChapterName === "Introduction") {
+    map.setPaintProperty("islands", "circle-color", "transparent");
+    map.setPaintProperty("islands", "circle-stroke-color", "transparent");
+
+    if (!map.getLayer("nations")) map.addLayer(nationsLayer, basemapId);
   } else {
     map.setPaintProperty("islands", "circle-color", paintMap);
     map.setPaintProperty("islands", "circle-stroke-color", " #fff");
+
+    // if (!map.getLayer("nations")) map.addLayer(nationsLayer);
   }
 }
 
