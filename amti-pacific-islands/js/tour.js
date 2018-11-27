@@ -35,7 +35,7 @@ const chapterURL =
   "/2/public/values?alt=json";
 
 document.addEventListener("DOMContentLoaded", function(event) {
-  document.querySelector("body").style.overflow = "hidden";
+  // document.querySelector("body").style.overflow = "hidden";
 
   window.addEventListener("resize", getProgress);
 
@@ -324,16 +324,16 @@ function setActiveChapter(i) {
 
   if (i === 0 && window.screen.availWidth > 768) {
     document.querySelector("button.scroll-up").style.display = "none";
-    document.querySelector("button.scroll-down").style.display = "inline-block";
+    document.querySelector("button.scroll-down").style.display = "none";
   } else if (i === 6 && window.screen.availWidth > 768) {
-    document.querySelector("button.scroll-up").style.display = "inline-block";
+    document.querySelector("button.scroll-up").style.display = "none";
     document.querySelector("button.scroll-down").style.display = "none";
   } else if (window.screen.availWidth < 768) {
     document.querySelector("button.scroll-up").style.display = "none";
     document.querySelector("button.scroll-down").style.display = "none";
   } else {
-    document.querySelector("button.scroll-up").style.display = "inline-block";
-    document.querySelector("button.scroll-down").style.display = "inline-block";
+    document.querySelector("button.scroll-up").style.display = "none";
+    document.querySelector("button.scroll-down").style.display = "none";
   }
   if (map.getLayer("islands")) highlightChapter(activeChapterName);
 }
@@ -377,7 +377,8 @@ function handleClick(direction) {
 
   i;
 
-  let scrollPosition = steps[i] * featurePosition;
+  let scrollPosition = steps[i] * featurePosition * 1.1;
+  console.log(scrollPosition, window.scrollY);
 
   window.scrollTo({
     top: scrollPosition,
