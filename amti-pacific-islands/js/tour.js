@@ -35,7 +35,7 @@ const chapterURL =
   "/2/public/values?alt=json";
 
 document.addEventListener("DOMContentLoaded", function(event) {
-  // document.querySelector("body").style.overflow = "hidden";
+  document.querySelector("body").style.overflow = "hidden";
 
   window.addEventListener("resize", getProgress);
 
@@ -68,9 +68,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         chapterList = parseChapterData(json.feed.entry);
 
         for (let i = 0; i < chapterList.length + 1; i++) {
-          steps[i] = (i * 1.54) / chapterList.length - 0.001;
+          steps[i] = (1.54 / parseFloat(chapterList.length)) * parseFloat(i);
         }
-        console.log(steps);
 
         document.querySelector(".loader").remove();
 
@@ -90,7 +89,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
           .then(resp => resp.json())
           .then(json => {
             let data = parseIslandData(json.feed.entry);
-
             handleScroll();
             initIslands(data);
           })
@@ -324,16 +322,16 @@ function setActiveChapter(i) {
 
   if (i === 0 && window.screen.availWidth > 768) {
     document.querySelector("button.scroll-up").style.display = "none";
-    document.querySelector("button.scroll-down").style.display = "none";
-  } else if (i === 6 && window.screen.availWidth > 768) {
-    document.querySelector("button.scroll-up").style.display = "none";
+    document.querySelector("button.scroll-down").style.display = "inline-block";
+  } else if (i === chapterList.length && window.screen.availWidth > 768) {
+    document.querySelector("button.scroll-up").style.display = "inline-block";
     document.querySelector("button.scroll-down").style.display = "none";
   } else if (window.screen.availWidth < 768) {
     document.querySelector("button.scroll-up").style.display = "none";
     document.querySelector("button.scroll-down").style.display = "none";
   } else {
-    document.querySelector("button.scroll-up").style.display = "none";
-    document.querySelector("button.scroll-down").style.display = "none";
+    document.querySelector("button.scroll-up").style.display = "inline-block";
+    document.querySelector("button.scroll-down").style.display = "inline-block";
   }
   if (map.getLayer("islands")) highlightChapter(activeChapterName);
 }
@@ -349,9 +347,8 @@ function handleScroll(e) {
   getProgress();
 
   steps.forEach((step, i) => {
-    let makingProgress = progress > step && progress < steps[i + 1];
+    let makingProgress = progress >= step && progress <= steps[i + 1];
     // let atZero = progress >= 0 && progress < steps[1];
-
     if (makingProgress) {
       if (activeChapterName !== chapterList[i].name) {
         map.flyTo(chapterList[i]);
@@ -375,10 +372,7 @@ function handleClick(direction) {
       ? chapterList.indexOf(activeChapter) - 1
       : chapterList.indexOf(activeChapter) + 1;
 
-  i;
-
   let scrollPosition = steps[i] * featurePosition * 1.1;
-  console.log(scrollPosition, window.scrollY);
 
   window.scrollTo({
     top: scrollPosition,
@@ -414,7 +408,7 @@ function animateMarker(timestamp) {
 
   let atTop = progress < steps[1];
 
-  let atBottom = progress > steps[6];
+  let atBottom = progress > chapterList.length;
 
   if (!atTop && !atBottom) {
     map.setPaintProperty("point", "circle-color", "#ff0");
