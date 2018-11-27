@@ -385,19 +385,12 @@ function setActiveChapter(i) {
   document.querySelector(".title").innerText = chapterList[i].title;
   document.querySelector(".story").innerText = chapterList[i].text;
 
-  if (i === 0 && window.screen.availWidth > 768) {
-    document.querySelector("button.scroll-up").style.display = "none";
-    document.querySelector("button.scroll-down").style.display = "none";
-  } else if (i === chapterList.length && window.screen.availWidth > 768) {
-    document.querySelector("button.scroll-up").style.display = "none";
-    document.querySelector("button.scroll-down").style.display = "none";
-  } else if (window.screen.availWidth < 768) {
-    document.querySelector("button.scroll-up").style.display = "none";
-    document.querySelector("button.scroll-down").style.display = "none";
+  if (activeChapterName === "Conclusion") {
+    document.querySelector("#chevWrapper").style.display = "none";
   } else {
-    document.querySelector("button.scroll-up").style.display = "none";
-    document.querySelector("button.scroll-down").style.display = "none";
+    document.querySelector("#chevWrapper").style.display = "block";
   }
+
   if (map.getLayer("islands")) highlightChapter(activeChapterName);
 }
 
