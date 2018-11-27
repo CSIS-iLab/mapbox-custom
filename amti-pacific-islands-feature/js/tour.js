@@ -35,8 +35,6 @@ const chapterURL =
   "/2/public/values?alt=json";
 
 document.addEventListener("DOMContentLoaded", function(event) {
-  document.querySelector("body").style.overflow = "hidden";
-
   window.addEventListener("resize", getProgress);
 
   document
