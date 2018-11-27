@@ -7,7 +7,8 @@ var radius = 20;
 document.addEventListener("DOMContentLoaded", function(event) {
   map = new mapboxgl.Map({
     container: "map",
-    style: "mapbox://styles/ilabmedia/cjk40a37x21ha2skptjecv1j0",
+    style: "mapbox://styles/ilabmedia/cjkjzuir10v132rq8qqxefi6g",
+    // style: "mapbox://styles/ilabmedia/cjk40a37x21ha2skptjecv1j0",
     center: [127.41332, 40],
     zoom: 7,
     bearing: 0,
