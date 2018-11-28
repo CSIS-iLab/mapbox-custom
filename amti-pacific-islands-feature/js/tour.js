@@ -9,6 +9,9 @@ let state,
   popup = new mapboxgl.Popup({
     closeButton: false
   }),
+  chinaPopup = new mapboxgl.Popup({
+    closeButton: false
+  }),
   activeChapterName = "",
   steps = [],
   framesPerSecond = 30,
@@ -72,7 +75,6 @@ const chapterURL =
 document.addEventListener("DOMContentLoaded", function(event) {
   // document.querySelector("body").style.overflow = "hidden";
 
-  console.log(document.querySelector("#features").offsetHeight);
   window.addEventListener("resize", getProgress);
 
   document
@@ -412,14 +414,53 @@ function handleScroll(e) {
         map.flyTo(chapterList[i]);
         activeChapterName = chapterList[i].name;
         setActiveChapter(i);
+        if (map.getLayer("islands")) setPopup();
       }
     }
-    // else if (atZero) {
-    //   map.flyTo(chapterList[0]);
-    //   activeChapterName = chapterList[0].name;
-    //   setActiveChapter(0);
-    // }
   });
+}
+
+function setPopup() {
+  let coordinates = chapterList.find(c => c.name === activeChapterName).center;
+
+  let features = map.getSource("islands")._data.features;
+
+  let feature = features.find(f => {
+    let cLatitude = Math.ceil(f.geometry.coordinates[0]);
+    let cLongitude = Math.ceil(f.geometry.coordinates[1]);
+
+    let fLatitude = Math.ceil(coordinates[0]);
+    let fLongitude = Math.ceil(coordinates[1]);
+
+    let cCoordinates = [cLatitude, cLongitude].join(",");
+    let fCoordinates = [fLatitude, fLongitude].join(",");
+    return cCoordinates === fCoordinates;
+  });
+
+  if (feature) {
+    let properties = feature.properties;
+    let description = Object.keys(properties)
+      .map(p => {
+        if (properties[p])
+          return `<div class=
+      "popupHeaderStyle"
+      >${p
+        .toUpperCase()
+        .replace(/-/g, " ")}</div><div class="popupEntryStyle">${
+            properties[p]
+          }</div>`;
+      })
+      .filter(p => p)
+      .join("");
+
+    chinaPopup
+      .setLngLat(coordinates)
+      .setHTML(
+        `<div class="leaflet-popup-content-wrapper">${description}</div>`
+      )
+      .addTo(map);
+  }
+  if (!activeChapterName.includes("China")) chinaPopup.remove();
 }
 
 function handleClick(direction) {
@@ -441,6 +482,7 @@ function handleClick(direction) {
 
 function pointOnCircle(angle) {
   //turn into function that returns array of animated points
+
   return {
     type: "Point",
     coordinates: chapterList.find(c => c.name === activeChapterName).center
