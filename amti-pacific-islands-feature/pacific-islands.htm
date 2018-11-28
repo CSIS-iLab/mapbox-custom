@@ -244,19 +244,8 @@
 	</div>
 
 
-	<script>
-		document.addEventListener("DOMContentLoaded", function(event) {
-			setTimeout(() => {
-				window.scrollTo({
-					top: 345,
-					left: 0,
-					behavior: "smooth"
-				});
-
-				document.querySelector("#pacific-islands").focus()
-			}, 200)
-		})
-	</script>
+<script>document.addEventListener("DOMContentLoaded", function(event) {setTimeout(() => {window.scrollTo({top: document.querySelector("#pacific-islands").getBoundingClientRect().top-document.querySelector("body").getBoundingClientRect().top
+-50,left: 0,behavior: "smooth"});console.log("hello world");document.querySelector("#pacific-islands").focus()}, 200)})</script>
 
 
 </body>
