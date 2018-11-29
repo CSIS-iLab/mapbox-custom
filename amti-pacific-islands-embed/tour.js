@@ -32,13 +32,13 @@ const nationsLayer = {
   id: "nations",
   type: "fill",
   source: "nations",
-  "source-layer": "pacific_islands_nations",
+  "source-layer": "Pacific_Colors",
   paint: {
     "fill-color": [
       "match",
-      ["get", "iso"],
+      ["get", "country"],
       ["FJ"],
-      "#A9CCE3",
+      "#C71585",
       ["CK"],
       "#D98880",
       ["FR"],
@@ -50,7 +50,7 @@ const nationsLayer = {
       ["PG"],
       "#C39BD3",
       ["TO"],
-      "#512E5F",
+      "#7D3C98",
       ["WS"],
       "#A9DFBF",
       ["US"],
@@ -63,12 +63,16 @@ const nationsLayer = {
       "#138D75",
       ["TV"],
       "#EE82EE",
-      ["TO"],
-      "#C71585",
       ["NR"],
       "#FF69B4",
       ["FM"],
       "#BA55D3",
+      ["PW"],
+      "#A9CCE3",
+      ["SB"],
+      "#FF1493",
+      ["MH"],
+      "#784212",
       "#000000"
     ]
   }
@@ -88,16 +92,13 @@ const chapterURL =
 
 document.addEventListener("DOMContentLoaded", function(event) {
   makeDom();
+  window.scrollTo({ top: 0 });
 
   window.addEventListener("resize", getProgress);
 
   document
     .querySelector("button.scroll-up")
     .addEventListener("click", () => handleClick("up"));
-
-  document
-    .querySelector("#chevWrapper")
-    .addEventListener("click", () => handleClick("down"));
 
   state = history.state || {};
 
@@ -133,6 +134,26 @@ document.addEventListener("DOMContentLoaded", function(event) {
         paintMap = ["match", ["get", "country"]]
           .concat(countryColors)
           .concat(["#e06b91"]);
+
+        chapterList.forEach(chapter => {
+          document.querySelector(
+            "#info"
+          ).innerHTML += `<section class="chapter" style="height:${
+            window.screen.availWidth > 768
+              ? 1000 / parseFloat(chapterList.length) - 18
+              : 2000 / parseFloat(chapterList.length) - 18
+          }vh"><div class="storymap-content">
+    <h3 class="title">${chapter.title}</h3>
+    <p class="story">${chapter.text}</p>
+    <div id="chevWrapper" style="display: block;"><span id="chevron">»</span>Scroll down</div>  </div>
+</section>`;
+        });
+
+        let chevron = document.querySelectorAll("#chevWrapper");
+
+        chevron.forEach(chev =>
+          chev.addEventListener("click", () => handleClick("down"))
+        );
 
         window.addEventListener("scroll", handleScroll);
       })
@@ -295,7 +316,7 @@ function initIslands(data) {
   /////// Nations Data Layer
   map.addSource("nations", {
     type: "vector",
-    url: "mapbox://ilabmedia.cjp1wj9qh04ru2wo7i1fn92g2-5dmbr"
+    url: "mapbox://ilabmedia.cjp31gcsm07fj32mjmdaafwgw-48iuq"
   });
 
   if (activeChapterName === "Introduction")
@@ -306,13 +327,20 @@ function initIslands(data) {
     resizeEvent.initUIEvent("resize", true, false, window, 0);
     window.dispatchEvent(resizeEvent);
     startScrollPosition =
-      document.querySelector("#storymap").getBoundingClientRect().top - 108;
+      document.querySelector(".navbar").offsetHeight +
+      document.querySelector(".backstretch").offsetHeight -
+      50;
+
+    let paragraphs = document.querySelectorAll(".entry-content > p");
+    let pHeight = 0;
+
+    [...paragraphs].forEach(p => (pHeight += p.offsetHeight));
+
     stopScrollPosition =
-      document.querySelector(".entry-content").offsetHeight +
       document.querySelector(".entry-content").offsetHeight -
-      document.querySelector("#features").offsetHeight -
-      document.querySelector(".site-footer").offsetHeight -
-      1000;
+      document.querySelector(".site-footer").offsetHeight +
+      pHeight;
+
     window.scrollTo({ top: window.scrollY + 1 });
   });
 
@@ -348,22 +376,6 @@ function initIslands(data) {
         `<div class="leaflet-popup-content-wrapper">${description}</div>`
       )
       .addTo(map);
-  });
-
-  /////// Hover Event
-  map.on("mouseenter", "islands", function(e) {
-    map.getCanvas().style.cursor = "pointer";
-    map.setFilter("islands-highlighted", [
-      "in",
-      "country",
-      e.features[0].properties.country
-    ]);
-  });
-
-  map.on("mouseleave", "islands", function() {
-    map.getCanvas().style.cursor = "";
-    map.setFilter("islands-highlighted", ["in", "country", ""]);
-    // popup.remove();
   });
 
   // Start the animation.
@@ -419,19 +431,47 @@ function highlightChapter(activeChapterName) {
 }
 
 function setActiveChapter(i) {
-  document.querySelector(".title").innerText = chapterList[i].title;
-  document.querySelector(".story").innerText = chapterList[i].text;
+  // document.querySelector(".title").innerText = chapterList[i].title;
+  // document.querySelector(".story").innerText = chapterList[i].text;
 
-  if (activeChapterName === "Conclusion") {
-    document.querySelector("#chevWrapper").style.display = "none";
+  if (activeChapterName === "Conclusion" || window.screen.availWidth < 768) {
+    let chevrons = document.querySelectorAll("#chevWrapper");
+    [...chevrons].forEach(chevron => (chevron.style.display = "none"));
   } else {
-    document.querySelector("#chevWrapper").style.display = "block";
+    let chevrons = document.querySelectorAll("#chevWrapper");
+    [...chevrons].forEach(chevron => (chevron.style.display = "block"));
   }
 
   if (map.getLayer("islands")) highlightChapter(activeChapterName);
 }
 
 function getProgress() {
+  startScrollPosition =
+    document.querySelector(".navbar").offsetHeight +
+    document.querySelector(".backstretch").offsetHeight -
+    50;
+
+  let paragraphs = document.querySelectorAll(".entry-content > p");
+  let pHeight = 0;
+
+  [...paragraphs].forEach(p => (pHeight += p.offsetHeight));
+
+  stopScrollPosition =
+    document.querySelector(".entry-content").offsetHeight -
+    document.querySelector(".site-footer").offsetHeight +
+    pHeight;
+
+  let sections = document.querySelectorAll("#info sections");
+
+  [...sections].forEach(
+    section =>
+      (section.style.height = `${
+        window.screen.availWidth > 768
+          ? 1000 / parseFloat(chapterList.length) - 18
+          : 2000 / parseFloat(chapterList.length) - 18
+      }vh`)
+  );
+
   featurePosition = document.querySelector("#features").offsetHeight / 2;
   scrollY = window.scrollY;
   progress = scrollY / featurePosition;
@@ -448,23 +488,26 @@ function handleScroll(e) {
     document.querySelector(".hamburger").classList.add("fixedHamburger");
     document.querySelector(
       "#map.fixedMap"
-    ).style.top = `${document.querySelector(".navbar").offsetHeight + 100}px`;
+    ).style.top = `${document.querySelector(".navbar").offsetHeight + 25}px`;
 
     document.querySelector(
       ".box.fixedBox"
-    ).style.top = `${document.querySelector(".navbar").offsetHeight + 100}px`;
+    ).style.top = `${document.querySelector(".navbar").offsetHeight + 25}px`;
 
     document.querySelector(
       "#legend.fixedLegend"
-    ).style.top = `${document.querySelector(".navbar").offsetHeight + 100}px`;
+    ).style.top = `${document.querySelector(".navbar").offsetHeight + 37}px`;
 
     document.querySelector(
       ".hamburger.fixedHamburger"
-    ).style.top = `${document.querySelector(".navbar").offsetHeight + 100}px`;
+    ).style.top = `${document.querySelector(".navbar").offsetHeight + 25}px`;
   } else {
     document.querySelector("#map").classList.remove("fixedMap");
+    document.querySelector("#map").style.top = "0";
     document.querySelector("#legend").classList.remove("fixedLegend");
+    document.querySelector("#legend").style.top = "12px";
     document.querySelector(".box").classList.remove("fixedBox");
+    document.querySelector(".box").style.top = "24px";
     document.querySelector(".hamburger").classList.remove("fixedHamburger");
   }
 
@@ -514,19 +557,26 @@ function setPopup() {
 
   if (feature) {
     let properties = feature.properties;
-    let description = Object.keys(properties)
-      .map(p => {
-        if (properties[p])
-          return `<div class=
-      "popupHeaderStyle"
-      >${p
-        .toUpperCase()
-        .replace(/-/g, " ")}</div><div class="popupEntryStyle">${
-            properties[p]
-          }</div>`;
-      })
-      .filter(p => p)
-      .join("");
+
+    let description =
+      window.screen.availWidth > 768
+        ? Object.keys(properties)
+            .map(p => {
+              if (properties[p])
+                return `<div class=
+        "popupHeaderStyle"
+        >${p
+          .toUpperCase()
+          .replace(/-/g, " ")}</div><div class="popupEntryStyle">${
+                  properties[p]
+                }</div>`;
+            })
+            .filter(p => p)
+            .join("")
+        : `<div class=
+  "popupHeaderStyle">Port or Base</div><div class="popupEntryStyle">${
+    properties["port-or-base"]
+  }</div>`;
 
     chinaPopup
       .setLngLat(coordinates)
@@ -651,8 +701,7 @@ function makeDom() {
             <div id="controls">
               <div id="info">
                 <div class="loader"></div>
-                <h3 class="title"></h3>
-                <p class="story mobile-toggle"></p>
+
                 <div class="navigator">
                   <button class="scroll-up" aria-label="scroll-up"><span class="text">scroll up</span><span class="symbol">Previous</span></button>
                   <button class="scroll-down" aria-label="scroll-down"><span class="text">scroll down</span><span class="symbol">Next</span></button>
@@ -661,7 +710,7 @@ function makeDom() {
               </div>
               <footer class="js-footer"></footer>
             </div>
-            <div id="chevWrapper"><span id="chevron">&raquo;</span>Scroll down</div>
+
       </aside>`;
 
   document.querySelector("#storymap").style.top = `${document

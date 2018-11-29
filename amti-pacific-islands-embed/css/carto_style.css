@@ -127,7 +127,7 @@ aside.toolbox {
   position: relative;
   -webkit-user-select: none;
   user-select: none;
-  max-width: 40%;
+  max-width: 26.6667%;
   min-width: 375px;
   margin-left: auto;
 }
@@ -232,7 +232,7 @@ aside.toolbox .ui:checked ~ .hamburger span:nth-child(3) {
   }
 
   aside.toolbox {
-    z-index: 1;
+    z-index: 3;
     top: -36px;
     width: calc(100vw - 48px);
     left: 48px;
