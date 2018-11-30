@@ -3,10 +3,6 @@ body {
   padding: 0;
 }
 
-footer .image {
-  z-index: 0;
-}
-
 #storymap {
   width: 100vw;
   margin-left: calc((100vw - 100%) / -2);
@@ -26,6 +22,7 @@ canvas.mapboxgl-canvas {
   width: 100vw;
   position: absolute;
   height: 100vh;
+  z-index: 1;
 }
 
 #map.fixedMap {

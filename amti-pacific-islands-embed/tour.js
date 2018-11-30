@@ -259,20 +259,6 @@ function initIslands(data) {
     }
   });
 
-  /////// Highlighted Points
-  map.addLayer({
-    id: "islands-highlighted",
-    type: "circle",
-    source: "islands",
-    paint: {
-      "circle-color": "#ff0",
-      "circle-stroke-width": 2,
-      "circle-stroke-color": "#fff",
-      "circle-radius": initialRadius
-    },
-    filter: ["in", "country", ""]
-  });
-
   /////// Animated Points
   map.addSource(`point`, {
     type: "geojson",
@@ -314,13 +300,12 @@ function initIslands(data) {
   }
 
   /////// Nations Data Layer
-  map.addSource("nations", {
-    type: "vector",
-    url: "mapbox://ilabmedia.cjp31gcsm07fj32mjmdaafwgw-48iuq"
-  });
-
-  if (activeChapterName === "Introduction")
-    map.addLayer(nationsLayer, basemapId);
+  // map.addSource("nations", {
+  //   type: "vector",
+  //   url: "mapbox://ilabmedia.cjp31gcsm07fj32mjmdaafwgw-48iuq"
+  // });
+  //
+  // map.addLayer(nationsLayer, basemapId);
 
   map.once("render", () => {
     let resizeEvent = window.document.createEvent("UIEvents");
@@ -421,7 +406,7 @@ function highlightChapter(activeChapterName) {
     map.setPaintProperty("islands", "circle-color", "transparent");
     map.setPaintProperty("islands", "circle-stroke-color", "transparent");
 
-    if (!map.getLayer("nations")) map.addLayer(nationsLayer, basemapId);
+    // if (!map.getLayer("nations")) map.addLayer(nationsLayer, basemapId);
   } else {
     map.setPaintProperty("islands", "circle-color", paintMap);
     map.setPaintProperty("islands", "circle-stroke-color", " #fff");
