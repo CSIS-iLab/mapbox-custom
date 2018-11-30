@@ -22,7 +22,7 @@ const popup = L.popup({ closeButton: true });
 
 const map = L.map("map", {
   center: [-11.9602541, 195],
-  zoom: 2,
+  zoom: 4,
   scrollWheelZoom: false,
   minZoom: 2,
   zoomControl: false,
@@ -36,13 +36,19 @@ L.control
 
 L.control.zoomslider().addTo(map);
 
+const colors = `#DCB0F2,#87C55F,#9EB9F3,#FE88B1,#C9DB74,#8BE0A4,#B497E7,#66C5CC,#D98880,#C39BD3,#A9CCE3,#A3E4D7,#F39C12,#EDBB99,#007cff,#007cff,#7D3C98,#007cff,#00ad3b,#00ad3b,#7D6608,#CB4335`;
+
+const countries = `FR,US,AU,NZ,FJ,KI,FM,NU,PG,WS,SB,VU,CK,NR,TO,TV,PW,MH,AS,GU,MP,UM,NC,PF,WF,TK`;
+
 const markets = new carto.source.SQL(`SELECT * FROM island_labels`);
 
 const colorSQL = new carto.source.SQL(` SELECT * FROM island_shapes`);
 
 const colorStyle = new carto.style.CartoCSS(`
         #layer {
-          polygon-fill: ramp([iso], (#dddddd, #aaaaaa, #F6CF71, #F89C74, #DCB0F2, #87C55F, #9EB9F3, #FE88B1, #C9DB74, #8BE0A4, #B497E7, #66C5CC), ("AU", "NZ", "PF", "PG", "SB", "UM", "FJ", "KI", "VU", "MH"), "=");
+          polygon-fill: ramp([iso], (#00ad3b,#007cff,#F6CF71,#F89C74,${colors}), (${countries}), "=");
+          line-width: 1;
+          line-color: #999999;
         }
   		`);
 
@@ -51,13 +57,13 @@ const colorLayer = new carto.layer.Layer(colorSQL, colorStyle);
 client.addLayer(colorLayer);
 
 const shapeSQL = new carto.source.SQL(
-  `WITH buffer AS (SELECT cartodb_id,iso,ST_Buffer(the_geom_webmercator,50000) AS the_geom_webmercator FROM  island_shapes) SELECT * FROM buffer`
+  `WITH buffer AS (SELECT cartodb_id,iso,ST_Buffer(the_geom_webmercator,75000) AS the_geom_webmercator FROM  island_shapes) SELECT * FROM buffer`
 );
 
 const shapeStyle = new carto.style.CartoCSS(`
         #layer {
-          polygon-fill: ramp([iso], (transparent,transparent, #F6CF71, #F89C74, #DCB0F2, #87C55F, #9EB9F3, #FE88B1, #C9DB74, #8BE0A4, #B497E7, #66C5CC), ("AU", "NZ", "PF", "PG", "SB", "UM", "FJ", "KI", "VU", "MH"), "=");
-          polygon-opacity:1;
+          polygon-fill: ramp([iso], (#00ad3b,#007cff,transparent,transparent,${colors}), (${countries}), "=");
+          polygon-opacity:.25;
         }
   		`);
 
@@ -66,7 +72,7 @@ const shapeLayer = new carto.layer.Layer(shapeSQL, shapeStyle);
 client.addLayer(shapeLayer);
 
 const patternSQL = new carto.source.SQL(
-  `WITH buffer AS (SELECT cartodb_id,iso,pact,ST_Buffer(the_geom_webmercator,50000) AS the_geom_webmercator FROM  island_shapes) SELECT * FROM buffer`
+  `WITH buffer AS (SELECT cartodb_id,iso,pact,ST_Buffer(the_geom_webmercator,75000) AS the_geom_webmercator FROM  island_shapes) SELECT * FROM buffer`
 );
 
 const greenstripe =
@@ -78,7 +84,7 @@ const nostripe =
 
 const patternStyle = new carto.style.CartoCSS(`
         #layer {
-          comp-op: screen;
+          comp-op: overlay;
           polygon-pattern-file: ramp([pact], (url(${greenstripe}),url(${bluestripe}),url(${nostripe})),("NZ","US"),"=");
         }
   		`);
