@@ -28,55 +28,58 @@ let state,
   startScrollPosition,
   stopScrollPosition;
 
-const nationsLayer = {
-  id: "nations",
-  type: "fill",
-  source: "nations",
-  "source-layer": "Pacific_Colors",
-  paint: {
-    "fill-color": [
-      "match",
-      ["get", "country"],
-      ["FJ"],
-      "#C71585",
-      ["CK"],
-      "#D98880",
-      ["FR"],
-      "hsl(25, 75%, 53%)",
-      ["NZ"],
-      "hsl(163, 44%, 49%)",
-      ["AU"],
-      "hsl(289, 24%, 53%)",
-      ["PG"],
-      "#C39BD3",
-      ["TO"],
-      "#7D3C98",
-      ["WS"],
-      "#A9DFBF",
-      ["US"],
-      "hsl(215, 37%, 56%)",
-      ["VU"],
-      "#7D6608",
-      ["NU"],
-      "#FF1493",
-      ["KI"],
-      "#138D75",
-      ["TV"],
-      "#EE82EE",
-      ["NR"],
-      "#FF69B4",
-      ["FM"],
-      "#BA55D3",
-      ["PW"],
-      "#A9CCE3",
-      ["SB"],
-      "#FF1493",
-      ["MH"],
-      "#784212",
-      "#000000"
-    ]
-  }
-};
+const colors = [
+  ["FJ"],
+  "#C71585",
+  ["CI"],
+  "hsl(128, 91%, 56%)",
+  ["FR"],
+  "hsl(25, 75%, 53%)",
+  ["PF"],
+  "hsl(25, 75%, 53%)",
+  ["NC"],
+  "hsl(25, 75%, 53%)",
+  ["NZ"],
+  "hsl(163, 44%, 49%)",
+  ["AU"],
+  "hsl(289, 24%, 53%)",
+  ["PG"],
+  "#C39BD3",
+  ["TO"],
+  "#7D3C98",
+  ["WS"],
+  "#A9DFBF",
+  ["GU"],
+  "hsl(215, 37%, 56%)",
+  ["UM"],
+  "hsl(215, 37%, 56%)",
+  ["AS"],
+  "hsl(215, 37%, 56%)",
+  ["MP"],
+  "hsl(215, 37%, 56%)",
+  ["US"],
+  "hsl(215, 37%, 56%)",
+  ["VU"],
+  "#7D6608",
+  ["NU"],
+  "#FF1493",
+  ["KI"],
+  "#138D75",
+  ["TV"],
+  "#EE82EE",
+  ["NR"],
+  "#FF69B4",
+  ["FM"],
+  "#BA55D3",
+  ["PW"],
+  "#A9CCE3",
+  ["SB"],
+  "#FF1493",
+  ["MH"],
+  "#784212",
+  ["TK"],
+  "hsl(291, 68%, 51%)"
+];
 
 const spreadsheetID = "115eMJVfot0DDYcv7nhsVM4X5Djihr2ygpMdMYzBSsdc";
 
@@ -292,6 +295,7 @@ function initIslands(data) {
   if (map.getLayer("point1")) {
     var layers = map.getStyle().layers;
     for (var i = 0; i < layers.length; i++) {
+      // basemapId = "pacific_colors";
       if (layers[i].type === "symbol") {
         basemapId = layers[i].id;
         break;
@@ -373,6 +377,73 @@ function initIslands(data) {
   //       .setLngLat(chapters[c].center)
   //       .addTo(map);
   //   });
+
+  /////// Pacific_Colors Data Layer
+  map.addSource("pacific_colors", {
+    type: "vector",
+    url: "mapbox://ilabmedia.cjp31gcsm07fj32mjmdaafwgw-48iuq"
+  });
+
+  map.addLayer({
+    id: "pacific_colors",
+    type: "fill",
+    source: "pacific_colors",
+    "source-layer": "Pacific_Colors",
+    paint: {
+      "fill-color": "transparent"
+    }
+  });
+
+  setTimeout(function() {
+    map
+      .queryRenderedFeatures({ layers: ["pacific_colors"] })
+
+      .forEach((f, i) => {
+        var shape = turf.feature(f.geometry);
+
+        let buffered = [];
+
+        buffered.push(turf.buffer(shape, 150, { units: "miles" }));
+
+        /////// Buffer Layer
+        map.addSource(`buffer_test_${i}`, {
+          type: "geojson",
+          data: { type: "FeatureCollection", features: buffered }
+        });
+
+        // debugger;
+        let countryIndex = colors.map(c => c[0]).indexOf(f.properties.iso);
+        let fillColor =
+          countryIndex !== -1 ? colors[countryIndex + 1] : "black";
+
+        map.addLayer(
+          {
+            id: `buffer_test_line${i}`,
+            type: "line",
+            source: `buffer_test_${i}`,
+            paint: {
+              "line-color": "white",
+              "line-opacity": 0,
+              "line-width": 3
+            }
+          },
+          basemapId
+        );
+
+        map.addLayer(
+          {
+            id: `buffer_test_${i}`,
+            type: "fill",
+            source: `buffer_test_${i}`,
+            paint: {
+              "fill-color": fillColor,
+              "fill-opacity": 0.15
+            }
+          },
+          basemapId
+        );
+      });
+  }, 3000);
 }
 
 function highlightChapter(activeChapterName) {
