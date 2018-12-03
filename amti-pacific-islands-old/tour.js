@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     // style: "mapbox://styles/ilabmedia/cjoq3wuhd0ufd2ro5rag49zvi",
     style: "mapbox://styles/ilabmedia/cjp1vsq4012qc2smt2prznr0i",
     center: [195, -11.9602541],
-    zoom: 5,
+    zoom: 7,
     bearing: 0,
     pitch: 0,
     scrollZoom: false,
@@ -443,17 +443,18 @@ function initIslands(data) {
           basemapId
         );
 
-        map.addLayer({
-          id: "pacific_colors_line",
-          type: "line",
-          source: "pacific_colors",
-          "source-layer": "Pacific_Colors",
-          paint: {
-            "line-color": "#444",
-            "line-opacity": 1,
-            "line-width": 1
-          }
-        });
+        if (!map.getLayer("pacific_colors_line"))
+          map.addLayer({
+            id: "pacific_colors_line",
+            type: "line",
+            source: "pacific_colors",
+            "source-layer": "Pacific_Colors",
+            paint: {
+              "line-color": "#444",
+              "line-opacity": 1,
+              "line-width": 1
+            }
+          });
       });
   }, 3000);
 }
