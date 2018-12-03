@@ -17,13 +17,27 @@ const chapters = [
   'China',
   'Conclusion'
 ]
+const countries = [
+  'France',
+  'United States',
+  'Australia',
+  'New Zealand',
+  'China'
+]
+
+const countryColors = {
+  'united-states': 'blue',
+  france: 'green',
+  australia: 'yellow',
+  'new-zealand': 'orange'
+}
 
 const spreadsheetID = '115eMJVfot0DDYcv7nhsVM4X5Djihr2ygpMdMYzBSsdc'
 
 const chapterURL =
   'https://spreadsheets.google.com/feeds/list/' +
   spreadsheetID +
-  '/2/public/values?alt=json'
+  '/3/public/values?alt=json'
 
 let map,
   stepActions = [],
@@ -88,13 +102,36 @@ const parseChapterData = rawData => {
         .map(c => `"${c}"`)
         .join(',')
 
-      map.style_points.setContent(`
-                #layer {
-                  marker-width: 15;
-                  marker-fill:  ramp([country], (#ff0,transparent,transparent,transparent,transparent,transparent,transparent,transparent), ("${name}",${names}), "=");
-          				marker-line-color: transparent;
-                }
-              `)
+      let className = name.toLowerCase().replace(' ', '-')
+
+      let countryElements = `.icon-${className}:not(.marker-cluster-small)`
+
+      let all = document.querySelectorAll(
+        `.leaflet-marker-icon:not(.marker-cluster-small)`
+      )
+
+      if (countries.includes(name)) {
+        let elements =
+          name !== 'China' ? document.querySelectorAll(countryElements) : all
+
+        all.forEach(i => {
+          i.style.backgroundImage = `url(../img/${
+            countryColors[className]
+          }.png)`
+        })
+
+        elements.forEach(i => {
+          i.style.backgroundImage = `url(../img/highlight.png)`
+        })
+
+        // map.style_points.setContent(`
+        //         #layer {
+        //           marker-width: 15;
+        //           marker-fill:  ramp([country], (#ff0,transparent,transparent,transparent,transparent,transparent,transparent,transparent), ("${name}",${names}), "=");
+        //   				marker-line-color: transparent;
+        //         }
+        //       `)
+      }
     }
 
     return chapterData

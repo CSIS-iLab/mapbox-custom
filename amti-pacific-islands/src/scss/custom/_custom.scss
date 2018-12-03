@@ -79,6 +79,10 @@
   background-image: url(../img/orange.png);
 }
 
+.icon-china:not(.marker-cluster-small) {
+  background-image: url(../img/red.png);
+}
+
 #interactive-source {
   position: absolute;
   right: 0;

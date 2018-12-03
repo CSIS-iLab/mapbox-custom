@@ -57,6 +57,8 @@ const makeMap = () => {
   const colorStyle = new carto.style.CartoCSS(`
         #layer {
           polygon-fill: ramp([iso], (#00ad3b,#007cff,#F6CF71,#F89C74,${colors}), (${countries}), "=");
+          polygon-opacity:.4;
+
         }
   		`)
 
@@ -71,7 +73,7 @@ const makeMap = () => {
   const shapeStyle = new carto.style.CartoCSS(`
         #layer {
           polygon-fill: ramp([iso], (#00ad3b,#007cff,transparent,transparent,${colors}), (${countries}), "=");
-          polygon-opacity:1;
+          polygon-opacity:.4;
         }
   		`)
 
