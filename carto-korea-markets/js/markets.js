@@ -190,10 +190,7 @@ const layer_markets = new carto.layer.Layer(markets, style_markets, {
 // Add markets point data
 
 client.addLayer(layer_markets);
-client
-  .getLeafletLayer()
-  .bringToFront()
-  .addTo(map);
+
 
 // Popups
 
