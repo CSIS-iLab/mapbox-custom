@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         chapterList = parseChapterData(json.feed.entry);
 
         for (let i = 0; i < chapterList.length + 1; i++) {
-          steps[i] = 1.54 / parseFloat(chapterList.length) * parseFloat(i);
+          steps[i] = (1.54 / parseFloat(chapterList.length)) * parseFloat(i);
         }
 
         document.querySelector(".loader").remove();
@@ -403,7 +403,7 @@ function initIslands(data) {
 
         let buffered = [];
 
-        buffered.push(turf.buffer(shape, 150, { units: "miles" }));
+        buffered.push(turf.buffer(shape, 75, { units: "miles" }));
 
         /////// Buffer Layer
         map.addSource(`buffer_test_${i}`, {
@@ -437,11 +437,23 @@ function initIslands(data) {
             source: `buffer_test_${i}`,
             paint: {
               "fill-color": fillColor,
-              "fill-opacity": 0.15
+              "fill-opacity": 1
             }
           },
           basemapId
         );
+
+        map.addLayer({
+          id: "pacific_colors_line",
+          type: "line",
+          source: "pacific_colors",
+          "source-layer": "Pacific_Colors",
+          paint: {
+            "line-color": "#444",
+            "line-opacity": 1,
+            "line-width": 1
+          }
+        });
       });
   }, 3000);
 }
