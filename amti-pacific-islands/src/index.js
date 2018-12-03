@@ -115,13 +115,13 @@ const parseChapterData = rawData => {
           name !== 'China' ? document.querySelectorAll(countryElements) : all
 
         all.forEach(i => {
-          i.style.backgroundImage = `url(https://csis-ilab.github.io/mapbox-custom/amti-pacific-islands/img/${
+          i.style.backgroundImage = `url(https://csis-ilab.github.io/mapbox-custom/amti-pacific-islands/dist/img/${
             countryColors[className]
           }.png)`
         })
 
         elements.forEach(i => {
-          i.style.backgroundImage = `url(https://csis-ilab.github.io/mapbox-custom/amti-pacific-islands/img/highlight.png)`
+          i.style.backgroundImage = `url(https://csis-ilab.github.io/mapbox-custom/amti-pacific-islands/dist/img/highlight.png)`
         })
 
         // map.style_points.setContent(`

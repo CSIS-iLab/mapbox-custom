@@ -1,9 +1,9 @@
 // webpack v4
 const path = require('path')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin")
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin")
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const StyleLintPlugin = require('stylelint-webpack-plugin')
@@ -14,7 +14,7 @@ module.exports = {
   entry: { main: './src/index.js' },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: devMode ? '[name].js' : '[name].[hash].js',
+    filename: devMode ? '[name].js' : '[name].[hash].js'
   },
   devtool: 'inline-source-map',
   devServer: {
@@ -67,7 +67,7 @@ module.exports = {
       new OptimizeCSSAssetsPlugin({
         cssProcessorOptions: {
           discardDuplicates: { removeAll: true },
-          discardComments: {removeAll: true }
+          discardComments: { removeAll: true }
         }
       })
     ]
@@ -79,10 +79,35 @@ module.exports = {
         from: './src/img/logo.jpg',
         to: './img/logo.jpg',
         toType: 'file'
+      },
+      {
+        from: './src/img/red.png',
+        to: './img/red.png',
+        toType: 'file'
+      },
+      {
+        from: './src/img/orange.png',
+        to: './img/orange.png',
+        toType: 'file'
+      },
+      {
+        from: './src/img/yellow.png',
+        to: './img/yellow.png',
+        toType: 'file'
+      },
+      {
+        from: './src/img/green.png',
+        to: './img/green.png',
+        toType: 'file'
+      },
+      {
+        from: './src/img/blue.png',
+        to: './img/blue.png',
+        toType: 'file'
       }
     ]),
     new MiniCssExtractPlugin({
-      filename: devMode ? '[name].css' : '[name].[contenthash].css',
+      filename: devMode ? '[name].css' : '[name].[contenthash].css'
     }),
     new HtmlWebpackPlugin({
       inject: false,
