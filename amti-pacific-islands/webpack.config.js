@@ -104,6 +104,11 @@ module.exports = {
         from: './src/img/blue.png',
         to: './img/blue.png',
         toType: 'file'
+      },
+      {
+        from: './src/img/highlight.png',
+        to: './img/highlight.png',
+        toType: 'file'
       }
     ]),
     new MiniCssExtractPlugin({
