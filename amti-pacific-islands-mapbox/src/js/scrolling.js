@@ -145,9 +145,11 @@ function animateMarker(timestamp) {
 
 function pointOnCircle() {
   //turn into function that returns array of animated points?
+  let coords = ScrollingControls.stepActions[currentStep + 1].center
+
   return {
     type: 'Point',
-    coordinates: ScrollingControls.stepActions[currentStep + 1].center
+    coordinates: [coords[0] - 5, coords[1] - 2]
   }
 }
 

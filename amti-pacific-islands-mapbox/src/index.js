@@ -91,8 +91,10 @@ const parseChapterData = rawData => {
 
     chapterData.fly = () => {
       fly(chapterData)
-      highlightChapter(chapterData)
-      setPopup(chapterData)
+      if (window.map.getSource('interests')) {
+        highlightChapter(chapterData)
+        setPopup(chapterData)
+      }
     }
 
     return chapterData
@@ -139,9 +141,9 @@ const setPopup = chapterData => {
   "popupHeaderStyle">Port or Base</div><div class="popupEntryStyle">${
     properties['port-or-base']
   }</div>`
-
+    console.log('pop', [coordinates[0] - 5, coordinates[1] - 2])
     chinaPopup
-      .setLngLat(coordinates)
+      .setLngLat([coordinates[0] - 5, coordinates[1] - 2])
       .setHTML(
         `<div class="leaflet-popup-content-wrapper">${description}</div>`
       )
