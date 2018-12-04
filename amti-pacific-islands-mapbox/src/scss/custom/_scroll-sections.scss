@@ -13,10 +13,11 @@
   p {
     margin-top: 0;
     margin-bottom: 1rem;
-    @include fontSize(14px);
+    @include fontSize(22px);
+    line-height:1.4;
 
     @include breakpoint('medium') {
-      @include fontSize(18px);
+      @include fontSize(27px);
     }
 
     &:last-of-type {
@@ -29,9 +30,9 @@
   position: absolute;
   top: 0;
   left: 1rem;
-  right: 1rem;
+  right: calc(-99vw + 60em);
   z-index: 30;
-  max-width: 30rem;
+  max-width: 30em;
   padding: 1rem;
   @extend %prose;
 
@@ -58,8 +59,8 @@
 
   @include breakpoint('medium') {
     top: unset;
-    right: calc(-100vw + 33% + 1rem);
-    max-width: 30rem;
+    right: calc(-100vw + 33%);
+    max-width: 30em;
     width: 33%;
   }
 }
@@ -88,7 +89,7 @@
     pointer-events: auto;
 
     .prose-jump-to {
-      @include fontSize(12px);
+      @include fontSize(24px);
     }
   }
 }
@@ -158,13 +159,13 @@
   }
 
   .scroll-total-page {
-    @include fontSize(12px);
+    @include fontSize(22px);
     color: $color__scroll-total;
     margin-left: -1px;
     vertical-align: 2px;
 
     @include breakpoint('medium') {
-      @include fontSize(18px);
+      @include fontSize(27px);
     }
   }
 

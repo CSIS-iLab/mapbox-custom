@@ -1,7 +1,7 @@
 // General
 
 body {
-  margin: 0;
+  overflow-x: hidden;
 
   --breakpoint: 'xsmall';
 
@@ -19,9 +19,11 @@ body {
 }
 
 #scrolly-island-interactive {
+  width: calc(100vw - 2rem);
+  margin-left: calc((100vw - 100%) / -2 + 1rem);
+  margin-right: calc((100vw - 100%) / -2 + 1rem);
   font-family: $font_pt_sans_narrow;
   font-size: 18px;
-  margin: 0;
   padding: 0;
   color: $gray;
 

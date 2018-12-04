@@ -20,7 +20,6 @@ const islandURL =
 const makeMap = () => {
   //
   window.map.on('load', function() {
-    console.log('load')
     fetch(islandURL)
       .then(resp => resp.json())
       .then(json => {
@@ -28,8 +27,6 @@ const makeMap = () => {
         initIslands()
       })
   })
-
-  window.map.on('click', 'interests', clickInterests)
 
   return map
 }
@@ -41,9 +38,15 @@ function initIslands() {
       customAttribution: 'CSIS'
     })
   )
+
   window.map.once('render', () => {
+    window.map.on('click', 'interests', clickInterests)
     addInterestsLayer()
     addAnimatedPointLayer()
+
+    let resizeEvent = window.document.createEvent('UIEvents')
+    resizeEvent.initUIEvent('resize', true, false, window, 0)
+    window.dispatchEvent(resizeEvent)
   })
 }
 
@@ -118,30 +121,46 @@ const clickInterests = e => {
   let details = new mapboxgl.Popup()
   let coordinates = e.features[0].geometry.coordinates.slice()
   let properties = e.features[0].properties
-  let description =
-    window.screen.availWidth > 768
-      ? Object.keys(properties)
-          .map(p => {
-            if (properties[p])
-              return `<div class=
-      "popupHeaderStyle"
-      >${p
-        .toUpperCase()
-        .replace(/-/g, ' ')}</div><div class="popupEntryStyle">${
+  let allowedHeaders = [
+    'type',
+    'number-of-ships-permanently-based',
+    'number-of-troops-stationed',
+    'number-of-aircraft-based',
+    'chinese-involvement'
+  ]
+  let description
+  if (window.screen.availWidth > 768) {
+    description = Object.keys(properties)
+      .filter(p => p !== 'country')
+      .map(p => {
+        if (properties[p])
+          return allowedHeaders.includes(p)
+            ? `<div class=
+        "popupHeaderStyle">${p
+          .toUpperCase()
+          .replace(/-/g, ' ')
+          .replace('NUMBER', '#')}</div><div class="popupEntryStyle">${
                 properties[p]
               }</div>`
-          })
-          .filter(p => p)
-          .join('')
-      : `<div class=
+            : `<div class="popupEntryStyle">${properties[p]}</div>`
+      })
+      .filter(p => p)
+      .join('')
+  } else {
+    Object.keys(properties)
+      .filter(p => p !== 'country')
+      .map(p => {
+        description = `<div class=
   "popupHeaderStyle">Port or Base</div><div class="popupEntryStyle">${
     properties['port-or-base']
   }</div>`
+      })
+  }
 
   details
     .setLngLat(coordinates)
     .setHTML(`<div class="leaflet-popup-content-wrapper">${description}</div>`)
-    .addTo(map)
+    .addTo(window.map)
 }
 
 function parseIslandData(rawData) {

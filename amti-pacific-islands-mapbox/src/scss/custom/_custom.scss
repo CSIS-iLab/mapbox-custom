@@ -54,6 +54,7 @@ button.mapboxgl-popup-close-button {
 .popupHeaderStyle {
   font-family: 'PT Sans Narrow', sans-serif;
   text-transform: uppercase;
+  font-weight: bold;
 }
 
 .popupEntryStyle {
@@ -130,7 +131,7 @@ button.mapboxgl-popup-close-button {
   }
 
   p {
-    font-size: 0.8rem;
+    font-size: 18rem;
     line-height: 1.1;
     margin: 0;
     text-align: right;

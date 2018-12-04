@@ -6,7 +6,7 @@
 }
 
 #legend {
-  position: relative;
+  position: sticky;
   z-index: 12;
   display: flex;
   flex-wrap: wrap;
@@ -48,7 +48,7 @@
 
   .legend-label {
     position: relative;
-    padding-left: 0.8rem;
+    padding-left: 1.2rem;
     margin-bottom: 0.5rem;
     font-size: 14px;
   }
@@ -63,11 +63,11 @@
     position: absolute;
     top: 2px;
     left: 0;
-    width: 12px;
-    height: 12px;
-    // border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
     // background-color: #000;
-    background-image: url(../img/red.png);
+    // background-image: url(../img/red.png);
   }
 
   .label-base::before {
@@ -78,20 +78,24 @@
     background-size: 200%;
   }
   .label-base.base-au::before {
-    // background-color: #f6cf71;
-    background-image: url(../img/yellow.png);
+    background-color: #f6cf71;
+    border: 2px solid #fff;
+    // background-image: url(../img/yellow.png);
   }
   .label-base.base-fr::before {
-    // background-color: #00ad3b;
-    background-image: url(../img/green.png);
+    background-color: #f89c74;
+    border: 2px solid #fff;
+    // background-image: url(../img/green.png);
   }
   .label-base.base-nz::before {
-    // background-color: #f89c74;
-    background-image: url(../img/orange.png);
+    background-color: #00ad3b;
+    border: 2px solid #fff;
+    // background-image: url(../img/orange.png);
   }
   .label-base.base-us::before {
-    // background-color: #6688b9;
-    background-image: url(../img/blue.png);
+    background-color: #6688b9;
+    border: 2px solid #fff;
+    // background-image: url(../img/blue.png);
   }
   .label-pact.pact-nz::before {
     // background-color: #6688b9;

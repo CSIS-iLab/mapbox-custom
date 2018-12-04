@@ -102,15 +102,18 @@ function scrollInit(args) {
   ScrollingControls.stepActions = args.stepActions
   ScrollingControls.init()
 }
-let framesPerSecond = 30,
+let framesPerSecond = 12,
   initialRadius = 8,
   radius = initialRadius,
-  maxRadius = 18,
+  maxRadius = 32,
   initialOpacity = 1,
-  opacity = initialOpacity
+  opacity = initialOpacity,
+  myTimer
 
 function animateMarker(timestamp) {
-  setTimeout(function() {
+  if (myTimer) clearTimeout(myTimer)
+
+  myTimer = setTimeout(function() {
     requestAnimationFrame(animateMarker)
 
     radius += (maxRadius - radius) / framesPerSecond
@@ -124,7 +127,7 @@ function animateMarker(timestamp) {
       radius = initialRadius
       opacity = initialOpacity
     }
-  }, 1000 / framesPerSecond)
+  }, 500 / framesPerSecond)
 
   let atTop = currentStep + 1 === 0
 
@@ -133,11 +136,9 @@ function animateMarker(timestamp) {
   if (ScrollingControls.stepActions[currentStep + 1].name.includes('China')) {
     window.map.setPaintProperty('point', 'circle-color', '#ff0')
     window.map.setPaintProperty('point1', 'circle-color', '#ff0')
-    window.map.setPaintProperty('point1', 'circle-stroke-color', '#ff0')
   } else {
     window.map.setPaintProperty('point', 'circle-color', 'transparent')
     window.map.setPaintProperty('point1', 'circle-color', 'transparent')
-    window.map.setPaintProperty('point1', 'circle-stroke-color', 'transparent')
   }
 
   window.map.getSource('point').setData(pointOnCircle(timestamp / 1000))

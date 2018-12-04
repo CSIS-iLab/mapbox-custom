@@ -20,10 +20,7 @@ function interactiveSetup({ container, initialDesc, steps }) {
 
       <figure id="map" class="map chart chart-primary" style="height:100vh"></figure>
 
-      <div id="interactive-source">
-        <a href="https://amti.csis.org" class="source-holder"><img src="http://csis-ilab.github.io/mapbox-custom/amti-resources-map/images/logo.jpg" alt="AMTI" title="AMTI" /></a>
-      </div>
-
+  
       <div id="scroll-progress">
         <a href="#1">
           <span class="scroll-icon"></span>
@@ -57,6 +54,21 @@ function interactiveSetup({ container, initialDesc, steps }) {
 import mapboxgl from 'mapbox-gl'
 
 const load = () => {
+  let cssFiles = [
+    'https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css',
+    'https://csis-ilab.github.io/mapbox-custom/amti-pacific-islands-mapbox/dist/main.css'
+  ]
+
+  cssFiles.forEach(file => {
+    var head = document.head
+    var link = document.createElement('link')
+
+    link.rel = 'stylesheet'
+    link.href = file
+
+    head.appendChild(link)
+  })
+
   mapboxgl.accessToken =
     'pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
 
@@ -69,6 +81,11 @@ const load = () => {
     pitch: 0,
     scrollZoom: false,
     attributionControl: false
+  })
+
+  map.on('mousedown', () => {
+    console.log('Center', map.getCenter())
+    console.log('Pitch', map.getPitch())
   })
 }
 

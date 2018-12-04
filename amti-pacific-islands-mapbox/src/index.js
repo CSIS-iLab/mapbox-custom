@@ -23,7 +23,6 @@ let countryColors = [],
     closeButton: false
   }),
   exclude = ['Introduction', 'Conclusion'],
-  isMobile,
   stepActions = [],
   currentStep = 0
 
@@ -57,8 +56,6 @@ const init = () => {
 
       makeMap()
 
-      isMobile = window.screen.availWidth < 768
-
       window.addEventListener('resize', resize)
     })
 }
@@ -67,7 +64,6 @@ init()
 
 const resize = () => {
   stepActions[currentStep].fly()
-  isMobile = window.screen.availWidth < 768
 }
 
 const parseChapterData = rawData => {
@@ -122,26 +118,43 @@ const setPopup = chapterData => {
 
   if (feature) {
     let properties = feature.properties
+    let allowedHeaders = [
+      'type',
+      'number-of-ships-permanently-based',
+      'number-of-troops-stationed',
+      'number-of-aircraft-based',
+      'chinese-involvement'
+    ]
+    let description
 
-    let description = !isMobile
-      ? Object.keys(properties)
-          .map(p => {
-            if (properties[p])
-              return `<div class=
-        "popupHeaderStyle"
-        >${p
-          .toUpperCase()
-          .replace(/-/g, ' ')}</div><div class="popupEntryStyle">${
-                properties[p]
-              }</div>`
-          })
-          .filter(p => p)
-          .join('')
-      : `<div class=
-  "popupHeaderStyle">Port or Base</div><div class="popupEntryStyle">${
-    properties['port-or-base']
-  }</div>`
-    console.log('pop', [coordinates[0] - 5, coordinates[1] - 2])
+    if (window.screen.availWidth > 768) {
+      description = Object.keys(properties)
+        .filter(p => p !== 'country')
+        .map(p => {
+          if (properties[p])
+            return allowedHeaders.includes(p)
+              ? `<div class=
+          "popupHeaderStyle">${p
+            .toUpperCase()
+            .replace(/-/g, ' ')
+            .replace('NUMBER', '#')}</div><div class="popupEntryStyle">${
+                  properties[p]
+                }</div>`
+              : `<div class="popupEntryStyle">${properties[p]}</div>`
+        })
+        .filter(p => p)
+        .join('')
+    } else {
+      Object.keys(properties)
+        .filter(p => p !== 'country')
+        .map(p => {
+          description = `<div class=
+    "popupHeaderStyle">Port or Base</div><div class="popupEntryStyle">${
+      properties['port-or-base']
+    }</div>`
+        })
+    }
+
     chinaPopup
       .setLngLat([coordinates[0] - 5, coordinates[1] - 2])
       .setHTML(
