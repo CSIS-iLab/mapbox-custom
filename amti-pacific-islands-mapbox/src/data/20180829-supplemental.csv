@@ -1,0 +1,219 @@
+iso,country_eng,region_eng,world_bank_classification,life_expectancy_updated,life_expectancy_exception_year,mortality_rate_under_5
+AFG,Afghanistan,Asia,1,63.673,,70.4
+ALB,Albania,Europe,3,78.345,,13.5
+DZA,Algeria,Africa,3,76.078,,25.2
+ASM,American Samoa,Oceania,3,0,,0
+AND,Andorra,Europe,4,0,,2.7
+AGO,Angola,Africa,2,61.547,,82.5
+ATG,Antigua and Barbuda,Americas,4,76.364,,8.5
+ARG,Argentina,Americas,3,76.577,,11.1
+ARM,Armenia,Asia,2,74.618,,13.4
+ABW,Aruba,Americas,4,75.867,,0
+AUS,Australia,Oceania,5,82.5,,3.7
+AUT,Austria,Europe,5,80.8902439,,3.5
+AZE,Azerbaijan,Asia,3,72.026,,30.9
+BHS,Bahamas,Americas,4,75.675,,10.6
+BHR,Bahrain,Asia,4,76.9,,7.6
+BGD,Bangladesh,Asia,2,72.489,,34.2
+BRB,Barbados,Americas,4,75.906,,12.3
+BLR,Belarus,Europe,3,73.8268293,,3.9
+BEL,Belgium,Europe,5,80.9926829,,3.9
+BLZ,Belize,Americas,3,70.384,,14.9
+BEN,Benin,Africa,1,60.907,,97.6
+BMU,Bermuda,Americas,4,81.2270732,,0
+BTN,Bhutan,Asia,2,70.197,,32.4
+BOL,Bolivia,Americas,2,69.125,,36.9
+BIH,Bosnia and Herzegovina,Europe,3,76.911,,6
+BWA,Botswana,Africa,3,66.797,,40.6
+BRA,Brazil,Americas,3,75.509,,15.1
+VGB,British Virgin Islands,Americas,4,0,,0
+BRN,Brunei Darussalam,Asia,4,77.203,,9.9
+BGR,Bulgaria,Europe,3,74.6146341,,7.6
+BFA,Burkina Faso,Africa,1,60.361,,84.6
+BDI,Burundi,Africa,1,57.481,,71.7
+CPV,Cabo Verde,Africa,2,72.798,,21.4
+KHM,Cambodia,Asia,2,68.981,,30.6
+CMR,Cameroon,Africa,2,58.073,,79.7
+CAN,Canada,Americas,5,82.3005122,,4.9
+CYM,Cayman Islands,Americas,4,82.1902439,2010,0
+CAF,Central African Republic,Africa,1,52.171,,123.6
+TCD,Chad,Africa,1,52.903,,127.3
+CHI,Channel Islands,Europe,4,81.107,,0
+CHL,Chile,Americas,5,79.522,,8.3
+CHN,China,Asia,3,76.252,,9.9
+COL,Colombia,Americas,3,74.381,,15.3
+COM,Comoros,Africa,1,63.701,,73.3
+COD,"Congo, Dem. Rep.",Africa,1,59.621,,94.3
+COG,"Congo, Rep.",Africa,2,64.625,,54.1
+CRI,Costa Rica,Americas,3,79.831,,8.8
+CIV,Cote d'Ivoire,Africa,2,53.582,,91.8
+HRV,Croatia,Europe,3,78.0219512,,4.7
+CUB,Cuba,Americas,3,79.742,,5.5
+CUW,Curacao,Americas,0,77.8731707,,0
+CYP,Cyprus,Asia,4,80.508,,2.6
+CZE,Czech Republic,Europe,5,78.3317073,,3.2
+DNK,Denmark,Europe,5,80.704878,,4.4
+DJI,Djibouti,Africa,2,62.465,,64.2
+DMA,Dominica,Americas,3,0,,34
+DOM,Dominican Republic,Americas,3,73.861,,30.7
+ECU,Ecuador,Americas,3,76.327,,20.9
+EGY,Egypt,Africa,2,71.484,,22.8
+SLV,El Salvador,Americas,2,73.512,,15
+GNQ,Equatorial Guinea,Africa,3,57.681,,90.9
+ERI,Eritrea,Africa,1,65.092,,44.5
+EST,Estonia,Europe,5,77.7365854,,2.9
+ETH,Ethiopia,Africa,1,65.475,,58.4
+FRO,Faroe Islands,Europe,0,82.2414634,,0
+FJI,Fiji,Oceania,3,70.269,,22
+FIN,Finland,Europe,5,81.7804878,,2.3
+FRA,France,Europe,5,82.2731707,,3.9
+PYF,French Polynesia,Oceania,4,76.813,,0
+GAB,Gabon,Africa,3,66.105,,47.4
+GMB,Gambia,Africa,1,61.193,,65.3
+GEO,Georgia,Asia,2,73.261,,10.7
+DEU,Germany,Europe,5,80.6414634,,3.8
+GHA,Ghana,Africa,2,62.742,,58.8
+GIB,Gibraltar,Europe,4,0,,0
+GRC,Greece,Europe,5,81.0365854,,3.8
+GRL,Greenland,Americas,4,71.8304878,2013,0
+GRD,Grenada,Americas,3,73.659,,16
+GUM,Guam,Oceania,4,79.575,,0
+GTM,Guatemala,Americas,2,73.409,,28.5
+GIN,Guinea,Africa,1,60.015,,89
+GNB,Guinea-Bissau,Africa,1,57.403,,88.1
+GUY,Guyana,Americas,3,66.65,,32.4
+HTI,Haiti,Americas,1,63.33,,67
+HND,Honduras,Americas,2,73.575,,18.7
+HKG,Hong Kong,Asia,4,84.2268293,,0
+HUN,Hungary,Europe,5,75.5682927,,5.2
+ISL,Iceland,Europe,5,82.4682927,,2.1
+IND,India,Asia,2,68.56,,43
+IDN,Indonesia,Asia,2,69.191,,26.4
+IRN,Iran,Asia,3,75.953,,15.1
+IRQ,Iraq,Asia,3,69.862,,31.2
+IRL,Ireland,Europe,5,81.6073171,,3.6
+IMN,Isle of Man,Europe,4,0,,0
+ISR,Israel,Asia,5,82.4073171,,3.6
+ITA,Italy,Europe,5,82.5439024,,3.3
+JAM,Jamaica,Americas,3,75.97,,15.3
+JPN,Japan,Asia,5,83.984878,,2.7
+JOR,Jordan,Asia,2,74.329,,17.6
+KAZ,Kazakhstan,Asia,3,72.3,,11.4
+KEN,Kenya,Africa,2,67.032,,49.2
+KIR,Kiribati,Oceania,2,66.317,,54.3
+XKX,Kosovo,Europe,2,71.6463415,,0
+KWT,Kuwait,Asia,4,74.694,,8.4
+KGZ,Kyrgyzstan,Asia,2,70.9512195,,21.1
+LAO,Laos,Asia,2,66.683,,63.9
+LVA,Latvia,Europe,5,74.5292683,,4.6
+LBN,Lebanon,Asia,3,79.584,,8.1
+LSO,Lesotho,Africa,2,54.174,,93.5
+LBR,Liberia,Africa,1,62.505,,67.4
+LBY,Libya,Africa,3,71.934,,12.9
+LIE,Liechtenstein,Europe,4,82.6560976,,0
+LTU,Lithuania,Europe,4,74.3219512,,5.3
+LUX,Luxembourg,Europe,5,82.2926829,,2.4
+MAC,Macao,Asia,4,83.849,,0
+MKD,Macedonia,Europe,3,75.703,,12.2
+MDG,Madagascar,Africa,1,65.932,,46.4
+MWI,Malawi,Africa,1,63.223,,55.1
+MYS,Malaysia,Asia,3,75.3,,8.3
+MDV,Maldives,Asia,3,77.339,,8.5
+MLI,Mali,Africa,1,57.966,,110.6
+MLT,Malta,Europe,4,81.797561,,6.8
+MHL,Marshall Islands,Oceania,3,0,,35.4
+MRT,Mauritania,Africa,2,63.238,,81.4
+MUS,Mauritius,Africa,3,74.394878,,13.7
+MEX,Mexico,Americas,3,77.118,,14.6
+FSM,Micronesia,Oceania,2,69.195,,33.3
+MDA,Moldova,Europe,2,71.61,,15.9
+MCO,Monaco,Europe,4,0,,3.4
+MNG,Mongolia,Asia,2,69.287,,17.9
+MNE,Montenegro,Europe,3,77.116,,3.8
+MAR,Morocco,Africa,2,75.821,,27.1
+MOZ,Mozambique,Africa,1,58.311,,71.3
+MMR,Myanmar,Asia,2,66.612,,50.8
+NAM,Namibia,Africa,3,64.388,,45.2
+NRU,Nauru,Oceania,3,0,,34.6
+NPL,Nepal,Asia,1,70.253,,34.5
+NLD,Netherlands,Europe,5,81.5097561,,3.8
+NCL,New Caledonia,Oceania,4,76.9615007,,0
+NZL,New Zealand,Oceania,5,81.612439,,5.4
+NIC,Nicaragua,Americas,2,75.404,,19.7
+NER,Niger,Africa,1,60.058,,91.3
+NGA,Nigeria,Africa,2,53.428,,104.3
+PRK,North Korea,Asia,1,71.685,,20
+MNP,Northern Mariana Islands,Oceania,4,0,,0
+NOR,Norway,Europe,5,82.5097561,,2.6
+OMN,Oman,Asia,4,77.029,,10.7
+PAK,Pakistan,Asia,2,66.481,,78.8
+PLW,Palau,Oceania,4,0,,15.9
+PAN,Panama,Americas,3,78.001,,16.4
+PNG,Papua New Guinea,Oceania,2,65.544,,54.3
+PRY,Paraguay,Americas,3,73.12,,19.9
+PER,Peru,Americas,3,74.983,,15.3
+PHL,Philippines,Asia,2,69.094,,27.1
+POL,Poland,Europe,5,77.4512195,,4.7
+PRT,Portugal,Europe,5,81.1268293,,3.5
+PRI,Puerto Rico,Americas,4,79.7883171,,0
+QAT,Qatar,Asia,4,78.184,,8.5
+ROU,Romania,Europe,3,75.0121951,,9
+RUS,Russia,Europe,3,71.5929268,,7.7
+RWA,Rwanda,Africa,1,67.129,,38.5
+WSM,Samoa,Oceania,3,75.013,,17.3
+SMR,San Marino,Europe,4,85.4170732,2012,2.8
+STP,Sao Tome and Principe,Africa,2,66.624,,33.8
+SAU,Saudi Arabia,Asia,4,74.561,,12.9
+SEN,Senegal,Africa,1,67.146,,47.1
+SRB,Serbia,Europe,3,75.2390244,,5.8
+SYC,Seychelles,Africa,4,74.3097561,,14.3
+SLE,Sierra Leone,Africa,1,51.835,,113.5
+SGP,Singapore,Asia,4,82.795122,,2.8
+SXM,Sint Maarten (Dutch part),Americas,4,73.0536585,2012,0
+SVK,Slovak Republic,Europe,5,76.5634146,,5.9
+SVN,Slovenia,Europe,5,80.7756098,,2.3
+SLB,Solomon Islands,Oceania,2,70.726,,25.8
+SOM,Somalia,Africa,1,56.293,,132.5
+ZAF,South Africa,Africa,3,62.774,,43.3
+KOR,South Korea,Asia,5,82.0243902,,3.4
+SSD,South Sudan,Africa,1,56.811,,90.7
+ESP,Spain,Europe,5,82.8317073,,3.3
+LKA,Sri Lanka,Asia,2,75.284,,9.4
+KNA,St. Kitts and Nevis,Americas,4,0,,9.3
+LCA,St. Lucia,Americas,3,75.496,,13.3
+MAF,St. Martin (French part),Americas,4,79.6219512,,0
+VCT,St. Vincent and the Grenadines,Americas,3,73.179,,16.6
+SDN,Sudan,Africa,2,64.486,,65.1
+SUR,Suriname,Americas,3,71.405,,20
+SWZ,Swaziland,Africa,2,57.754,,70.4
+SWE,Sweden,Europe,5,82.204878,,2.9
+CHE,Switzerland,Europe,5,82.897561,,4.1
+SYR,Syria,Asia,2,70.31,,17.5
+TWN,Taiwan,Asia,4,80.2,2015,0
+TJK,Tajikistan,Asia,2,71.051,,43.1
+TZA,Tanzania,Africa,1,65.675,,56.7
+THA,Thailand,Asia,3,75.303,,12.2
+TLS,Timor-Leste,Asia,2,68.881,,49.7
+TGO,Togo,Africa,1,60.232,,75.7
+TON,Tonga,Oceania,3,73.029,,16.4
+TTO,Trinidad and Tobago,Americas,4,70.673,,18.5
+TUN,Tunisia,Africa,2,75.731,,13.6
+TUR,Turkey,Asia,3,75.755,,12.7
+TKM,Turkmenistan,Asia,3,67.835,,51
+TCA,Turks and Caicos Islands,Americas,4,0,,0
+TUV,Tuvalu,Oceania,3,0,,25.3
+UGA,Uganda,Africa,1,59.889,,53
+UKR,Ukraine,Europe,2,71.4763415,,9.1
+ARE,United Arab Emirates,Asia,4,77.256,,7.7
+GBR,United Kingdom,Europe,5,80.9560976,,4.3
+USA,United States,Americas,5,78.6902439,,6.5
+URY,Uruguay,Americas,4,77.493,,9.2
+UZB,Uzbekistan,Asia,2,71.314,,24.1
+VUT,Vanuatu,Oceania,2,72.133,,27.6
+VEN,Venezuela,Americas,3,74.545,,16.3
+VNM,Vietnam,Asia,2,76.253,,21.6
+VIR,Virgin Islands (U.S.),Americas,4,79.2682927,,0
+PSE,West Bank and Gaza,Asia,2,73.473,,19.4
+YEM,Yemen,Asia,2,64.953,,55.3
+ZMB,Zambia,Africa,2,61.874,,63.4
+ZWE,Zimbabwe,Africa,1,61.163,,56.4
