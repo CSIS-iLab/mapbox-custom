@@ -18,6 +18,10 @@ body {
   }
 }
 
+#content {
+  overflow: visible;
+}
+
 #scrolly-island-interactive {
   width: calc(100vw - 2rem);
   margin-left: calc((100vw - 100%) / -2 + 1rem);
