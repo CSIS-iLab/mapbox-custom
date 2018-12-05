@@ -20,7 +20,7 @@ function interactiveSetup({ container, initialDesc, steps }) {
 
       <figure id="map" class="map chart chart-primary" style="height:100vh"></figure>
 
-  
+
       <div id="scroll-progress">
         <a href="#1">
           <span class="scroll-icon"></span>
@@ -87,6 +87,15 @@ const load = () => {
     console.log('Center', map.getCenter())
     console.log('Pitch', map.getPitch())
   })
-}
 
+  // let navHeight = document.querySelector('.navbar').offsetHeight
+  //
+  // if (navHeight) {
+  //   document.querySelector('.scroll__graphic').style.top = `${navHeight}px`
+  //
+  //   document.querySelector(
+  //     '.scroll__graphic'
+  //   ).style.height = `calc(100vh - ${navHeight}px)`
+  // }
+}
 export default interactiveSetup
