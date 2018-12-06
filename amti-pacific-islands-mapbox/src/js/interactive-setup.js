@@ -88,14 +88,14 @@ const load = () => {
     console.log('Pitch', map.getPitch())
   })
 
-  let navHeight = document.querySelector('.navbar').offsetHeight
-
-  if (navHeight) {
-    document.querySelector('.scroll__graphic').style.top = `${navHeight}px`
-
-    document.querySelector(
-      '.scroll__graphic'
-    ).style.height = `calc(100vh - ${navHeight}px)`
-  }
+  // let navHeight = document.querySelector('.navbar').offsetHeight
+  //
+  // if (navHeight) {
+  //   document.querySelector('.scroll__graphic').style.top = `${navHeight}px`
+  //
+  //   document.querySelector(
+  //     '.scroll__graphic'
+  //   ).style.height = `calc(100vh - ${navHeight}px)`
+  // }
 }
 export default interactiveSetup

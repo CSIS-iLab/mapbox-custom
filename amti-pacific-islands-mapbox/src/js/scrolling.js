@@ -11,9 +11,9 @@ const ScrollingControls = {
   stepActions: null,
   handleResize() {
     let windowHeight = window.innerHeight
-    let siteHeader = document.getElementById('masthead')
+    let siteHeader = document.querySelector('.navbar')
     let topOffset = 0
-    if (siteHeader && !breakpoints.isMobile()) {
+    if (siteHeader) {
       topOffset = siteHeader.offsetTop + siteHeader.offsetHeight
       ScrollingControls.graphic.style('top', topOffset + 'px')
       ScrollingControls.filters.style('top', topOffset + 'px')

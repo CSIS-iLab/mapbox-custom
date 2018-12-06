@@ -14,7 +14,7 @@
     margin-top: 0;
     margin-bottom: 1rem;
     @include fontSize(22px);
-    line-height:1.4;
+    line-height: 1.4;
 
     @include breakpoint('medium') {
       @include fontSize(27px);
@@ -59,7 +59,7 @@
 
   @include breakpoint('medium') {
     top: unset;
-    right: calc(-100vw + 33%);
+    right: calc(-100vw + 35%);
     max-width: 30em;
     width: 33%;
   }
