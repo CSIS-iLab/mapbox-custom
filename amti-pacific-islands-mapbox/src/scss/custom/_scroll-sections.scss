@@ -91,6 +91,10 @@
     .prose-jump-to {
       @include fontSize(24px);
     }
+
+    h3 {
+      color: #023950;
+    }
   }
 }
 
