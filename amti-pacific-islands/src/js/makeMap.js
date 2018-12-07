@@ -1,5 +1,4 @@
 import mapboxgl from 'mapbox-gl'
-
 let map,
   interestsData,
   popup = new mapboxgl.Popup({
@@ -40,9 +39,28 @@ function initIslands() {
   )
 
   window.map.once('render', () => {
-    window.map.on('click', 'interests', clickInterests)
     addInterestsLayer()
     addAnimatedPointLayer()
+
+    window.map.on('click', 'interests', clickInterests)
+
+    let nations = ['Australia', 'New Zealand', 'United States', 'France']
+
+    nations.forEach(nation =>
+      window.map.on('click', `${nation}_clusters`, e =>
+        clickClusters(e, nation)
+      )
+    )
+
+    // window.map.on('click', `clusters`, clickClusters)
+
+    window.map.on('mouseenter', 'interests', function() {
+      window.map.getCanvas().style.cursor = 'pointer'
+    })
+
+    window.map.on('mouseleave', 'interests', function() {
+      window.map.getCanvas().style.cursor = ''
+    })
 
     let resizeEvent = window.document.createEvent('UIEvents')
     resizeEvent.initUIEvent('resize', true, false, window, 0)
@@ -51,6 +69,7 @@ function initIslands() {
 }
 
 function addInterestsLayer() {
+  console.log(interestsData)
   window.map.addSource('interests', {
     type: 'geojson',
     data: interestsData
@@ -64,8 +83,119 @@ function addInterestsLayer() {
       'circle-color': 'transparent',
       'circle-stroke-width': 2,
       'circle-stroke-color': 'transparent',
-      'circle-radius': initialRadius
+      'circle-radius': initialRadius + 2
     }
+  })
+
+  // window.map.addSource(`clusters`, {
+  //   type: 'geojson',
+  //   data: interestsData,
+  //   cluster: true,
+  //   clusterMaxZoom: 6,
+  //   clusterRadius: 50
+  // })
+  //
+  // window.map.addLayer({
+  //   id: `clusters`,
+  //   type: 'circle',
+  //   source: `clusters`,
+  //   paint: {
+  //     'circle-color': 'transparent',
+  //     'circle-stroke-width': 2,
+  //     'circle-stroke-color': 'transparent',
+  //     'circle-radius': initialRadius + 2
+  //   }
+  // })
+  //
+  // window.map.addLayer({
+  //   id: `cluster-count`,
+  //   type: 'symbol',
+  //   source: `clusters`,
+  //   filter: ['has', 'point_count'],
+  //   paint: {
+  //     'text-color': '#ffffff',
+  //     'text-halo-color': '#000000',
+  //     'text-halo-blur': 0.5,
+  //     'text-halo-width': 1
+  //   },
+  //   layout: {
+  //     'text-field': '{point_count_abbreviated}',
+  //     'text-font': ['PT Sans Bold'],
+  //     'text-size': 0
+  //   }
+  // })
+  //
+  // window.map.addLayer({
+  //   id: `unclustered-point`,
+  //   type: 'circle',
+  //   source: `clusters`,
+  //   filter: ['!', ['has', 'point_count']],
+  //   paint: {
+  //     'circle-color': 'transparent',
+  //     'circle-radius': initialRadius + 2,
+  //     'circle-stroke-width': 1,
+  //     'circle-stroke-color': 'transparent'
+  //   }
+  // })
+
+  let nations = ['Australia', 'New Zealand', 'United States', 'France']
+
+  nations.forEach(nation => {
+    window.map.addSource(`${nation}_clusters`, {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: interestsData.features.filter(
+          f => f.properties.country === nation
+        )
+      },
+      cluster: true,
+      clusterMaxZoom: 6,
+      clusterRadius: 50
+    })
+
+    window.map.addLayer({
+      id: `${nation}_clusters`,
+      type: 'circle',
+      source: `${nation}_clusters`,
+      paint: {
+        'circle-color': 'transparent',
+        'circle-stroke-width': 2,
+        'circle-stroke-color': 'transparent',
+        'circle-radius': initialRadius + 2
+      }
+    })
+
+    window.map.addLayer({
+      id: `${nation}_cluster-count`,
+      type: 'symbol',
+      source: `${nation}_clusters`,
+      filter: ['has', 'point_count'],
+      paint: {
+        'text-color': '#ffffff',
+        'text-halo-color': '#000000',
+        'text-halo-blur': 0.5,
+        'text-halo-width': 1
+      },
+      layout: {
+        'text-field': '{point_count_abbreviated}',
+        'text-font': ['PT Sans Bold'],
+        'text-size': 0
+      }
+    })
+
+    window.map.addLayer({
+      id: `${nation}_unclustered-point`,
+      type: 'circle',
+      source: `${nation}_clusters`,
+      filter: ['!', ['has', 'point_count']],
+      paint: {
+        'circle-color': 'transparent',
+        'circle-radius': initialRadius + 2,
+        'circle-stroke-width': 1,
+        'circle-stroke-color': 'transparent'
+      }
+    })
   })
 }
 
@@ -115,6 +245,25 @@ function pointOnCircle(loc = 0) {
     type: 'Point',
     coordinates: loc
   }
+}
+
+const clickClusters = (e, nation) => {
+  console.log(e, nation)
+  var features = window.map.queryRenderedFeatures(e.point, {
+    layers: [`${nation}_clusters`]
+  })
+  var clusterId = features[0].properties.cluster_id
+
+  window.map
+    .getSource(`${nation}_clusters`)
+    .getClusterExpansionZoom(clusterId, function(err, zoom) {
+      if (err) return
+
+      window.map.easeTo({
+        center: features[0].geometry.coordinates,
+        zoom: zoom
+      })
+    })
 }
 
 const clickInterests = e => {

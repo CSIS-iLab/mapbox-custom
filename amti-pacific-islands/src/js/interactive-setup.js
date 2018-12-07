@@ -5,7 +5,7 @@ function interactiveSetup({ container, initialDesc, steps }) {
     HTML += `<div class="initial-step-desc">
               ${initialDesc}
               <div id="chevWrapper" style="display: block;">
-                <a href="#step1">
+                <a href="#step0">
                   <span id="chevron">»</span>
                   Scroll down
                 </a>
@@ -71,8 +71,8 @@ import mapboxgl from 'mapbox-gl'
 
 const load = () => {
   let cssFiles = [
-    'https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css',
-    'https://csis-ilab.github.io/mapbox-custom/amti-pacific-islands/dist/main.css'
+    'https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css'
+    // 'https://csis-ilab.github.io/mapbox-custom/amti-pacific-islands/dist/main.css'
   ]
 
   cssFiles.forEach(file => {
@@ -99,9 +99,11 @@ const load = () => {
     attributionControl: false
   })
 
-  map.on('mousedown', () => {
+  var legend = document.querySelector('#legend')
+  legend.addEventListener('mousedown', () => {
     console.log('Center', map.getCenter())
     console.log('Pitch', map.getPitch())
+    console.log('Zoom', map.getZoom())
   })
 
   // let navHeight = document.querySelector('.navbar').offsetHeight

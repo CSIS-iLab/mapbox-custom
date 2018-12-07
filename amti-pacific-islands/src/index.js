@@ -24,7 +24,8 @@ let countryColors = [],
   }),
   exclude = ['Introduction', 'Conclusion'],
   stepActions = [],
-  currentStep = 0
+  currentStep = 0,
+  nations = ['Australia', 'New Zealand', 'United States', 'France']
 
 const init = () => {
   if (!container) {
@@ -204,15 +205,54 @@ const highlightChapter = chapterData => {
       'circle-stroke-color',
       newStrokeMap
     )
-  } else if (chapterData.name === 'Introduction') {
+
+    // window.map.setLayoutProperty(`cluster-count`, 'text-size', 18)
+
+    if (
+      chapterData.name !== 'Introduction' &&
+      !chapterData.name.includes('China')
+    ) {
+      window.map.setLayoutProperty(
+        `${chapterData.name}_cluster-count`,
+        'text-size',
+        18
+      )
+    }
+  } else if (
+    chapterData.name === 'Introduction' &&
+    !chapterData.name.includes('China')
+  ) {
     window.map.setPaintProperty('interests', 'circle-color', 'transparent')
     window.map.setPaintProperty(
       'interests',
       'circle-stroke-color',
       'transparent'
     )
+
+    // window.map.setLayoutProperty(`cluster-count`, 'text-size', 0)
+
+    nations.forEach(nation =>
+      window.map.setLayoutProperty(`${nation}_cluster-count`, 'text-size', 0)
+    )
   } else {
+    console.log(chapterData.name)
     window.map.setPaintProperty('interests', 'circle-color', paintMap)
-    window.map.setPaintProperty('interests', 'circle-stroke-color', ' #fff')
+    window.map.setPaintProperty('interests', 'circle-stroke-color', '#ffffff')
+    window.map.setPaintProperty('clusters', 'circle-color', paintMap)
+    window.map.setPaintProperty('clusters', 'circle-stroke-color', '#ffffff')
+  }
+  // window.map.setLayoutProperty(`cluster-count`, 'text-size', 18)
+
+  if (
+    chapterData.name !== 'Introduction' &&
+    !chapterData.name.includes('China')
+  ) {
+    nations.forEach(nation =>
+      window.map.setLayoutProperty(
+        `${chapterData.name}_cluster-count`,
+        'text-size',
+        18
+      )
+    )
   }
 }
