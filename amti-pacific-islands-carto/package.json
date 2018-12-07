@@ -1,5 +1,5 @@
 {
-  "name": "amti-pacific-islands-mapbox",
+  "name": "amti-pacific-islands-carto",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -46,7 +46,6 @@
     "d3-selection": "^1.3.2",
     "d3-transition": "^1.1.3",
     "intersection-observer": "^0.5.0",
-    "mapbox-gl": "^0.52.0-beta.1",
     "scrollama": "^1.4.2",
     "slim-select": "^1.17.0",
     "uglifyjs-webpack-plugin": "^2.0.1"

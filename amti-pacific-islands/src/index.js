@@ -4,46 +4,29 @@ import Scrolling from './js/scrolling'
 import breakpoints from './js/breakpoints'
 
 import makeMap from './js/makeMap'
+import mapboxgl from 'mapbox-gl'
 
 import './scss/main.scss'
-
-const container = document.getElementById('scrolly-island-interactive')
-const chapters = [
-  'Introduction',
-  'France',
-  'United States',
-  'Australia',
-  'New Zealand',
-  'China',
-  'Conclusion'
-]
-const countries = [
-  'France',
-  'United States',
-  'Australia',
-  'New Zealand',
-  'China'
-]
-
-const countryColors = {
-  'united-states': 'blue',
-  france: 'green',
-  australia: 'yellow',
-  'new-zealand': 'orange'
-}
 
 const spreadsheetID = '115eMJVfot0DDYcv7nhsVM4X5Djihr2ygpMdMYzBSsdc'
 
 const chapterURL =
   'https://spreadsheets.google.com/feeds/list/' +
   spreadsheetID +
-  '/3/public/values?alt=json'
+  '/2/public/values?alt=json'
 
-let map,
+const container = document.getElementById('scrolly-island-interactive')
+
+let countryColors = [],
+  paintMap,
+  chinaPopup = new mapboxgl.Popup({
+    closeButton: false
+  }),
+  exclude = ['Introduction', 'Conclusion'],
   stepActions = [],
   currentStep = 0
 
-function init() {
+const init = () => {
   if (!container) {
     return
   }
@@ -52,6 +35,15 @@ function init() {
     .then(resp => resp.json())
     .then(json => {
       stepActions = parseChapterData(json.feed.entry)
+
+      countryColors = stepActions
+        .filter(c => !exclude.includes(c.name))
+        .map(c => [c.name, c.color])
+        .reduce((a, b) => a.concat(b))
+
+      paintMap = ['match', ['get', 'country']]
+        .concat(countryColors)
+        .concat(['#e06b91'])
     })
     .then(x => {
       interactiveSetup({
@@ -61,9 +53,17 @@ function init() {
       })
 
       Scrolling({ stepActions: stepActions })
-      map = makeMap()
-      window.addEventListener('resize', stepActions[currentStep].fly())
+
+      makeMap()
+
+      window.addEventListener('resize', resize)
     })
+}
+
+init()
+
+const resize = () => {
+  stepActions[currentStep].fly()
 }
 
 const parseChapterData = rawData => {
@@ -78,59 +78,18 @@ const parseChapterData = rawData => {
       }
     })
     chapterData.center = [
-      parseFloat(chapterData.longitude) + 2,
-      parseFloat(chapterData.latitude) + 5
+      parseFloat(chapterData.latitude) + 5,
+      parseFloat(chapterData.longitude) + 2
     ]
 
     chapterData.text = `<h3 class="title">${chapterData.title}</h3>
 <p class="story">${chapterData.text}</p>`
 
     chapterData.fly = () => {
-      map.map.flyTo(chapterData.center, parseInt(chapterData.zoom, 10) + 1, {
-        animate: true,
-        easeLinearity: 2,
-        duration: 1.5
-      })
-
-      let name =
-        chapterData.name.indexOf('-') > 0
-          ? chapterData.name.substring(0, chapterData.name.indexOf('-'))
-          : chapterData.name
-
-      let names = chapters
-        .filter(c => c !== name)
-        .map(c => `"${c}"`)
-        .join(',')
-
-      let className = name.toLowerCase().replace(' ', '-')
-
-      let countryElements = `.icon-${className}:not(.marker-cluster-small)`
-
-      let all = document.querySelectorAll(
-        `.leaflet-marker-icon:not(.marker-cluster-small)`
-      )
-
-      if (countries.includes(name)) {
-        let elements =
-          name !== 'China' ? document.querySelectorAll(countryElements) : all
-
-        all.forEach(i => {
-          i.style.backgroundImage = `url(https://csis-ilab.github.io/mapbox-custom/amti-pacific-islands/dist/img/${
-            countryColors[className]
-          }.png)`
-        })
-
-        elements.forEach(i => {
-          i.style.backgroundImage = `url(https://csis-ilab.github.io/mapbox-custom/amti-pacific-islands/dist/img/highlight.png)`
-        })
-
-        // map.style_points.setContent(`
-        //         #layer {
-        //           marker-width: 15;
-        //           marker-fill:  ramp([country], (#ff0,transparent,transparent,transparent,transparent,transparent,transparent,transparent), ("${name}",${names}), "=");
-        //   				marker-line-color: transparent;
-        //         }
-        //       `)
+      fly(chapterData)
+      if (window.map.getSource('interests')) {
+        highlightChapter(chapterData)
+        setPopup(chapterData)
       }
     }
 
@@ -139,4 +98,121 @@ const parseChapterData = rawData => {
   return d
 }
 
-init()
+const setPopup = chapterData => {
+  let coordinates = chapterData.center
+
+  let features = window.map.getSource('interests')._data.features
+
+  let feature = features.find(f => {
+    let cLatitude = Math.ceil(f.geometry.coordinates[0])
+    let cLongitude = Math.ceil(f.geometry.coordinates[1])
+
+    let fLatitude = Math.ceil(coordinates[0] - 5)
+    let fLongitude = Math.ceil(coordinates[1] - 2)
+
+    let cCoordinates = [cLatitude, cLongitude].join(',')
+    let fCoordinates = [fLatitude, fLongitude].join(',')
+
+    return cCoordinates === fCoordinates
+  })
+
+  if (feature) {
+    let properties = feature.properties
+    let allowedHeaders = [
+      'type',
+      'number-of-ships-permanently-based',
+      'number-of-troops-stationed',
+      'number-of-aircraft-based',
+      'chinese-involvement'
+    ]
+    let description
+
+    if (window.screen.availWidth > 768) {
+      description = Object.keys(properties)
+        .filter(p => p !== 'country')
+        .map(p => {
+          if (properties[p])
+            return allowedHeaders.includes(p)
+              ? `<div class=
+          "popupHeaderStyle">${p
+            .toUpperCase()
+            .replace(/-/g, ' ')
+            .replace('NUMBER', '#')}</div><div class="popupEntryStyle">${
+                  properties[p]
+                }</div>`
+              : `<div class="popupEntryStyle">${properties[p]}</div>`
+        })
+        .filter(p => p)
+        .join('')
+    } else {
+      Object.keys(properties)
+        .filter(p => p !== 'country')
+        .map(p => {
+          description = `<div class=
+    "popupHeaderStyle">Port or Base</div><div class="popupEntryStyle">${
+      properties['port-or-base']
+    }</div>`
+        })
+    }
+
+    chinaPopup
+      .setLngLat([coordinates[0] - 5, coordinates[1] - 2])
+      .setHTML(
+        `<div class="leaflet-popup-content-wrapper">${description}</div>`
+      )
+      .addTo(map)
+  }
+  if (!chapterData.name.includes('China')) chinaPopup.remove()
+}
+
+const fly = chapterData => {
+  if (!chapterData.name.includes('China')) {
+    window.map.flyTo(chapterData)
+  } else {
+    chapterData.longitude = parseFloat(chapterData.longitude) + 2
+    chapterData.latitude = parseFloat(chapterData.latitude) + 5
+    window.map.flyTo(chapterData)
+  }
+}
+
+const highlightChapter = chapterData => {
+  if (!exclude.includes(chapterData.name)) {
+    let newFillMap = !chapterData.name.includes('China')
+      ? [
+          'match',
+          ['get', 'country'],
+          `${chapterData.name}`,
+          `${stepActions.find(c => c.name === chapterData.name).color}`,
+          'transparent'
+        ]
+      : ['match', ['get', 'chinese-involvement'], '', 'transparent', '#e06b91']
+
+    let newStrokeMap = !chapterData.name.includes('China')
+      ? [
+          'match',
+          ['get', 'country'],
+          `${chapterData.name}`,
+          '#fff',
+          'transparent'
+        ]
+      : ['match', ['get', 'chinese-involvement'], '', 'transparent', '#fff']
+
+    window.map.setPaintProperty('interests', 'circle-color', newFillMap)
+
+    window.map.setPaintProperty(
+      'interests',
+      'circle-stroke-color',
+      newStrokeMap
+    )
+  } else if (chapterData.name === 'Introduction') {
+    window.map.setPaintProperty('interests', 'circle-color', 'transparent')
+    window.map.setPaintProperty(
+      'interests',
+      'circle-stroke-color',
+      'transparent'
+    )
+  } else {
+    window.map.setPaintProperty('interests', 'circle-color', paintMap)
+    window.map.setPaintProperty('interests', 'circle-stroke-color', ' #fff')
+  }
+}

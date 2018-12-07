@@ -13,11 +13,10 @@
   p {
     margin-top: 0;
     margin-bottom: 1rem;
-    @include fontSize(22px);
-    line-height: 1.4;
+    @include fontSize(14px);
 
     @include breakpoint('medium') {
-      @include fontSize(27px);
+      @include fontSize(18px);
     }
 
     &:last-of-type {
@@ -30,9 +29,9 @@
   position: absolute;
   top: 0;
   left: 1rem;
-  right: calc(-99vw + 60em);
+  right: 1rem;
   z-index: 30;
-  max-width: 30em;
+  max-width: 30rem;
   padding: 1rem;
   @extend %prose;
 
@@ -59,8 +58,8 @@
 
   @include breakpoint('medium') {
     top: unset;
-    right: calc(-100vw + 35%);
-    max-width: 30em;
+    right: calc(-100vw + 33% + 1rem);
+    max-width: 30rem;
     width: 33%;
   }
 }
@@ -89,11 +88,7 @@
     pointer-events: auto;
 
     .prose-jump-to {
-      @include fontSize(24px);
-    }
-
-    h3 {
-      color: #023950;
+      @include fontSize(12px);
     }
   }
 }
@@ -163,13 +158,13 @@
   }
 
   .scroll-total-page {
-    @include fontSize(22px);
+    @include fontSize(12px);
     color: $color__scroll-total;
     margin-left: -1px;
     vertical-align: 2px;
 
     @include breakpoint('medium') {
-      @include fontSize(27px);
+      @include fontSize(18px);
     }
   }
 

@@ -3,17 +3,15 @@ import 'intersection-observer'
 import scrollama from 'scrollama'
 import breakpoints from './breakpoints'
 
-let currentStep, map
-
 const ScrollingControls = {
   scroller: scrollama(),
   currentStep: 0,
   stepActions: null,
   handleResize() {
     let windowHeight = window.innerHeight
-    let siteHeader = document.querySelector('.navbar')
+    let siteHeader = document.getElementById('masthead')
     let topOffset = 0
-    if (siteHeader) {
+    if (siteHeader && !breakpoints.isMobile()) {
       topOffset = siteHeader.offsetTop + siteHeader.offsetHeight
       ScrollingControls.graphic.style('top', topOffset + 'px')
       ScrollingControls.filters.style('top', topOffset + 'px')
@@ -33,15 +31,13 @@ const ScrollingControls = {
       return i === response.index
     })
 
-    currentStep = response.index
-    if (window.map.getSource('point')) {
-      animateMarker(0)
-    }
-    ScrollingControls.progress_current.text(currentStep + 2)
-    ScrollingControls.progress_link.node().href = '#step' + (currentStep + 1)
+    ScrollingControls.currentStep = response.index
+    ScrollingControls.progress_current.text(ScrollingControls.currentStep + 2)
+    ScrollingControls.progress_link.node().href =
+      '#step' + (ScrollingControls.currentStep + 1)
 
-    if (ScrollingControls.stepActions[currentStep + 1]) {
-      ScrollingControls.stepActions[currentStep + 1].fly()
+    if (ScrollingControls.stepActions[ScrollingControls.currentStep + 1]) {
+      ScrollingControls.stepActions[ScrollingControls.currentStep + 1].fly()
     }
   },
   handleStepExit(response) {
@@ -101,57 +97,6 @@ const ScrollingControls = {
 function scrollInit(args) {
   ScrollingControls.stepActions = args.stepActions
   ScrollingControls.init()
-}
-let framesPerSecond = 12,
-  initialRadius = 8,
-  radius = initialRadius,
-  maxRadius = 32,
-  initialOpacity = 1,
-  opacity = initialOpacity,
-  myTimer
-
-function animateMarker(timestamp) {
-  if (myTimer) clearTimeout(myTimer)
-
-  myTimer = setTimeout(function() {
-    requestAnimationFrame(animateMarker)
-
-    radius += (maxRadius - radius) / framesPerSecond
-    opacity -= 0.9 / framesPerSecond
-    opacity = Math.max(0, opacity)
-
-    window.map.setPaintProperty('point', 'circle-radius', radius)
-    window.map.setPaintProperty('point', 'circle-opacity', opacity)
-
-    if (opacity <= 0) {
-      radius = initialRadius
-      opacity = initialOpacity
-    }
-  }, 500 / framesPerSecond)
-
-  let atTop = currentStep + 1 === 0
-
-  let atBottom = currentStep + 1 === ScrollingControls.stepActions.length
-
-  if (ScrollingControls.stepActions[currentStep + 1].name.includes('China')) {
-    window.map.setPaintProperty('point', 'circle-color', '#ff0')
-    window.map.setPaintProperty('point1', 'circle-color', '#ff0')
-  } else {
-    window.map.setPaintProperty('point', 'circle-color', 'transparent')
-    window.map.setPaintProperty('point1', 'circle-color', 'transparent')
-  }
-
-  window.map.getSource('point').setData(pointOnCircle(timestamp / 1000))
-}
-
-function pointOnCircle() {
-  //turn into function that returns array of animated points?
-  let coords = ScrollingControls.stepActions[currentStep + 1].center
-
-  return {
-    type: 'Point',
-    coordinates: [coords[0] - 5, coords[1] - 2]
-  }
 }
 
 export default scrollInit

@@ -1,6 +1,13 @@
 // General
 
+html {
+  font-size: 10px;
+}
+
 body {
+  font-size: 18px;
+  overflow-x: hidden;
+
   --breakpoint: 'xsmall';
 
   @include breakpoint('small') {
@@ -16,20 +23,26 @@ body {
   }
 }
 
+#content {
+  overflow: visible;
+}
+
 #scrolly-island-interactive {
+  width: calc(100vw - 2rem);
+  margin-left: calc((100vw - 100%) / -2 + 1rem);
+  margin-right: calc((100vw - 100%) / -2 + 1rem);
   font-family: $font_pt_sans_narrow;
   font-size: 18px;
-  margin: 0;
   padding: 0;
-  color: $gray;
+  color: $dark-gray;
 
   a {
+    color: $gray;
     text-decoration: none;
-    color: $teal;
     @include transition(color 0.3s ease-in-out, box-shadow 0.3s ease-in-out);
 
     &:hover {
-      box-shadow: inset 0px -2px 0px 0 $dark-gray;
+      color: $teal;
     }
   }
 

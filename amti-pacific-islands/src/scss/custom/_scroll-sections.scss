@@ -13,10 +13,11 @@
   p {
     margin-top: 0;
     margin-bottom: 1rem;
-    @include fontSize(14px);
+    @include fontSize(22px);
+    line-height: 1.4;
 
     @include breakpoint('medium') {
-      @include fontSize(18px);
+      @include fontSize(27px);
     }
 
     &:last-of-type {
@@ -27,11 +28,8 @@
 
 .initial-step-desc {
   position: absolute;
-  top: 0;
-  left: 1rem;
-  right: 1rem;
   z-index: 30;
-  max-width: 30rem;
+  top: 60px;
   padding: 1rem;
   @extend %prose;
 
@@ -40,6 +38,7 @@
   }
 
   @include breakpoint('medium') {
+    max-width: 30em;
     top: 1rem;
     right: 0;
     left: unset;
@@ -58,8 +57,8 @@
 
   @include breakpoint('medium') {
     top: unset;
-    right: calc(-100vw + 33% + 1rem);
-    max-width: 30rem;
+    right: calc(-100vw + 35%);
+    max-width: 30em;
     width: 33%;
   }
 }
@@ -73,6 +72,7 @@
 
   &.is-active {
     visibility: visible;
+    top: 60px;
   }
 
   &[data-step='5'].is-active {
@@ -88,12 +88,17 @@
     pointer-events: auto;
 
     .prose-jump-to {
-      @include fontSize(12px);
+      @include fontSize(24px);
+    }
+
+    h3 {
+      color: #023950;
     }
   }
 }
 
 #scroll-progress {
+  display: none;
   --icon-width: 1rem;
   --icon-height: calc(var(--icon-width) + 8px);
   --padding: 0.5rem;
@@ -158,13 +163,13 @@
   }
 
   .scroll-total-page {
-    @include fontSize(12px);
+    @include fontSize(22px);
     color: $color__scroll-total;
     margin-left: -1px;
     vertical-align: 2px;
 
     @include breakpoint('medium') {
-      @include fontSize(18px);
+      @include fontSize(27px);
     }
   }
 
