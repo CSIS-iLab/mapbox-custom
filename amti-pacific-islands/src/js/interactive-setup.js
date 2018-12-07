@@ -5,7 +5,7 @@ function interactiveSetup({ container, initialDesc, steps }) {
     HTML += `<div class="initial-step-desc">
               ${initialDesc}
               <div id="chevWrapper" style="display: block;">
-                <a href="#step0">
+                <a href="#step1">
                   <span id="chevron">»</span>
                   Scroll down
                 </a>

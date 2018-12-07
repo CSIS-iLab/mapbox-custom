@@ -29,7 +29,7 @@
 .initial-step-desc {
   position: absolute;
   z-index: 30;
-  top: 60px;
+  top: 70px;
   padding: 1rem;
   @extend %prose;
 
@@ -72,7 +72,7 @@
 
   &.is-active {
     visibility: visible;
-    top: 60px;
+    top: 70px;
   }
 
   &[data-step='5'].is-active {
