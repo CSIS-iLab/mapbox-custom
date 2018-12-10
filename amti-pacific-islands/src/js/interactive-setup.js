@@ -1,18 +1,6 @@
 function interactiveSetup({ container, initialDesc, steps }) {
   let HTML = ''
 
-  if (initialDesc) {
-    HTML += `<div class="initial-step-desc">
-              ${initialDesc}
-              <div id="chevWrapper" style="display: block;">
-                <a href="#step0">
-                  <span id="chevron">»</span>
-                  Scroll down
-                </a>
-              </div>
-            </div>`
-  }
-
   HTML += `<section id="scroll">
   <div class="scroll__graphic sticky">
     <div id="legend">
@@ -48,7 +36,13 @@ function interactiveSetup({ container, initialDesc, steps }) {
       let content = ''
       if (step.text) {
         content = `<div class="prose">
-                    ${step.text}
+                    ${
+                      i === 0
+                        ? `${
+                            step.text
+                          }<p><strong>Scroll</strong> to continue or <a href="#toc-0"><strong>click</strong></a> to jump to the analysis.</p>`
+                        : step.text
+                    }
                     <div id="chevWrapper" style="display: block;">
                       <a href="#step${i + 1}">
                         <span id="chevron">»</span>
@@ -106,14 +100,32 @@ const load = () => {
     console.log('Zoom', map.getZoom())
   })
 
-  // let navHeight = document.querySelector('.navbar').offsetHeight
-  //
-  // if (navHeight) {
-  //   document.querySelector('.scroll__graphic').style.top = `${navHeight}px`
-  //
-  //   document.querySelector(
-  //     '.scroll__graphic'
-  //   ).style.height = `calc(100vh - ${navHeight}px)`
-  // }
+  let resizeEvent = window.document.createEvent('UIEvents')
+  resizeEvent.initUIEvent('resize', true, false, window, 0)
+  window.dispatchEvent(resizeEvent)
+
+  window.addEventListener('DOMMouseScroll', wheel, false)
+  window.onmousewheel = document.onmousewheel = wheel
+
+  function wheel(event) {
+    var delta = 0
+    if (event.wheelDelta) delta = event.wheelDelta / 120
+    else if (event.detail) delta = -event.detail / 3
+
+    handle(delta)
+    if (event.preventDefault) event.preventDefault()
+    event.returnValue = false
+  }
+
+  function handle(delta) {
+    var time = 1000
+    var distance = 150
+
+    window.scrollTo({
+      top: window.scrollY - distance * delta,
+      left: 0,
+      behavior: 'smooth'
+    })
+  }
 }
 export default interactiveSetup

@@ -10,7 +10,7 @@
   z-index: 12;
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: -72px;
+  margin-bottom: -50px;
   align-items: center;
   padding: 0.5rem;
   line-height: 1.2;
@@ -101,11 +101,9 @@
     // background-image: url(../img/blue.png);
   }
   .label-pact.pact-nz::before {
-    // background-color: #6688b9;
     background-image: url(../img/greenstripe.png);
   }
   .label-pact.pact-us::before {
-    // background-color: #6688b9;
     background-image: url(../img/bluestripe.png);
   }
 }

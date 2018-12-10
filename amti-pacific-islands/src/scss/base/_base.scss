@@ -37,12 +37,10 @@ body {
   color: $dark-gray;
 
   a {
-    color: $gray;
-    text-decoration: none;
+    // color: $teal;
     @include transition(color 0.3s ease-in-out, box-shadow 0.3s ease-in-out);
 
     &:hover {
-      color: $teal;
     }
   }
 
@@ -54,5 +52,16 @@ body {
 
   a {
     text-decoration: none;
+  }
+
+  h1,
+  h2,
+  h3 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    color: #023950;
   }
 }

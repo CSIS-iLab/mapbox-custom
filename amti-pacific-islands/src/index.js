@@ -19,13 +19,15 @@ const container = document.getElementById('scrolly-island-interactive')
 
 let countryColors = [],
   paintMap,
+  isMobile,
   chinaPopup = new mapboxgl.Popup({
     closeButton: false
   }),
   exclude = ['Introduction', 'Conclusion'],
+  nations = ['Australia', 'New Zealand', 'United States', 'France'],
+  special = ['United States', 'France'],
   stepActions = [],
-  currentStep = 0,
-  nations = ['Australia', 'New Zealand', 'United States', 'France']
+  currentStep = 0
 
 const init = () => {
   if (!container) {
@@ -35,6 +37,7 @@ const init = () => {
   fetch(chapterURL)
     .then(resp => resp.json())
     .then(json => {
+      isMobile = window.screen.availWidth < 768
       stepActions = parseChapterData(json.feed.entry)
 
       countryColors = stepActions
@@ -50,7 +53,7 @@ const init = () => {
       interactiveSetup({
         container: container,
         initialDesc: `${stepActions[0] ? `${stepActions[0].text}` : ``}`,
-        steps: Object.values(stepActions).slice(1)
+        steps: Object.values(stepActions)
       })
 
       Scrolling({ stepActions: stepActions })
@@ -78,10 +81,20 @@ const parseChapterData = rawData => {
         chapterData[columnName] = row[column]['$t']
       }
     })
-    chapterData.center = [
-      parseFloat(chapterData.latitude) + 5,
-      parseFloat(chapterData.longitude) + 2
-    ]
+
+    if (!isMobile) {
+      chapterData.center = [
+        parseFloat(chapterData['latitude']),
+        parseFloat(chapterData['longitude'])
+      ]
+    } else {
+      chapterData.center = [
+        parseFloat(chapterData['mobile-latitude']),
+        parseFloat(chapterData['mobile-longitude'])
+      ]
+
+      chapterData.zoom = chapterData['mobile-zoom']
+    }
 
     chapterData.text = `<h3 class="title">${chapterData.title}</h3>
 <p class="story">${chapterData.text}</p>`
@@ -108,8 +121,8 @@ const setPopup = chapterData => {
     let cLatitude = Math.ceil(f.geometry.coordinates[0])
     let cLongitude = Math.ceil(f.geometry.coordinates[1])
 
-    let fLatitude = Math.ceil(coordinates[0] - 5)
-    let fLongitude = Math.ceil(coordinates[1] - 2)
+    let fLatitude = Math.ceil(coordinates[0])
+    let fLongitude = Math.ceil(coordinates[1])
 
     let cCoordinates = [cLatitude, cLongitude].join(',')
     let fCoordinates = [fLatitude, fLongitude].join(',')
@@ -128,7 +141,7 @@ const setPopup = chapterData => {
     ]
     let description
 
-    if (window.screen.availWidth > 768) {
+    if (!isMobile) {
       description = Object.keys(properties)
         .filter(p => p !== 'country')
         .map(p => {
@@ -149,15 +162,14 @@ const setPopup = chapterData => {
       Object.keys(properties)
         .filter(p => p !== 'country')
         .map(p => {
-          description = `<div class=
-    "popupHeaderStyle">Port or Base</div><div class="popupEntryStyle">${
-      properties['port-or-base']
-    }</div>`
+          description = `<div class="popupEntryStyle">${
+            properties['port-or-base']
+          }</div>`
         })
     }
 
     chinaPopup
-      .setLngLat([coordinates[0] - 5, coordinates[1] - 2])
+      .setLngLat([coordinates[0], coordinates[1]])
       .setHTML(
         `<div class="leaflet-popup-content-wrapper">${description}</div>`
       )
@@ -167,11 +179,50 @@ const setPopup = chapterData => {
 }
 
 const fly = chapterData => {
-  if (!chapterData.name.includes('China')) {
-    window.map.flyTo(chapterData)
+  if (special.includes(chapterData.name) && isMobile) {
+    let latStart = parseFloat(chapterData['mobile-latitude-start'])
+    let longStart = parseFloat(chapterData['mobile-longitude-start'])
+
+    let latEnd = parseFloat(chapterData['mobile-latitude-end'])
+    let longEnd = parseFloat(chapterData['mobile-longitude-end'])
+
+    function myLoop(start, frames) {
+      if (timeout) clearTimeout(timeout)
+      var timeout = setTimeout(function() {
+        let count = start
+
+        let latInterval =
+          latStart - latEnd < -180
+            ? (latStart - latEnd + 360) / frames
+            : latStart - latEnd > 180
+              ? (360 - latStart - latEnd) / frames
+              : Math.abs(latStart - latEnd) / frames
+
+        let longInterval = (longStart - longEnd) / frames
+
+        let lat =
+          chapterData.name === 'United States'
+            ? latStart - latInterval * count
+            : latStart - latInterval * count
+
+        lat = lat < -180 ? 360 + lat : lat > 180 ? 360 - lat : lat
+
+        let long = longStart - longInterval * count
+
+        window.map.flyTo({
+          center: [lat, long],
+          zoom: chapterData.zoom,
+          pitch: chapterData.pitch,
+          curve: 0.5,
+          speed: 10
+        })
+
+        if (start++ < frames) myLoop(start, frames)
+      }, 36)
+    }
+
+    myLoop(0, 72)
   } else {
-    chapterData.longitude = parseFloat(chapterData.longitude) + 2
-    chapterData.latitude = parseFloat(chapterData.latitude) + 5
     window.map.flyTo(chapterData)
   }
 }
@@ -206,22 +257,14 @@ const highlightChapter = chapterData => {
       newStrokeMap
     )
 
-    // window.map.setLayoutProperty(`cluster-count`, 'text-size', 18)
-
-    if (
-      chapterData.name !== 'Introduction' &&
-      !chapterData.name.includes('China')
-    ) {
-      window.map.setLayoutProperty(
-        `${chapterData.name}_cluster-count`,
-        'text-size',
-        18
-      )
-    }
-  } else if (
-    chapterData.name === 'Introduction' &&
-    !chapterData.name.includes('China')
-  ) {
+    nations.forEach(nation => {
+      if (nation === chapterData.name && nations.includes(chapterData.name)) {
+        window.map.setLayoutProperty(`${nation}_cluster-count`, 'text-size', 18)
+      } else {
+        window.map.setLayoutProperty(`${nation}_cluster-count`, 'text-size', 0)
+      }
+    })
+  } else if (chapterData.name === 'Introduction') {
     window.map.setPaintProperty('interests', 'circle-color', 'transparent')
     window.map.setPaintProperty(
       'interests',
@@ -229,30 +272,15 @@ const highlightChapter = chapterData => {
       'transparent'
     )
 
-    // window.map.setLayoutProperty(`cluster-count`, 'text-size', 0)
-
     nations.forEach(nation =>
       window.map.setLayoutProperty(`${nation}_cluster-count`, 'text-size', 0)
     )
   } else {
-    console.log(chapterData.name)
     window.map.setPaintProperty('interests', 'circle-color', paintMap)
     window.map.setPaintProperty('interests', 'circle-stroke-color', '#ffffff')
-    window.map.setPaintProperty('clusters', 'circle-color', paintMap)
-    window.map.setPaintProperty('clusters', 'circle-stroke-color', '#ffffff')
-  }
-  // window.map.setLayoutProperty(`cluster-count`, 'text-size', 18)
 
-  if (
-    chapterData.name !== 'Introduction' &&
-    !chapterData.name.includes('China')
-  ) {
-    nations.forEach(nation =>
-      window.map.setLayoutProperty(
-        `${chapterData.name}_cluster-count`,
-        'text-size',
-        18
-      )
-    )
+    nations.forEach(nation => {
+      window.map.setLayoutProperty(`${nation}_cluster-count`, 'text-size', 18)
+    })
   }
 }

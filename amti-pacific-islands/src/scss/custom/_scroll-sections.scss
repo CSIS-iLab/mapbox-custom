@@ -13,11 +13,11 @@
   p {
     margin-top: 0;
     margin-bottom: 1rem;
-    @include fontSize(22px);
+    @include fontSize(27px);
     line-height: 1.4;
 
     @include breakpoint('medium') {
-      @include fontSize(27px);
+      @include fontSize(32px);
     }
 
     &:last-of-type {
@@ -75,24 +75,12 @@
     top: 70px;
   }
 
-  &[data-step='5'].is-active {
-    visibility: hidden;
-
-    @include breakpoint('medium') {
-      visibility: visible;
-    }
-  }
-
   .prose {
     @extend %prose;
     pointer-events: auto;
 
     .prose-jump-to {
       @include fontSize(24px);
-    }
-
-    h3 {
-      color: #023950;
     }
   }
 }

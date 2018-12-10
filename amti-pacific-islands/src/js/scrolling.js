@@ -9,14 +9,16 @@ const ScrollingControls = {
   scroller: scrollama(),
   currentStep: 0,
   stepActions: null,
+
   handleResize() {
-    let windowHeight = window.innerHeight
-    let siteHeader = document.querySelector('.navbar')
-    let topOffset = 0
+    let windowHeight = window.innerHeight,
+      siteHeader = document.querySelector('.navbar'),
+      scrollText = document.querySelector('.scroll__text'),
+      topOffset = 0
+
     if (siteHeader) {
       topOffset = siteHeader.offsetTop + siteHeader.offsetHeight
       ScrollingControls.graphic.style('top', topOffset + 'px')
-      ScrollingControls.filters.style('top', topOffset + 'px')
       windowHeight = windowHeight - topOffset
     }
 
@@ -26,6 +28,8 @@ const ScrollingControls = {
     var stepHeight = Math.floor(window.innerHeight)
     ScrollingControls.step.style('height', stepHeight + 'px')
 
+    scrollText.style.top = `-${windowHeight}px`
+
     ScrollingControls.scroller.resize()
   },
   handleStepEnter(response) {
@@ -33,44 +37,26 @@ const ScrollingControls = {
       return i === response.index
     })
 
-    currentStep = response.index
     if (window.map.getSource('point')) {
       animateMarker(0)
     }
-    ScrollingControls.progress_current.text(currentStep + 2)
-    ScrollingControls.progress_link.node().href = '#step' + (currentStep + 1)
 
-    if (ScrollingControls.stepActions[currentStep + 1]) {
-      ScrollingControls.stepActions[currentStep + 1].fly()
+    ScrollingControls.currentStep = response.index
+    currentStep = response.index
+
+    ScrollingControls.progress_current.text(currentStep)
+    ScrollingControls.progress_link.node().href = '#step' + currentStep
+
+    if (ScrollingControls.stepActions[currentStep]) {
+      ScrollingControls.stepActions[currentStep].fly()
     }
   },
-  handleStepExit(response) {
-    if (
-      ScrollingControls.stepActions[ScrollingControls.currentStep] &&
-      response.direction == 'up'
-    ) {
-      // ScrollingControls.stepActions[ScrollingControls.currentStep].exit()
 
-      if (response.index == 0) {
-        ScrollingControls.progress_current.text(
-          ScrollingControls.currentStep + 1
-        )
-      }
-    }
-
-    if (
-      response.index == ScrollingControls.stepActions.length - 1 &&
-      response.direction == 'down'
-    ) {
-      ScrollingControls.stepActions[response.index].endInteractive()
-    }
-  },
   init() {
     this.container = select('#scroll')
     this.graphic = this.container.select('.scroll__graphic')
     this.chart = this.graphic.select('.chart')
     this.text = this.container.select('.scroll__text')
-    this.filters = this.container.select('#filters')
     this.step = this.text.selectAll('.step')
     this.progress_link = select('#scroll-progress a')
     this.progress_current = select('#scroll-progress .scroll-current-page')
@@ -85,13 +71,12 @@ const ScrollingControls = {
         text: '.scroll__text',
         step: '.scroll__text .step',
         offset: 1,
-        debug: false
+        debug: true
       })
       .onStepEnter(this.handleStepEnter)
-      .onStepExit(this.handleStepExit)
 
     this.progress_link.node().href = '#step' + this.currentStep
-    this.progress_current.text(this.currentStep + 1)
+    this.progress_current.text(this.currentStep)
     this.total_pages.text('/' + (this.stepActions.length + 1))
 
     window.addEventListener('resize', this.handleResize)
@@ -108,49 +93,67 @@ let framesPerSecond = 12,
   maxRadius = 32,
   initialOpacity = 1,
   opacity = initialOpacity,
-  myTimer
+  timer
 
 function animateMarker(timestamp) {
-  if (myTimer) clearTimeout(myTimer)
+  if (currentStep) {
+    if (timer) clearTimeout(timer)
 
-  myTimer = setTimeout(function() {
-    requestAnimationFrame(animateMarker)
+    timer = setTimeout(function() {
+      requestAnimationFrame(animateMarker)
 
-    radius += (maxRadius - radius) / framesPerSecond
-    opacity -= 0.9 / framesPerSecond
-    opacity = Math.max(0, opacity)
+      radius += (maxRadius - radius) / framesPerSecond
+      opacity -= 0.9 / framesPerSecond
+      opacity = Math.max(0, opacity)
 
-    window.map.setPaintProperty('point', 'circle-radius', radius)
-    window.map.setPaintProperty('point', 'circle-opacity', opacity)
+      window.map.setPaintProperty('point', 'circle-radius', radius)
+      window.map.setPaintProperty('point', 'circle-opacity', opacity)
 
-    if (opacity <= 0) {
-      radius = initialRadius
-      opacity = initialOpacity
+      if (opacity <= 0) {
+        radius = initialRadius
+        opacity = initialOpacity
+      }
+    }, 500 / framesPerSecond)
+
+    let atTop = currentStep === 0
+
+    let atBottom = currentStep === ScrollingControls.stepActions.length
+
+    if (ScrollingControls.stepActions[currentStep].name.includes('China')) {
+      window.map.setPaintProperty('point', 'circle-color', '#ff0')
+      window.map.setPaintProperty('point1', 'circle-color', '#ff0')
+    } else {
+      window.map.setPaintProperty('point', 'circle-color', 'transparent')
+      window.map.setPaintProperty('point1', 'circle-color', 'transparent')
     }
-  }, 500 / framesPerSecond)
 
-  let atTop = currentStep + 1 === 0
-
-  let atBottom = currentStep + 1 === ScrollingControls.stepActions.length
-
-  if (ScrollingControls.stepActions[currentStep + 1].name.includes('China')) {
-    window.map.setPaintProperty('point', 'circle-color', '#ff0')
-    window.map.setPaintProperty('point1', 'circle-color', '#ff0')
-  } else {
-    window.map.setPaintProperty('point', 'circle-color', 'transparent')
-    window.map.setPaintProperty('point1', 'circle-color', 'transparent')
+    window.map.getSource('point').setData(pointOnCircle(timestamp / 1000))
   }
-
-  window.map.getSource('point').setData(pointOnCircle(timestamp / 1000))
 }
 
 function pointOnCircle() {
-  //turn into function that returns array of animated points?
-  let coords = ScrollingControls.stepActions[currentStep + 1].center
+  let chinaInterests = [
+    [167.188, -15.51494],
+    [-172.008333, -13.829722],
+    [145.809917, -5.073056],
+    [147.371944, -2.040278],
+    [146.99655, -6.741072],
+    [177.485278, -17.760556],
+    [-175.197194, -21.131056],
+    [-158.12, -19.967778]
+  ]
+
+  let chinaStep = currentStep - 5
+
+  let thisStep = ScrollingControls.stepActions[currentStep]
+
+  let coords = thisStep.name.includes('China')
+    ? chinaInterests[chinaStep]
+    : thisStep.center
 
   return {
     type: 'Point',
-    coordinates: [coords[0] - 5, coords[1] - 2]
+    coordinates: [coords[0], coords[1]]
   }
 }
 

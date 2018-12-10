@@ -1,13 +1,30 @@
 import mapboxgl from 'mapbox-gl'
+
+import MapboxglSpiderifier from 'mapboxgl-spiderifier'
+
 let map,
   interestsData,
   popup = new mapboxgl.Popup({
     closeButton: false
   }),
-  exclude = ['Introduction', 'Conclusion'],
-  chapterList,
   basemapId,
-  initialRadius = 8
+  initialRadius = 8,
+  spiderifier,
+  exclude = ['Introduction', 'Conclusion'],
+  allowedHeaders = [
+    'type',
+    'number-of-ships-permanently-based',
+    'number-of-troops-stationed',
+    'number-of-aircraft-based',
+    'chinese-involvement'
+  ]
+
+const chapterColors = {
+  'United States': `#6688b9`,
+  France: `#f89c74`,
+  'New Zealand': `#00ad3b`,
+  Australia: `#f6cf71`
+}
 
 const spreadsheetID = '115eMJVfot0DDYcv7nhsVM4X5Djihr2ygpMdMYzBSsdc'
 
@@ -43,16 +60,78 @@ function initIslands() {
     addAnimatedPointLayer()
 
     window.map.on('click', 'interests', clickInterests)
+    window.map.on('zoom', () => spiderifier.unspiderfy())
 
     let nations = ['Australia', 'New Zealand', 'United States', 'France']
+
+    spiderifier = new MapboxglSpiderifier(window.map, {
+      customPin: true,
+      initializeLeg: function(spiderLeg) {
+        let chapterColor = chapterColors[spiderLeg.feature.country]
+        let spiderPinCustom = `<div class="spider-point-circle" style="width:20px;height:20px;margin-left:-10px;margin-top:-10px;border-radius:50%;border:2px solid #fff;background-color:${chapterColor}"></div>`
+
+        spiderLeg.elements.pin.innerHTML = spiderPinCustom
+
+        var popup = new mapboxgl.Popup({
+          closeButton: true,
+          closeOnClick: false,
+          offset: MapboxglSpiderifier.popupOffsetForSpiderLeg(spiderLeg)
+        })
+
+        let properties = spiderLeg.feature
+
+        let description
+        if (window.screen.availWidth > 768) {
+          description = Object.keys(properties)
+            .filter(p => p !== 'country')
+            .map(p => {
+              if (properties[p])
+                return allowedHeaders.includes(p)
+                  ? `<div class=
+              "popupHeaderStyle">${p
+                .toUpperCase()
+                .replace(/-/g, ' ')
+                .replace('NUMBER', '#')}</div><div class="popupEntryStyle">${
+                      properties[p]
+                    }</div>`
+                  : `<div class="popupEntryStyle">${properties[p]}</div>`
+            })
+            .filter(p => p)
+            .join('')
+        } else {
+          Object.keys(properties)
+            .filter(p => p !== 'country')
+            .map(p => {
+              description = `<div class=
+        "popupHeaderStyle">Port or Base</div><div class="popupEntryStyle">${
+          properties['port-or-base']
+        }</div>`
+            })
+        }
+
+        popup.setHTML(`${description}`)
+
+        spiderLeg.mapboxMarker.setPopup(popup)
+
+        let circles = [...document.querySelectorAll('.spider-point-circle')]
+
+        circles.forEach(circle => {
+          circle.addEventListener('mouseenter', removePopups)
+        })
+
+        nations.forEach(nation =>
+          window.map.on('mouseenter', `${nation}_clusters`, removePopups)
+        )
+
+        window.map.on('mouseenter', `interests`, removePopups)
+      }
+    })
 
     nations.forEach(nation =>
       window.map.on('click', `${nation}_clusters`, e =>
         clickClusters(e, nation)
       )
     )
-
-    // window.map.on('click', `clusters`, clickClusters)
 
     window.map.on('mouseenter', 'interests', function() {
       window.map.getCanvas().style.cursor = 'pointer'
@@ -68,8 +147,13 @@ function initIslands() {
   })
 }
 
+function removePopups() {
+  let popups = Array.from(document.querySelectorAll('.mapboxgl-popup'))
+
+  popups.forEach(p => p.remove())
+}
+
 function addInterestsLayer() {
-  console.log(interestsData)
   window.map.addSource('interests', {
     type: 'geojson',
     data: interestsData
@@ -86,57 +170,6 @@ function addInterestsLayer() {
       'circle-radius': initialRadius + 2
     }
   })
-
-  // window.map.addSource(`clusters`, {
-  //   type: 'geojson',
-  //   data: interestsData,
-  //   cluster: true,
-  //   clusterMaxZoom: 6,
-  //   clusterRadius: 50
-  // })
-  //
-  // window.map.addLayer({
-  //   id: `clusters`,
-  //   type: 'circle',
-  //   source: `clusters`,
-  //   paint: {
-  //     'circle-color': 'transparent',
-  //     'circle-stroke-width': 2,
-  //     'circle-stroke-color': 'transparent',
-  //     'circle-radius': initialRadius + 2
-  //   }
-  // })
-  //
-  // window.map.addLayer({
-  //   id: `cluster-count`,
-  //   type: 'symbol',
-  //   source: `clusters`,
-  //   filter: ['has', 'point_count'],
-  //   paint: {
-  //     'text-color': '#ffffff',
-  //     'text-halo-color': '#000000',
-  //     'text-halo-blur': 0.5,
-  //     'text-halo-width': 1
-  //   },
-  //   layout: {
-  //     'text-field': '{point_count_abbreviated}',
-  //     'text-font': ['PT Sans Bold'],
-  //     'text-size': 0
-  //   }
-  // })
-  //
-  // window.map.addLayer({
-  //   id: `unclustered-point`,
-  //   type: 'circle',
-  //   source: `clusters`,
-  //   filter: ['!', ['has', 'point_count']],
-  //   paint: {
-  //     'circle-color': 'transparent',
-  //     'circle-radius': initialRadius + 2,
-  //     'circle-stroke-width': 1,
-  //     'circle-stroke-color': 'transparent'
-  //   }
-  // })
 
   let nations = ['Australia', 'New Zealand', 'United States', 'France']
 
@@ -248,35 +281,35 @@ function pointOnCircle(loc = 0) {
 }
 
 const clickClusters = (e, nation) => {
-  console.log(e, nation)
   var features = window.map.queryRenderedFeatures(e.point, {
     layers: [`${nation}_clusters`]
   })
-  var clusterId = features[0].properties.cluster_id
 
-  window.map
-    .getSource(`${nation}_clusters`)
-    .getClusterExpansionZoom(clusterId, function(err, zoom) {
-      if (err) return
+  spiderifier.unspiderfy()
+  if (!features.length) {
+    return
+  } else {
+    window.map
+      .getSource(`${nation}_clusters`)
+      .getClusterLeaves(features[0].properties.cluster_id, 100, 0, function(
+        err,
+        leafFeatures
+      ) {
+        if (err) {
+          return console.error('error while getting leaves of a cluster', err)
+        }
+        var markers = leafFeatures.map(lF => lF.properties)
 
-      window.map.easeTo({
-        center: features[0].geometry.coordinates,
-        zoom: zoom
+        spiderifier.spiderfy(features[0].geometry.coordinates, markers)
       })
-    })
+  }
 }
 
 const clickInterests = e => {
   let details = new mapboxgl.Popup()
   let coordinates = e.features[0].geometry.coordinates.slice()
   let properties = e.features[0].properties
-  let allowedHeaders = [
-    'type',
-    'number-of-ships-permanently-based',
-    'number-of-troops-stationed',
-    'number-of-aircraft-based',
-    'chinese-involvement'
-  ]
+
   let description
   if (window.screen.availWidth > 768) {
     description = Object.keys(properties)
