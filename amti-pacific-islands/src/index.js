@@ -24,7 +24,7 @@ let countryColors = [],
     closeButton: false
   }),
   exclude = ['Introduction', 'Conclusion'],
-  nations = ['Australia', 'New Zealand', 'United States', 'France'],
+  nations = ['Australia', 'New Zealand', 'United States', 'France', 'China'],
   special = ['United States', 'France'],
   stepActions = [],
   currentStep = 0
@@ -101,7 +101,7 @@ const parseChapterData = rawData => {
 
     chapterData.fly = () => {
       fly(chapterData)
-      if (window.map.getSource('interests')) {
+      if (window.map.getSource('United States_clusters')) {
         highlightChapter(chapterData)
         setPopup(chapterData)
       }
@@ -113,21 +113,12 @@ const parseChapterData = rawData => {
 }
 
 const setPopup = chapterData => {
-  let coordinates = chapterData.center
+  let chapterName = chapterData.name
 
   let features = window.map.getSource('interests')._data.features
 
   let feature = features.find(f => {
-    let cLatitude = Math.ceil(f.geometry.coordinates[0])
-    let cLongitude = Math.ceil(f.geometry.coordinates[1])
-
-    let fLatitude = Math.ceil(coordinates[0])
-    let fLongitude = Math.ceil(coordinates[1])
-
-    let cCoordinates = [cLatitude, cLongitude].join(',')
-    let fCoordinates = [fLatitude, fLongitude].join(',')
-
-    return cCoordinates === fCoordinates
+    return f.properties.country === chapterName
   })
 
   if (feature) {
@@ -169,7 +160,7 @@ const setPopup = chapterData => {
     }
 
     chinaPopup
-      .setLngLat([coordinates[0], coordinates[1]])
+      .setLngLat(feature.geometry.coordinates)
       .setHTML(
         `<div class="leaflet-popup-content-wrapper">${description}</div>`
       )
@@ -227,59 +218,130 @@ const fly = chapterData => {
   }
 }
 
+const chapterColors = {
+  'United States': `#6688b9`,
+  France: `#f89c74`,
+  'New Zealand': `#00ad3b`,
+  Australia: `#f6cf71`,
+  China: '#e06b91'
+}
+
 const highlightChapter = chapterData => {
-  if (!exclude.includes(chapterData.name)) {
-    let newFillMap = !chapterData.name.includes('China')
+  let chapterName =
+    chapterData.name.indexOf('-') > 0
+      ? chapterData.name.substring(0, chapterData.name.indexOf('-'))
+      : chapterData.name
+
+  if (!exclude.includes(chapterName)) {
+    let newFillMap = !chapterName.includes('China')
       ? [
           'match',
           ['get', 'country'],
-          `${chapterData.name}`,
-          `${stepActions.find(c => c.name === chapterData.name).color}`,
+          `${chapterName}`,
+          `${stepActions.find(c => c.name === chapterName).color}`,
           'transparent'
         ]
       : ['match', ['get', 'chinese-involvement'], '', 'transparent', '#e06b91']
 
-    let newStrokeMap = !chapterData.name.includes('China')
-      ? [
-          'match',
-          ['get', 'country'],
-          `${chapterData.name}`,
-          '#fff',
-          'transparent'
-        ]
+    let newStrokeMap = !chapterName.includes('China')
+      ? ['match', ['get', 'country'], `${chapterName}`, '#fff', 'transparent']
       : ['match', ['get', 'chinese-involvement'], '', 'transparent', '#fff']
 
-    window.map.setPaintProperty('interests', 'circle-color', newFillMap)
-
-    window.map.setPaintProperty(
-      'interests',
-      'circle-stroke-color',
-      newStrokeMap
-    )
-
     nations.forEach(nation => {
-      if (nation === chapterData.name && nations.includes(chapterData.name)) {
+      if (nation === chapterName && nations.includes(chapterName)) {
+        window.map.setPaintProperty(
+          `${nation}_clusters`,
+          'circle-color',
+          newFillMap
+        )
+
+        window.map.setPaintProperty(
+          `${nation}_clusters`,
+          'circle-stroke-color',
+          newStrokeMap
+        )
+
+        window.map.setPaintProperty(
+          `${nation}_cluster-count-color`,
+          'circle-color',
+          chapterColors[nation]
+        )
+
+        window.map.setPaintProperty(
+          `${nation}_cluster-count-color`,
+          'circle-stroke-color',
+          '#fff'
+        )
+
         window.map.setLayoutProperty(`${nation}_cluster-count`, 'text-size', 18)
       } else {
+        window.map.setPaintProperty(
+          `${nation}_clusters`,
+          'circle-color',
+          'transparent'
+        )
+
+        window.map.setPaintProperty(
+          `${nation}_clusters`,
+          'circle-stroke-color',
+          'transparent'
+        )
+
+        window.map.setPaintProperty(
+          `${nation}_cluster-count-color`,
+          'circle-color',
+          'transparent'
+        )
+
+        window.map.setPaintProperty(
+          `${nation}_cluster-count-color`,
+          'circle-stroke-color',
+          'transparent'
+        )
+
         window.map.setLayoutProperty(`${nation}_cluster-count`, 'text-size', 0)
       }
     })
-  } else if (chapterData.name === 'Introduction') {
-    window.map.setPaintProperty('interests', 'circle-color', 'transparent')
-    window.map.setPaintProperty(
-      'interests',
-      'circle-stroke-color',
-      'transparent'
-    )
-
-    nations.forEach(nation =>
-      window.map.setLayoutProperty(`${nation}_cluster-count`, 'text-size', 0)
-    )
-  } else {
-    window.map.setPaintProperty('interests', 'circle-color', paintMap)
-    window.map.setPaintProperty('interests', 'circle-stroke-color', '#ffffff')
-
+  } else if (chapterName === 'Introduction') {
     nations.forEach(nation => {
+      window.map.setPaintProperty(
+        `${nation}_clusters`,
+        'circle-color',
+        'transparent'
+      )
+
+      window.map.setPaintProperty(
+        `${nation}_clusters`,
+        'circle-stroke-color',
+        'transparent'
+      )
+
+      window.map.setPaintProperty(
+        `${nation}_cluster-count-color`,
+        'circle-color',
+        'transparent'
+      )
+
+      window.map.setPaintProperty(
+        `${nation}_cluster-count-color`,
+        'circle-stroke-color',
+        'transparent'
+      )
+      window.map.setLayoutProperty(`${nation}_cluster-count`, 'text-size', 0)
+    })
+  } else {
+    nations.forEach(nation => {
+      window.map.setPaintProperty(
+        `${nation}_clusters`,
+        'circle-color',
+        chapterColors[nation]
+      )
+
+      window.map.setPaintProperty(
+        `${nation}_clusters`,
+        'circle-stroke-color',
+        '#fff'
+      )
       window.map.setLayoutProperty(`${nation}_cluster-count`, 'text-size', 18)
     })
   }

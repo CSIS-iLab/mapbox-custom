@@ -36,6 +36,17 @@ function interactiveSetup({ container, initialDesc, steps }) {
       let content = ''
       if (step.text) {
         content = `<div class="prose">
+        ${
+          i > 0
+            ? `<div id="chevWrapper">
+          <a href="#step${i - 1}">
+             <span id="chevron-up">»</span>
+            &nbsp;Scroll up
+          </a>
+          </div>`
+            : ``
+        }
+
                     ${
                       i === 0
                         ? `${
@@ -43,10 +54,10 @@ function interactiveSetup({ container, initialDesc, steps }) {
                           }<p><strong>Scroll</strong> to continue or <a href="#toc-0"><strong>click</strong></a> to jump to the analysis.</p>`
                         : step.text
                     }
-                    <div id="chevWrapper" style="display: block;">
+                    <div id="chevWrapper">
                       <a href="#step${i + 1}">
-                        <span id="chevron">»</span>
-                        Scroll down
+                        <span id="chevron-down">»</span>
+                        &nbsp;Scroll down
                       </a>
                     </div>
                   </div>`
@@ -90,7 +101,8 @@ const load = () => {
     bearing: 0,
     pitch: 0,
     scrollZoom: false,
-    attributionControl: false
+    attributionControl: false,
+    dragPan: window.screen.availWidth < 768 ? false : true
   })
 
   var legend = document.querySelector('#legend')
@@ -118,8 +130,8 @@ const load = () => {
   }
 
   function handle(delta) {
-    var time = 1000
-    var distance = 150
+    var time = 2000
+    var distance = 200
 
     window.scrollTo({
       top: window.scrollY - distance * delta,

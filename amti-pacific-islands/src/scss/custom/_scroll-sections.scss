@@ -14,7 +14,7 @@
     margin-top: 0;
     margin-bottom: 1rem;
     @include fontSize(27px);
-    line-height: 1.4;
+    line-height: 1.2;
 
     @include breakpoint('medium') {
       @include fontSize(32px);

@@ -33,6 +33,29 @@ const ScrollingControls = {
     ScrollingControls.scroller.resize()
   },
   handleStepEnter(response) {
+    function preventDefault(e) {
+      e = e || window.event
+      if (e.preventDefault) e.preventDefault()
+      e.returnValue = false
+    }
+    function wheel(e) {
+      preventDefault(e)
+    }
+
+    function disable_scroll() {
+      if (window.addEventListener) {
+        window.addEventListener('DOMMouseScroll', wheel, false)
+      }
+      window.onmousewheel = document.onmousewheel = wheel
+    }
+
+    function enable_scroll() {
+      if (window.removeEventListener) {
+        window.removeEventListener('DOMMouseScroll', wheel, false)
+      }
+      window.onmousewheel = document.onmousewheel = document.onkeydown = null
+    }
+
     ScrollingControls.step.classed('is-active', function(d, i) {
       return i === response.index
     })
@@ -42,14 +65,23 @@ const ScrollingControls = {
     }
 
     ScrollingControls.currentStep = response.index
-    currentStep = response.index
 
     ScrollingControls.progress_current.text(currentStep)
     ScrollingControls.progress_link.node().href = '#step' + currentStep
 
     if (ScrollingControls.stepActions[currentStep]) {
-      ScrollingControls.stepActions[currentStep].fly()
+      if (currentStep < response.index) {
+        ScrollingControls.stepActions[currentStep + 1].fly()
+        // setTimeout(disable_scroll(), 100)
+        // setTimeout(enable_scroll, 1000)
+      } else if (currentStep > response.index) {
+        ScrollingControls.stepActions[currentStep - 1].fly()
+        // setTimeout(disable_scroll(), 100)
+        // setTimeout(enable_scroll, 1000)
+      }
     }
+
+    currentStep = response.index
   },
 
   init() {
@@ -70,8 +102,8 @@ const ScrollingControls = {
         graphic: '.scroll__graphic',
         text: '.scroll__text',
         step: '.scroll__text .step',
-        offset: 1,
-        debug: true
+        offset: 0.75,
+        threshold: 16
       })
       .onStepEnter(this.handleStepEnter)
 

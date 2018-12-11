@@ -8,9 +8,16 @@
   margin: auto;
 }
 
-#chevron {
+#chevron-down {
   display: inline-block;
   transform: rotate(90deg);
+  font-size: 38px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+#chevron-up {
+  display: inline-block;
+  transform: rotate(-90deg);
   font-size: 38px;
   vertical-align: middle;
   white-space: nowrap;
@@ -18,8 +25,8 @@
 
 #chevWrapper {
   color: $gray;
-  animation: chevbounce 0.9s infinite ease;
-  animation-direction: alternate;
+  // animation: chevbounce 0.9s infinite ease;
+  // animation-direction: alternate;
   margin: auto;
   text-align: center;
   cursor: pointer;

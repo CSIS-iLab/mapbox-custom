@@ -59,7 +59,7 @@ function initIslands() {
     addInterestsLayer()
     addAnimatedPointLayer()
 
-    window.map.on('click', 'interests', clickInterests)
+    // window.map.on('click', 'interests', clickInterests)
     window.map.on('zoom', () => spiderifier.unspiderfy())
 
     let nations = ['Australia', 'New Zealand', 'United States', 'France']
@@ -74,7 +74,7 @@ function initIslands() {
 
         var popup = new mapboxgl.Popup({
           closeButton: true,
-          closeOnClick: false,
+          closeOnClick: true,
           offset: MapboxglSpiderifier.popupOffsetForSpiderLeg(spiderLeg)
         })
 
@@ -112,33 +112,21 @@ function initIslands() {
         popup.setHTML(`${description}`)
 
         spiderLeg.mapboxMarker.setPopup(popup)
-
-        let circles = [...document.querySelectorAll('.spider-point-circle')]
-
-        circles.forEach(circle => {
-          circle.addEventListener('mouseenter', removePopups)
-        })
-
-        nations.forEach(nation =>
-          window.map.on('mouseenter', `${nation}_clusters`, removePopups)
-        )
-
-        window.map.on('mouseenter', `interests`, removePopups)
       }
     })
 
-    nations.forEach(nation =>
+    nations.forEach(nation => {
       window.map.on('click', `${nation}_clusters`, e =>
         clickClusters(e, nation)
       )
-    )
 
-    window.map.on('mouseenter', 'interests', function() {
-      window.map.getCanvas().style.cursor = 'pointer'
-    })
+      window.map.on('mouseenter', `${nation}_clusters`, function() {
+        window.map.getCanvas().style.cursor = 'pointer'
+      })
 
-    window.map.on('mouseleave', 'interests', function() {
-      window.map.getCanvas().style.cursor = ''
+      window.map.on('mouseleave', `${nation}_clusters`, function() {
+        window.map.getCanvas().style.cursor = ''
+      })
     })
 
     let resizeEvent = window.document.createEvent('UIEvents')
@@ -147,39 +135,21 @@ function initIslands() {
   })
 }
 
-function removePopups() {
-  let popups = Array.from(document.querySelectorAll('.mapboxgl-popup'))
-
-  popups.forEach(p => p.remove())
-}
-
 function addInterestsLayer() {
   window.map.addSource('interests', {
     type: 'geojson',
     data: interestsData
   })
 
-  window.map.addLayer({
-    id: 'interests',
-    type: 'circle',
-    source: 'interests',
-    paint: {
-      'circle-color': 'transparent',
-      'circle-stroke-width': 2,
-      'circle-stroke-color': 'transparent',
-      'circle-radius': initialRadius + 2
-    }
-  })
-
-  let nations = ['Australia', 'New Zealand', 'United States', 'France']
+  let nations = ['United States', 'Australia', 'New Zealand', 'France', 'China']
 
   nations.forEach(nation => {
     window.map.addSource(`${nation}_clusters`, {
       type: 'geojson',
       data: {
         type: 'FeatureCollection',
-        features: interestsData.features.filter(
-          f => f.properties.country === nation
+        features: interestsData.features.filter(f =>
+          f.properties.country.includes(nation)
         )
       },
       cluster: true,
@@ -191,6 +161,19 @@ function addInterestsLayer() {
       id: `${nation}_clusters`,
       type: 'circle',
       source: `${nation}_clusters`,
+      paint: {
+        'circle-color': 'transparent',
+        'circle-stroke-width': 2,
+        'circle-stroke-color': 'transparent',
+        'circle-radius': initialRadius + 2
+      }
+    })
+
+    window.map.addLayer({
+      id: `${nation}_cluster-count-color`,
+      type: 'circle',
+      source: `${nation}_clusters`,
+      filter: ['has', 'point_count'],
       paint: {
         'circle-color': 'transparent',
         'circle-stroke-width': 2,
@@ -214,19 +197,6 @@ function addInterestsLayer() {
         'text-field': '{point_count_abbreviated}',
         'text-font': ['PT Sans Bold'],
         'text-size': 0
-      }
-    })
-
-    window.map.addLayer({
-      id: `${nation}_unclustered-point`,
-      type: 'circle',
-      source: `${nation}_clusters`,
-      filter: ['!', ['has', 'point_count']],
-      paint: {
-        'circle-color': 'transparent',
-        'circle-radius': initialRadius + 2,
-        'circle-stroke-width': 1,
-        'circle-stroke-color': 'transparent'
       }
     })
   })
@@ -286,9 +256,10 @@ const clickClusters = (e, nation) => {
   })
 
   spiderifier.unspiderfy()
+
   if (!features.length) {
     return
-  } else {
+  } else if (features[0].properties.cluster) {
     window.map
       .getSource(`${nation}_clusters`)
       .getClusterLeaves(features[0].properties.cluster_id, 100, 0, function(
@@ -302,6 +273,8 @@ const clickClusters = (e, nation) => {
 
         spiderifier.spiderfy(features[0].geometry.coordinates, markers)
       })
+  } else {
+    clickInterests(e)
   }
 }
 
