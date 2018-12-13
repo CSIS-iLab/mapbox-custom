@@ -251,30 +251,32 @@ function pointOnCircle(loc = 0) {
 }
 
 const clickClusters = (e, nation) => {
-  var features = window.map.queryRenderedFeatures(e.point, {
-    layers: [`${nation}_clusters`]
-  })
+  if (window.nation === nation) {
+    var features = window.map.queryRenderedFeatures(e.point, {
+      layers: [`${nation}_clusters`]
+    })
 
-  spiderifier.unspiderfy()
+    spiderifier.unspiderfy()
 
-  if (!features.length) {
-    return
-  } else if (features[0].properties.cluster) {
-    window.map
-      .getSource(`${nation}_clusters`)
-      .getClusterLeaves(features[0].properties.cluster_id, 100, 0, function(
-        err,
-        leafFeatures
-      ) {
-        if (err) {
-          return console.error('error while getting leaves of a cluster', err)
-        }
-        var markers = leafFeatures.map(lF => lF.properties)
+    if (!features.length) {
+      return
+    } else if (features[0].properties.cluster) {
+      window.map
+        .getSource(`${nation}_clusters`)
+        .getClusterLeaves(features[0].properties.cluster_id, 100, 0, function(
+          err,
+          leafFeatures
+        ) {
+          if (err) {
+            return console.error('error while getting leaves of a cluster', err)
+          }
+          var markers = leafFeatures.map(lF => lF.properties)
 
-        spiderifier.spiderfy(features[0].geometry.coordinates, markers)
-      })
-  } else {
-    clickInterests(e)
+          spiderifier.spiderfy(features[0].geometry.coordinates, markers)
+        })
+    } else {
+      clickInterests(e)
+    }
   }
 }
 

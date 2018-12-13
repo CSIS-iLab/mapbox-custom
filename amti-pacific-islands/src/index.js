@@ -101,6 +101,9 @@ const parseChapterData = rawData => {
 
     chapterData.fly = () => {
       fly(chapterData)
+
+      window.nation = chapterData.name
+
       if (window.map.getSource('United States_clusters')) {
         highlightChapter(chapterData)
         setPopup(chapterData)
