@@ -1,10 +1,9 @@
 import interactiveSetup from './js/interactive-setup'
-
 import Scrolling from './js/scrolling'
 import breakpoints from './js/breakpoints'
-
 import makeMap from './js/makeMap'
 import mapboxgl from 'mapbox-gl'
+import fetch from 'isomorphic-fetch'
 
 import './scss/main.scss'
 

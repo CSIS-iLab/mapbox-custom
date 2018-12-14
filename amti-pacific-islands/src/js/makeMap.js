@@ -1,6 +1,6 @@
 import mapboxgl from 'mapbox-gl'
-
 import MapboxglSpiderifier from 'mapboxgl-spiderifier'
+import fetch from 'isomorphic-fetch'
 
 let map,
   interestsData,
