@@ -67,11 +67,15 @@
   position: relative;
   margin: 2rem auto;
   // padding-bottom: 100vh;
-  opacity: 0.9;
-  visibility: hidden;
+  opacity: 0.25;
+  // visibility: hidden;
+
+  &:first-of-type {
+    margin-top: 170px;
+  }
 
   &.is-active {
-    visibility: visible;
+    opacity: 1;
     top: 70px;
   }
 

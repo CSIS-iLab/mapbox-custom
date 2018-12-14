@@ -25,10 +25,10 @@ const ScrollingControls = {
     ScrollingControls.graphic.style('height', windowHeight + 'px')
     ScrollingControls.chart.style('height', windowHeight + 'px')
 
-    var stepHeight = Math.floor(window.innerHeight)
+    var stepHeight = Math.floor(windowHeight / 2)
     ScrollingControls.step.style('height', stepHeight + 'px')
 
-    scrollText.style.top = `-${windowHeight}px`
+    scrollText.style.top = `-${windowHeight + 170}px`
 
     ScrollingControls.scroller.resize()
   },
@@ -102,8 +102,8 @@ const ScrollingControls = {
         graphic: '.scroll__graphic',
         text: '.scroll__text',
         step: '.scroll__text .step',
-        offset: 0.75,
-        threshold: 16
+        offset: 0.5,
+        threshold: 10
       })
       .onStepEnter(this.handleStepEnter)
 
