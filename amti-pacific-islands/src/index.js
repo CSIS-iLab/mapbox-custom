@@ -4,6 +4,8 @@ import breakpoints from './js/breakpoints'
 import makeMap from './js/makeMap'
 import mapboxgl from 'mapbox-gl'
 import fetch from 'isomorphic-fetch'
+import { polyfill } from 'es6-promise'
+polyfill()
 
 import './scss/main.scss'
 
