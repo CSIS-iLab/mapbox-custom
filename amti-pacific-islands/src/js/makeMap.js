@@ -13,6 +13,7 @@ let map,
   initialRadius = 8,
   spiderifier,
   exclude = ['Introduction', 'Conclusion'],
+  nations = ['United States', 'Australia', 'New Zealand', 'France', 'China'],
   allowedHeaders = [
     'type',
     'number-of-ships-permanently-based',
@@ -25,7 +26,8 @@ const chapterColors = {
   'United States': `#6688b9`,
   France: `#f89c74`,
   'New Zealand': `#00ad3b`,
-  Australia: `#f6cf71`
+  Australia: `#f6cf71`,
+  China: `#e06b91`
 }
 
 const spreadsheetID = '115eMJVfot0DDYcv7nhsVM4X5Djihr2ygpMdMYzBSsdc'
@@ -64,12 +66,18 @@ function initIslands() {
     // window.map.on('click', 'interests', clickInterests)
     window.map.on('zoom', () => spiderifier.unspiderfy())
 
-    let nations = ['Australia', 'New Zealand', 'United States', 'France']
-
     spiderifier = new MapboxglSpiderifier(window.map, {
       customPin: true,
       initializeLeg: function(spiderLeg) {
-        let chapterColor = chapterColors[spiderLeg.feature.country]
+        let chapterName =
+          spiderLeg.feature.country.indexOf('-') > 0
+            ? spiderLeg.feature.country.substring(
+                0,
+                spiderLeg.feature.country.indexOf('-')
+              )
+            : spiderLeg.feature.country
+
+        let chapterColor = chapterColors[chapterName]
         let spiderPinCustom = `<div class="spider-point-circle" style="width:20px;height:20px;margin-left:-10px;margin-top:-10px;border-radius:50%;border:2px solid #fff;background-color:${chapterColor}"></div>`
 
         spiderLeg.elements.pin.innerHTML = spiderPinCustom
@@ -142,8 +150,6 @@ function addInterestsLayer() {
     type: 'geojson',
     data: interestsData
   })
-
-  let nations = ['United States', 'Australia', 'New Zealand', 'France', 'China']
 
   nations.forEach(nation => {
     window.map.addSource(`${nation}_clusters`, {
@@ -253,7 +259,7 @@ function pointOnCircle(loc = 0) {
 }
 
 const clickClusters = (e, nation) => {
-  if (window.nation === nation) {
+  if (window.nation === nation || window.nation === 'Conclusion') {
     var features = window.map.queryRenderedFeatures(e.point, {
       layers: [`${nation}_clusters`]
     })
