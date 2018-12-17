@@ -70,10 +70,6 @@
   opacity: 0.25;
   // visibility: hidden;
 
-  &:first-of-type {
-    margin-top: 170px;
-  }
-
   &.is-active {
     opacity: 1;
     top: 70px;
@@ -82,6 +78,9 @@
   .prose {
     @extend %prose;
     pointer-events: auto;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
 
     .prose-jump-to {
       @include fontSize(24px);
