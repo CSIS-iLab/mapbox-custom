@@ -28,7 +28,7 @@ const ScrollingControls = {
     var stepHeight = Math.floor(windowHeight / 2)
     ScrollingControls.step.style('height', stepHeight + 'px')
 
-    scrollText.style.top = `-${windowHeight + 170}px`
+    scrollText.style.top = `-${windowHeight}px`
 
     ScrollingControls.scroller.resize()
   },

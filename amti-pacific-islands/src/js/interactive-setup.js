@@ -1,5 +1,3 @@
-import $ from 'jquery'
-
 function interactiveSetup({ container, initialDesc, steps }) {
   let HTML = ''
 
@@ -118,8 +116,8 @@ const load = () => {
   resizeEvent.initUIEvent('resize', true, false, window, 0)
   window.dispatchEvent(resizeEvent)
 
-  // window.addEventListener('DOMMouseScroll', wheel, false)
-  // window.onmousewheel = document.onmousewheel = wheel
+  window.addEventListener('DOMMouseScroll', wheel, false)
+  window.onmousewheel = document.onmousewheel = wheel
 
   function wheel(event) {
     var delta = 0
@@ -132,17 +130,14 @@ const load = () => {
   }
 
   function handle(delta) {
-    var time = 50
+    var time = 2000
     var distance = 200
 
-    $('html, body')
-      .stop()
-      .animate(
-        {
-          scrollTop: $(window).scrollTop() - distance * delta
-        },
-        time
-      )
+    window.scrollTo({
+      top: window.scrollY - distance * delta,
+      left: 0,
+      behavior: 'smooth'
+    })
   }
 }
 export default interactiveSetup
