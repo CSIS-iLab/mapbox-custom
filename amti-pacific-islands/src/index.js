@@ -204,12 +204,13 @@ const fly = chapterData => {
 
         let long = longStart - longInterval * count
 
-        window.map.jumpTo({
+        window.map.flyTo({
           center: [lat, long],
           zoom: chapterData.zoom,
           pitch: chapterData.pitch,
           curve: 0.5,
-          speed: 10
+          speed: 10,
+          animate: false
         })
 
         if (start++ < frames) myLoop(start, frames)
@@ -218,7 +219,7 @@ const fly = chapterData => {
 
     myLoop(0, 72)
   } else {
-    window.map.jumpTo(chapterData)
+    window.map.flyTo(chapterData)
   }
 }
 
