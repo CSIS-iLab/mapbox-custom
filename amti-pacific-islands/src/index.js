@@ -100,8 +100,6 @@ const parseChapterData = rawData => {
     chapterData.text = `<h3 class="title">${chapterData.title}</h3>
 <p class="story">${chapterData.text}</p>`
 
-    chapterData.animate = false
-
     chapterData.fly = () => {
       fly(chapterData)
 
@@ -211,8 +209,7 @@ const fly = chapterData => {
           zoom: chapterData.zoom,
           pitch: chapterData.pitch,
           curve: 0.5,
-          speed: 10,
-          animate: false
+          speed: 10
         })
 
         if (start++ < frames) myLoop(start, frames)
