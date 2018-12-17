@@ -78,6 +78,7 @@
   .prose {
     @extend %prose;
     pointer-events: auto;
+
     position: absolute;
     top: 50%;
     transform: translateY(-50%);

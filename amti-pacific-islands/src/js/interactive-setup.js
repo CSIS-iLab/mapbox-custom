@@ -54,12 +54,16 @@ function interactiveSetup({ container, initialDesc, steps }) {
                           }<p><strong>Scroll</strong> to continue or <a href="#toc-0"><strong>click</strong></a> to jump to the analysis.</p>`
                         : step.text
                     }
-                    <div id="chevWrapper">
+                    ${
+                      i !== lastStep
+                        ? `<div id="chevWrapper">
                       <a href="#step${i + 1}">
-                        <span id="chevron-down">»</span>
+                         <span id="chevron-down">»</span>
                         &nbsp;Scroll down
                       </a>
-                    </div>
+                      </div>`
+                        : ``
+                    }
                   </div>`
       }
       HTML += `<div class="step" data-step="${i}" id="step${i}">${content}</div>`
