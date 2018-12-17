@@ -100,6 +100,8 @@ const parseChapterData = rawData => {
     chapterData.text = `<h3 class="title">${chapterData.title}</h3>
 <p class="story">${chapterData.text}</p>`
 
+    chapterData.animate = false
+
     chapterData.fly = () => {
       fly(chapterData)
 
