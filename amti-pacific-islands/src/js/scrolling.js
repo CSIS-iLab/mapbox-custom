@@ -25,7 +25,7 @@ const ScrollingControls = {
     ScrollingControls.graphic.style('height', windowHeight + 'px')
     ScrollingControls.chart.style('height', windowHeight + 'px')
 
-    var stepHeight = Math.floor(windowHeight / 2) + topOffset
+    var stepHeight = Math.floor(windowHeight / 2) + topOffset + 100
     ScrollingControls.step.style('height', stepHeight + 'px')
 
     scrollText.style.top = `-${windowHeight}px`
