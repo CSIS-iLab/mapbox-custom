@@ -120,8 +120,8 @@ const load = () => {
   resizeEvent.initUIEvent('resize', true, false, window, 0)
   window.dispatchEvent(resizeEvent)
 
-  window.addEventListener('DOMMouseScroll', wheel, false)
-  window.onmousewheel = document.onmousewheel = wheel
+  // window.addEventListener('DOMMouseScroll', wheel, false)
+  // window.onmousewheel = document.onmousewheel = wheel
 
   function wheel(event) {
     var delta = 0
