@@ -120,8 +120,8 @@ const load = () => {
   resizeEvent.initUIEvent('resize', true, false, window, 0)
   window.dispatchEvent(resizeEvent)
 
-  // window.addEventListener('DOMMouseScroll', wheel, false)
-  // window.onmousewheel = document.onmousewheel = wheel
+  window.addEventListener('DOMMouseScroll', wheel, false)
+  window.onmousewheel = document.onmousewheel = wheel
 
   function wheel(event) {
     var delta = 0
@@ -134,7 +134,7 @@ const load = () => {
   }
 
   function handle(delta) {
-    var time = 2000
+    var time = 1000
     var distance = 200
 
     window.scrollTo({
