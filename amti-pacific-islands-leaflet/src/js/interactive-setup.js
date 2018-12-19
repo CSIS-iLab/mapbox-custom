@@ -31,7 +31,7 @@ function interactiveSetup({ container, initialDesc, steps }) {
 `
 
   let lastStep = 0
-  if (steps && window.isMobile) {
+  if (steps && !window.isMobile) {
     lastStep = steps.length - 1
     HTML += '<div class="scroll__text">'
     steps.forEach((step, i) => {
@@ -104,7 +104,7 @@ function interactiveSetup({ container, initialDesc, steps }) {
     '<div class="phone-landscape-disclaimer">To view our interactive visualization please reorient your device or view on a desktop computer.</div>'
   container.innerHTML = HTML
 
-  if (!window.isMobile) {
+  if (window.isMobile) {
     let scrollText = document.querySelector('.scroll__text')
     let step = scrollText.querySelector('.step')
     step.classList.add('is-active')
@@ -152,12 +152,13 @@ function interactiveSetup({ container, initialDesc, steps }) {
 
   load()
 }
-import mapboxgl from 'mapbox-gl'
+
+import L from 'mapbox.js'
 
 const load = () => {
   let cssFiles = [
-    'https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css',
-    'https://csis-ilab.github.io/mapbox-custom/amti-pacific-islands-webgl/dist/main.css'
+    'https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css'
+    // 'https://csis-ilab.github.io/mapbox-custom/amti-pacific-islands/dist/main.css'
   ]
 
   cssFiles.forEach(file => {
@@ -168,30 +169,30 @@ const load = () => {
     link.href = file
 
     head.appendChild(link)
+    console.log('73')
   })
 
-  mapboxgl.accessToken =
-    'pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
+  console.log(L.mapbox)
 
-  window.map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/ilabmedia/cjp1vsq4012qc2smt2prznr0i',
-    center: [195, -11.9602541],
-    zoom: 2,
-    bearing: 0,
-    pitch: 0,
-    scrollZoom: false,
-    attributionControl: false,
-    dragPan: window.isMobile ? false : true
-  })
+  // .map('map', style, { scrollWheelZoom: false })
 
-  var legend = document.querySelector('#legend')
-  legend.addEventListener('mousedown', () => {
-    console.log('Center', map.getCenter())
-    console.log('Pitch', map.getPitch())
-    console.log('Zoom', map.getZoom())
-  })
+  L.mapbox.accessToken =
+    'pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNqcHZvemptYzAzYnI0N3BodDg4NXBlOTUifQ.BbL7RBI4fzWi8Yi4t3imxg'
 
+  window.map = L.mapbox
+    .map('map', null, {
+      accessToken: L.mapbox.accessToken,
+      scrollWheelZoom: false
+    })
+    .setView([40, -74.5], 9)
+
+  L.mapbox
+    .styleLayer('mapbox://styles/ilabmedia/cjp1vsq4012qc2smt2prznr0i')
+    .addTo(window.map)
+
+  console.log(window.map)
+
+  console.log(187)
   let resizeEvent = window.document.createEvent('UIEvents')
   resizeEvent.initUIEvent('resize', true, false, window, 0)
   window.dispatchEvent(resizeEvent)

@@ -1,0 +1,67 @@
+// General
+
+html {
+  font-size: 10px;
+}
+
+body {
+  font-size: 18px;
+  overflow-x: hidden;
+
+  --breakpoint: 'xsmall';
+
+  @include breakpoint('small') {
+    --breakpoint: 'small';
+  }
+
+  @include breakpoint('medium') {
+    --breakpoint: 'medium';
+  }
+
+  @include breakpoint('large') {
+    --breakpoint: 'large';
+  }
+}
+
+#content {
+  overflow: visible;
+}
+
+#scrolly-island-interactive {
+  width: calc(100vw - 2rem);
+  margin-left: calc((100vw - 100%) / -2 + 1rem);
+  margin-right: calc((100vw - 100%) / -2 + 1rem);
+  font-family: $font_pt_sans_narrow;
+  font-size: 18px;
+  padding: 0;
+  color: $dark-gray;
+
+  a {
+    // color: $teal;
+    @include transition(color 0.3s ease-in-out, box-shadow 0.3s ease-in-out);
+
+    &:hover {
+    }
+  }
+
+  sup {
+    vertical-align: baseline;
+    position: relative;
+    top: -0.4em;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  h1,
+  h2,
+  h3 {
+    margin: 0;
+    font-size: 2rem;
+  }
+
+  h3 {
+    color: #023950;
+  }
+}

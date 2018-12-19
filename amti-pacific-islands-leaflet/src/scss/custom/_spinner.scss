@@ -1,0 +1,129 @@
+.spinner {
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #004165;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 0.5s linear infinite;
+  margin: auto;
+}
+
+#chevron-down {
+  display: inline-block;
+  transform: rotate(90deg);
+  font-size: 38px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+#chevron-up {
+  display: inline-block;
+  transform: rotate(-90deg);
+  font-size: 38px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+#chevWrapper {
+  color: $gray;
+  // animation: chevbounce 0.9s infinite ease;
+  // animation-direction: alternate;
+  margin: auto;
+  text-align: center;
+  cursor: pointer;
+  line-height: 0.5;
+
+  a {
+    color: $gray;
+  }
+}
+
+/*============================
+=         Animations         =
+============================*/
+
+@keyframes chevbounce {
+  from {
+    transform: translate(0px, 0px);
+  }
+
+  to {
+    transform: translate(0px, 10px);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    display: none;
+    opacity: 0;
+  }
+
+  1% {
+    display: block;
+    opacity: 0;
+  }
+
+  100% {
+    display: block;
+    opacity: 1;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  0% {
+    display: none;
+    opacity: 0;
+  }
+
+  1% {
+    display: block;
+    opacity: 0;
+  }
+
+  100% {
+    display: block;
+    opacity: 1;
+  }
+}
+
+@-o-keyframes fadeIn {
+  0% {
+    display: none;
+    opacity: 0;
+  }
+
+  1% {
+    display: block;
+    opacity: 0;
+  }
+
+  100% {
+    display: block;
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    display: none;
+    opacity: 0;
+  }
+
+  1% {
+    display: block;
+    opacity: 0;
+  }
+
+  100% {
+    display: block;
+    opacity: 1;
+  }
+}
