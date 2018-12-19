@@ -259,7 +259,12 @@ function pointOnCircle(loc = 0) {
 }
 
 const clickClusters = (e, nation) => {
-  if (window.nation === nation || window.nation === 'Conclusion') {
+  let chapterName =
+    window.nation.indexOf('-') > 0
+      ? window.nation.substring(0, window.nation.indexOf('-'))
+      : window.nation
+
+  if (chapterName === nation || chapterName === 'Conclusion') {
     var features = window.map.queryRenderedFeatures(e.point, {
       layers: [`${nation}_clusters`]
     })
