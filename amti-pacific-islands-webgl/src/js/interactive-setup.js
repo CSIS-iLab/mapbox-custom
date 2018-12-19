@@ -157,7 +157,7 @@ import mapboxgl from 'mapbox-gl'
 const load = () => {
   let cssFiles = [
     'https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css',
-    'https://csis-ilab.github.io/mapbox-custom/amti-pacific-islands/dist/main.css'
+    'https://csis-ilab.github.io/mapbox-custom/amti-pacific-islands-webgl/dist/main.css'
   ]
 
   cssFiles.forEach(file => {
