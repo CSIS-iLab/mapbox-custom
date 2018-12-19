@@ -1,0 +1,52 @@
+/*===================================
+=            Page Layout            =
+===================================*/
+
+.entry-header {
+  position: relative;
+  z-index: 30;
+
+  @include breakpoint('medium') {
+    position: static;
+  }
+}
+
+.block-after-interactive {
+  position: relative;
+  z-index: 25;
+  background-color: white;
+  margin-left: -1rem !important;
+  margin-right: -1rem !important;
+  padding: 0 1rem;
+
+  @include breakpoint('medium') {
+    position: static;
+    z-index: unset;
+    background-color: unset;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding: unset;
+  }
+}
+
+#scrolly-island-interactive {
+  position: relative;
+}
+
+#scroll {
+  position: relative;
+
+  @media only screen and (max-width: 48em) and (orientation: landscape) {
+    display: none;
+  }
+}
+
+.phone-landscape-disclaimer {
+  display: none;
+
+  @media only screen and (max-width: 48em) and (orientation: landscape) {
+    display: block;
+    font-weight: bold;
+    padding: 1rem;
+  }
+}
