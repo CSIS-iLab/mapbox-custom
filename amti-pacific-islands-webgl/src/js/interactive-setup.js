@@ -116,8 +116,8 @@ function interactiveSetup({ container, initialDesc, steps }) {
       topOffset = (siteHeader.offsetTop + siteHeader.offsetHeight) * 2
       windowHeight = windowHeight - topOffset
     }
-
-    scrollText.style.top = `-${windowHeight / 3}px`
+    console.log(windowHeight / 3)
+    scrollText.style.top = `-${windowHeight / 6}px`
     scrollText.style.right = 0
     scrollText.style.position = 'absolute'
 

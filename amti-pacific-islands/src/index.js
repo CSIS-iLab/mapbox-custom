@@ -209,9 +209,7 @@ const setGLPopup = chapterData => {
 
     chinaPopup
       .setLngLat(feature.geometry.coordinates)
-      .setHTML(
-        `<div class="leaflet-popup-content-wrapper">${description}</div>`
-      )
+      .setHTML(`${description}`)
       .addTo(map)
   }
   if (!chapterData.name.includes('China')) chinaPopup.remove()
