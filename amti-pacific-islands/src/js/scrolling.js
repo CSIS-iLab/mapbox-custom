@@ -30,37 +30,14 @@ const ScrollingControls = {
 
     scrollText.style.top = `-${windowHeight}px`
 
-    ScrollingControls.scroller.resize()
+    // ScrollingControls.scroller.resize()
   },
   handleStepEnter(response) {
-    function preventDefault(e) {
-      e = e || window.event
-      if (e.preventDefault) e.preventDefault()
-      e.returnValue = false
-    }
-    function wheel(e) {
-      preventDefault(e)
-    }
-
-    function disable_scroll() {
-      if (window.addEventListener) {
-        window.addEventListener('DOMMouseScroll', wheel, false)
-      }
-      window.onmousewheel = document.onmousewheel = wheel
-    }
-
-    function enable_scroll() {
-      if (window.removeEventListener) {
-        window.removeEventListener('DOMMouseScroll', wheel, false)
-      }
-      window.onmousewheel = document.onmousewheel = document.onkeydown = null
-    }
-
     ScrollingControls.step.classed('is-active', function(d, i) {
       return i === response.index
     })
 
-    if (window.map.getSource('point')) {
+    if (!window.isIE && window.map.getSource('point')) {
       animateMarker(0)
     }
 
@@ -72,12 +49,8 @@ const ScrollingControls = {
     if (ScrollingControls.stepActions[currentStep]) {
       if (currentStep < response.index) {
         ScrollingControls.stepActions[currentStep + 1].fly()
-        // setTimeout(disable_scroll(), 100)
-        // setTimeout(enable_scroll, 1000)
       } else if (currentStep > response.index) {
         ScrollingControls.stepActions[currentStep - 1].fly()
-        // setTimeout(disable_scroll(), 100)
-        // setTimeout(enable_scroll, 1000)
       }
     }
 
@@ -106,6 +79,7 @@ const ScrollingControls = {
         threshold: 10
       })
       .onStepEnter(this.handleStepEnter)
+      .onStepExit(this.handleStepEnter)
 
     this.progress_link.node().href = '#step' + this.currentStep
     this.progress_current.text(this.currentStep)

@@ -8,7 +8,8 @@ button.mapboxgl-popup-close-button {
   font-weight: bold;
 }
 
-.mapboxgl-ctrl-top-right {
+.mapboxgl-ctrl-top-right,
+.leaflet-left {
   z-index: 999;
   top: -5px !important;
 
@@ -70,10 +71,21 @@ button.mapboxgl-popup-close-button {
 }
 
 .leaflet-marker-icon:not(.marker-cluster-small) {
-  background-image: url(../img/red.png);
-  background-size: contain;
-  height: 50px;
-  width: 50px;
+  background-color: #e06b91;
+  border-radius: 50%;
+  border: 2px solid white;
+  padding: 8px;
+  font-family: 'PT Sans Narrow', sans-serif;
+  text-transform: uppercase;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-text-stroke: 0.5px black;
+  color: white;
+
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
 }
 
 .marker-cluster span {
@@ -86,23 +98,23 @@ button.mapboxgl-popup-close-button {
 }
 
 .icon-united-states:not(.marker-cluster-small) {
-  background-image: url(../img/blue.png);
+  background-color: #6688b9;
 }
 
 .icon-france:not(.marker-cluster-small) {
-  background-image: url(../img/green.png);
+  background-color: #f89c74;
 }
 
 .icon-australia:not(.marker-cluster-small) {
-  background-image: url(../img/yellow.png);
+  background-color: #f6cf71;
 }
 
 .icon-new-zealand:not(.marker-cluster-small) {
-  background-image: url(../img/orange.png);
+  background-color: #00ad3b;
 }
 
 .icon-china:not(.marker-cluster-small) {
-  background-image: url(../img/red.png);
+  background-color: #e06b91;
 }
 
 #interactive-source {
@@ -139,5 +151,59 @@ button.mapboxgl-popup-close-button {
     margin: 0;
     text-align: right;
     color: $dark-gray;
+  }
+}
+.navigator {
+  text-align: center;
+
+  button.scroll-up,
+  button.scroll-down {
+    border: 2px solid #00b29e;
+    color: #00b29e;
+    background: none;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+    /* border-radius: 50%; */
+    /* height: 50px; */
+    /* width: 50px; */
+    display: inline-block;
+    margin: 12px auto;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    padding: 3px 6px;
+    text-transform: uppercase;
+  }
+
+  button.scroll-up {
+    margin-right: 1rem;
+  }
+
+  button.scroll-up:hover,
+  button.scroll-down:hover {
+    border-color: #00b29e;
+    background: #00b29e;
+    color: #fff;
+  }
+
+  button.scroll-up .symbol,
+  button.scroll-down .symbol {
+    display: block;
+    // font-size: 1rem;
+    /* transform: rotate(90deg) scaleY(2); */
+  }
+
+  button .text {
+    display: none;
   }
 }

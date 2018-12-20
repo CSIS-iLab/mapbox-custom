@@ -169,30 +169,20 @@ const load = () => {
     link.href = file
 
     head.appendChild(link)
-    console.log('73')
   })
-
-  console.log(L.mapbox)
-
-  // .map('map', style, { scrollWheelZoom: false })
 
   L.mapbox.accessToken =
     'pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNqcHZvemptYzAzYnI0N3BodDg4NXBlOTUifQ.BbL7RBI4fzWi8Yi4t3imxg'
 
-  window.map = L.mapbox
-    .map('map', null, {
-      accessToken: L.mapbox.accessToken,
-      scrollWheelZoom: false
-    })
-    .setView([40, -74.5], 9)
+  window.map = L.mapbox.map('map', null, {
+    accessToken: L.mapbox.accessToken,
+    scrollWheelZoom: false
+  })
 
   L.mapbox
     .styleLayer('mapbox://styles/ilabmedia/cjp1vsq4012qc2smt2prznr0i')
     .addTo(window.map)
 
-  console.log(window.map)
-
-  console.log(187)
   let resizeEvent = window.document.createEvent('UIEvents')
   resizeEvent.initUIEvent('resize', true, false, window, 0)
   window.dispatchEvent(resizeEvent)

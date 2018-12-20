@@ -26,7 +26,7 @@ const chapterColors = {
 
 const spreadsheetID = '115eMJVfot0DDYcv7nhsVM4X5Djihr2ygpMdMYzBSsdc'
 
-const islandURL =
+let islandURL =
   'https://spreadsheets.google.com/feeds/list/' +
   spreadsheetID +
   '/1/public/values?alt=json'
@@ -55,29 +55,6 @@ function initIslands() {
 }
 
 function addInterestsLayer() {
-  // L.mapbox.featureLayer(interestsData, {
-  //   pointToLayer: function(feature, latlon) {
-  //     let chapterName =
-  //       feature.properties.country.indexOf('-') > 0
-  //         ? feature.properties.country.substring(
-  //             0,
-  //             feature.properties.country.indexOf('-')
-  //           )
-  //         : feature.properties.country
-  //
-  //     return L.circleMarker(latlon, {
-  //       fillOpacity: 1,
-  //       color: '#ffffff',
-  //       weight: 2,
-  //       opacity: 1,
-  //       radius: initialRadius,
-  //       fillColor: chapterColors[chapterName]
-  //     })
-  //   }
-  // })
-  //
-  // // .addTo(window.map)
-
   window.nation_marker_clusters = {}
   nations.forEach(nation => {
     let chapterName = nation.toLowerCase().replace(' ', '-')

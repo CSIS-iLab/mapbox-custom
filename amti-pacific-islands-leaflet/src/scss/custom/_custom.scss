@@ -71,10 +71,21 @@ button.mapboxgl-popup-close-button {
 }
 
 .leaflet-marker-icon:not(.marker-cluster-small) {
-  background-image: url(../img/red.png);
-  background-size: contain;
-  height: 50px;
-  width: 50px;
+  background-color: #e06b91;
+  border-radius: 50%;
+  border: 2px solid white;
+  padding: 8px;
+  font-family: 'PT Sans Narrow', sans-serif;
+  text-transform: uppercase;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-text-stroke: 0.5px black;
+  color: white;
+
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
 }
 
 .marker-cluster span {
@@ -87,23 +98,23 @@ button.mapboxgl-popup-close-button {
 }
 
 .icon-united-states:not(.marker-cluster-small) {
-  background-image: url(../img/blue.png);
+  background-color: #6688b9;
 }
 
 .icon-france:not(.marker-cluster-small) {
-  background-image: url(../img/green.png);
+  background-color: #f89c74;
 }
 
 .icon-australia:not(.marker-cluster-small) {
-  background-image: url(../img/yellow.png);
+  background-color: #f6cf71;
 }
 
 .icon-new-zealand:not(.marker-cluster-small) {
-  background-image: url(../img/orange.png);
+  background-color: #00ad3b;
 }
 
 .icon-china:not(.marker-cluster-small) {
-  background-image: url(../img/red.png);
+  background-color: #e06b91;
 }
 
 #interactive-source {
