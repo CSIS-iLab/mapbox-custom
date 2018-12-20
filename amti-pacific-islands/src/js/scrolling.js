@@ -17,7 +17,7 @@ const ScrollingControls = {
       topOffset = 0
 
     if (siteHeader) {
-      topOffset = siteHeader.offsetTop + siteHeader.offsetHeight
+      topOffset = (siteHeader.offsetTop + siteHeader.offsetHeight) * 2
       ScrollingControls.graphic.style('top', topOffset + 'px')
       windowHeight = windowHeight - topOffset
     }

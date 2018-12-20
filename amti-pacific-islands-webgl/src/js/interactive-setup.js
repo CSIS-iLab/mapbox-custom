@@ -105,10 +105,18 @@ function interactiveSetup({ container, initialDesc, steps }) {
   container.innerHTML = HTML
 
   if (!window.isMobile) {
+    let topOffset
     let scrollText = document.querySelector('.scroll__text')
     let step = scrollText.querySelector('.step')
     step.classList.add('is-active')
     let windowHeight = window.innerHeight
+    let siteHeader = document.querySelector('.navbar')
+
+    if (siteHeader) {
+      topOffset = (siteHeader.offsetTop + siteHeader.offsetHeight) * 2
+      windowHeight = windowHeight - topOffset
+    }
+
     scrollText.style.top = `-${windowHeight / 3}px`
     scrollText.style.right = 0
     scrollText.style.position = 'absolute'
