@@ -60,7 +60,7 @@ const init = () => {
   fetch(chapterURL)
     .then(resp => resp.json())
     .then(json => {
-      window.isMobile = window.screen.availWidth < 768
+      window.isMobile = window.screen.availWidth < 425
       window.stepActions = parseChapterData(json.feed.entry)
 
       countryColors = window.stepActions
