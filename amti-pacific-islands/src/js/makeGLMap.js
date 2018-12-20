@@ -329,7 +329,7 @@ const clickInterests = e => {
 
   details
     .setLngLat(coordinates)
-    .setHTML(`<div class="leaflet-popup-content-wrapper">${description}</div>`)
+    .setHTML(`${description}`)
     .addTo(window.map)
 }
 
