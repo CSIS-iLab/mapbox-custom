@@ -104,11 +104,13 @@ function interactiveSetup({ container, initialDesc, steps }) {
     '<div class="phone-landscape-disclaimer">To view our interactive visualization please reorient your device or view on a desktop computer.</div>'
   container.innerHTML = HTML
 
+  let scrollText, step, windowHeight
+
   if (!window.isIE && !window.isMobile) {
-    let scrollText = document.querySelector('.scroll__text')
-    let step = scrollText.querySelector('.step')
+    scrollText = document.querySelector('.scroll__text')
+    step = scrollText.querySelector('.step')
     step.classList.add('is-active')
-    let windowHeight = window.innerHeight
+    windowHeight = window.innerHeight
     console.log(windowHeight / 6)
     scrollText.style.top = `-${windowHeight / 3}px`
     scrollText.style.overflow = `hidden`
