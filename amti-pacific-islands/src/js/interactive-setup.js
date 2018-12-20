@@ -113,7 +113,7 @@ function interactiveSetup({ container, initialDesc, steps }) {
     scrollText.style.top = `-${windowHeight / 3}px`
     scrollText.style.overflow = `hidden`
     scrollText.style.position = `absolute`
-    scrollText.style.right = `calc(100vw - 95%)`
+    scrollText.style.right = `calc(100vw - 100%)`
     document.querySelector('#scroll').style.overflow = `hidden`
 
     document.querySelector('.navigator').addEventListener('click', e => {
@@ -166,7 +166,7 @@ const load = () => {
   let cssFiles = [
     'https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css',
     'https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css',
-    'https://csis-ilab.github.io/mapbox-custom/amti-pacific-islands-leaflet/dist/main.css'
+    'https://csis-ilab.github.io/mapbox-custom/amti-pacific-islands/dist/main.css'
   ]
 
   cssFiles.forEach(file => {

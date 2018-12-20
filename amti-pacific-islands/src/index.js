@@ -13,8 +13,7 @@ import './scss/main.scss'
 const spreadsheetID = '115eMJVfot0DDYcv7nhsVM4X5Djihr2ygpMdMYzBSsdc'
 
 window.isIE =
-  (navigator.userAgent.includes('IE') ||
-    navigator.userAgent.includes('Edge')) &&
+  (navigator.userAgent.indexOf('IE') || navigator.userAgent.indexOf('Edge')) &&
   mapboxgl.supported()
 
 let chapterURL =
