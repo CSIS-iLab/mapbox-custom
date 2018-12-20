@@ -12,9 +12,11 @@ import './scss/main.scss'
 
 const spreadsheetID = '115eMJVfot0DDYcv7nhsVM4X5Djihr2ygpMdMYzBSsdc'
 
-window.isIE =
-  (navigator.userAgent.indexOf('IE') || navigator.userAgent.indexOf('Edge')) &&
-  mapboxgl.supported()
+let IE = /*@cc_on!@*/ false || !!document.documentMode
+
+let Edge = !isIE && !!window.StyleMedia
+
+window.isIE = (IE || Edge) && mapboxgl.supported()
 
 let chapterURL =
   'https://spreadsheets.google.com/feeds/list/' +
