@@ -30,7 +30,7 @@ const ScrollingControls = {
 
     scrollText.style.top = `-${windowHeight}px`
 
-    // ScrollingControls.scroller.resize()
+    ScrollingControls.scroller.resize()
   },
   handleStepEnter(response) {
     ScrollingControls.step.classed('is-active', function(d, i) {
