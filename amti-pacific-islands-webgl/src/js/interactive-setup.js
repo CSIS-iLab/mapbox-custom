@@ -109,7 +109,9 @@ function interactiveSetup({ container, initialDesc, steps }) {
     let step = scrollText.querySelector('.step')
     step.classList.add('is-active')
     let windowHeight = window.innerHeight
-    scrollText.style.top = `-${(windowHeight / 6) * 5}px`
+    scrollText.style.top = `-${windowHeight / 3}px`
+    scrollText.style.right = 0
+    scrollText.style.position = 'absolute'
 
     document.querySelector('.navigator').addEventListener('click', e => {
       if (
