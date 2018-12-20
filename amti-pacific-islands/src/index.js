@@ -14,7 +14,7 @@ const spreadsheetID = '115eMJVfot0DDYcv7nhsVM4X5Djihr2ygpMdMYzBSsdc'
 
 let IE = /*@cc_on!@*/ false || !!document.documentMode
 
-let Edge = !isIE && !!window.StyleMedia
+let Edge = !IE && !!window.StyleMedia
 
 window.isIE = (IE || Edge) && mapboxgl.supported()
 
