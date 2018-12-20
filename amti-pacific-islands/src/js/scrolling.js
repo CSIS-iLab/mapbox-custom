@@ -28,8 +28,6 @@ const ScrollingControls = {
     var stepHeight = Math.floor(windowHeight) + topOffset + 100
     ScrollingControls.step.style('height', stepHeight + 'px')
 
-    scrollText.style.top = `-${windowHeight}px`
-
     ScrollingControls.scroller.resize()
   },
   handleStepEnter(response) {

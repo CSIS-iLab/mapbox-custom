@@ -112,7 +112,7 @@ function interactiveSetup({ container, initialDesc, steps }) {
     console.log(windowHeight / 6)
     scrollText.style.top = `-${windowHeight / 6}px`
     scrollText.style.right = 0
-    scrollText.style.position = 'absolute'
+    scrollText.style.position = 'fixed'
 
     document.querySelector('.navigator').addEventListener('click', e => {
       if (
@@ -151,6 +151,8 @@ function interactiveSetup({ container, initialDesc, steps }) {
         }
       `
     })
+  } else {
+    scrollText.style.top = `-${windowHeight}px`
   }
 
   load()
