@@ -25,7 +25,10 @@ const ScrollingControls = {
     ScrollingControls.graphic.style('height', windowHeight + 'px')
     ScrollingControls.chart.style('height', windowHeight + 'px')
 
-    var stepHeight = Math.floor(windowHeight) + topOffset + 100
+    let stepHeight = isMobile
+      ? Math.floor(windowHeight * 2)
+      : Math.floor(windowHeight) + topOffset + 100
+
     ScrollingControls.step.style('height', stepHeight + 'px')
 
     ScrollingControls.scroller.resize()

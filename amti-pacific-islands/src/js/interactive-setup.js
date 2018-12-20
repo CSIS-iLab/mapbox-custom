@@ -110,7 +110,6 @@ function interactiveSetup({ container, initialDesc, steps }) {
 
   if (!window.isIE && !window.isMobile) {
     step.classList.add('is-active')
-    console.log(windowHeight / 6)
     scrollText.style.top = `-${windowHeight / 3}px`
     scrollText.style.overflow = `hidden`
     scrollText.style.position = `absolute`
@@ -192,6 +191,8 @@ const load = () => {
     L.mapbox
       .styleLayer('mapbox://styles/ilabmedia/cjp1vsq4012qc2smt2prznr0i')
       .addTo(window.map)
+
+    console.log(window.map)
   } else {
     mapboxgl.accessToken =
       'pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
