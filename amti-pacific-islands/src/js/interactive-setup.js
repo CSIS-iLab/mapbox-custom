@@ -110,9 +110,11 @@ function interactiveSetup({ container, initialDesc, steps }) {
     step.classList.add('is-active')
     let windowHeight = window.innerHeight
     console.log(windowHeight / 6)
-    scrollText.style.top = `-${windowHeight / 6}px`
-    scrollText.style.right = 0
-    scrollText.style.position = 'fixed'
+    scrollText.style.top = `-${windowHeight / 3}px`
+    scrollText.style.overflow = `hidden`
+    scrollText.style.position = `absolute`
+    scrollText.style.right = `calc(100vw - 95%)`
+    document.querySelector('#scroll').style.overflow = `hidden`
 
     document.querySelector('.navigator').addEventListener('click', e => {
       if (
