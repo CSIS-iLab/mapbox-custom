@@ -58,8 +58,12 @@
   @include breakpoint('medium') {
     top: unset;
     right: calc(-100vw + 35%);
-    max-width: 30em;
+    width: 40%;
+  }
+
+  @include breakpoint('xlarge') {
     width: 33%;
+    max-width: 30em;
   }
 }
 

@@ -55,6 +55,8 @@
     "mapboxgl-spiderifier": "^1.0.9",
     "scrollama": "^1.4.2",
     "slim-select": "^1.17.0",
-    "uglifyjs-webpack-plugin": "^2.0.1"
+    "stickyfilljs": "^2.1.0",
+    "uglifyjs-webpack-plugin": "^2.0.1",
+    "whatwg-fetch": "^3.0.0"
   }
 }

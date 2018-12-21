@@ -110,7 +110,7 @@ function interactiveSetup({ container, initialDesc, steps }) {
 
   if (!window.isIE && !window.isMobile) {
     step.classList.add('is-active')
-    scrollText.style.top = `-${windowHeight / 3}px`
+    scrollText.style.top = `-${windowHeight / 4}px`
     scrollText.style.overflow = `hidden`
     scrollText.style.position = `absolute`
     scrollText.style.right = `calc(100vw - 100%)`
@@ -122,12 +122,19 @@ function interactiveSetup({ container, initialDesc, steps }) {
         e.target.parentNode.classList.contains('scroll-up')
       ) {
         window.stepActions[--i].fly()
+        window.currentStep--
       } else if (
         e.target.classList.contains('scroll-down') ||
         e.target.parentNode.classList.contains('scroll-down')
       ) {
         window.stepActions[++i].fly()
+        window.currentStep++
       }
+
+      if (!window.isIE && window.map.getSource('point')) {
+        window.animateMarker(0)
+      }
+
       step.querySelector('.text').innerHTML = window.stepActions[i].text
 
       let first = i === 0
@@ -155,12 +162,20 @@ function interactiveSetup({ container, initialDesc, steps }) {
     })
   } else {
     scrollText.style.top = `-${windowHeight}px`
+    document.querySelector('#legend').style.position = 'relative'
+
+    if (!window.isMobile) {
+      scrollText.style.right = `calc(100vw - 160%)`
+    }
   }
 
   load()
 }
 import mapboxgl from 'mapbox-gl'
 import L from 'mapbox.js'
+import Stickyfill from 'stickyfilljs'
+import { polyfill } from 'es6-promise'
+polyfill()
 
 const load = () => {
   let cssFiles = [
@@ -170,13 +185,13 @@ const load = () => {
   ]
 
   cssFiles.forEach(file => {
-    var head = document.head
-    var link = document.createElement('link')
+    let head = document.head
+    let cssLink = document.createElement('link')
 
-    link.rel = 'stylesheet'
-    link.href = file
+    cssLink.rel = 'stylesheet'
+    cssLink.href = file
 
-    head.appendChild(link)
+    head.appendChild(cssLink)
   })
 
   if (window.isIE) {
@@ -192,7 +207,8 @@ const load = () => {
       .styleLayer('mapbox://styles/ilabmedia/cjp1vsq4012qc2smt2prznr0i')
       .addTo(window.map)
 
-    console.log(window.map)
+    let elements = document.querySelectorAll('.sticky')
+    Stickyfill.add(elements)
   } else {
     mapboxgl.accessToken =
       'pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw'
@@ -209,6 +225,14 @@ const load = () => {
       dragPan: window.isMobile ? false : true
     })
   }
+
+  var legend = document.querySelector('#legend')
+  legend.addEventListener('mousedown', () => {
+    console.log('Center', map.getCenter())
+    console.log('Pitch', map.getPitch())
+    console.log('Zoom', map.getZoom())
+  })
+
   let resizeEvent = window.document.createEvent('UIEvents')
   resizeEvent.initUIEvent('resize', true, false, window, 0)
   window.dispatchEvent(resizeEvent)

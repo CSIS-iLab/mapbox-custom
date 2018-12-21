@@ -8,15 +8,27 @@ button.mapboxgl-popup-close-button {
   font-weight: bold;
 }
 
-.mapboxgl-ctrl-top-right,
-.leaflet-left {
+.mapboxgl-ctrl-top-right {
   z-index: 999;
-  top: -5px !important;
 
   @include breakpoint('medium') {
-    top: 60px !important;
+    // top: 60px !important;
+    top: -5px !important;
     right: unset !important;
     left: 0 !important;
+  }
+}
+
+.leaflet-left {
+  z-index: 999;
+  right: 10px !important;
+  left: unset !important;
+  top: 10px !important;
+
+  @include breakpoint('medium') {
+    left: -10px !important;
+    right: unset !important;
+    top: -10px !important;
   }
 }
 

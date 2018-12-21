@@ -4,9 +4,9 @@ import breakpoints from './js/breakpoints'
 import makeGLMap from './js/makeGLMap'
 import makeLLMap from './js/makeLLMap'
 import mapboxgl from 'mapbox-gl'
-import fetch from 'isomorphic-fetch'
 import { polyfill } from 'es6-promise'
 polyfill()
+import { fetch as fetchPolyfill } from 'whatwg-fetch'
 
 import './scss/main.scss'
 
@@ -14,9 +14,9 @@ const spreadsheetID = '115eMJVfot0DDYcv7nhsVM4X5Djihr2ygpMdMYzBSsdc'
 
 let IE = /*@cc_on!@*/ false || !!document.documentMode
 
-let Edge = !IE && !!window.StyleMedia
+let Edge = !mapboxgl.supported()
 
-window.isIE = (IE || Edge) && mapboxgl.supported()
+window.isIE = IE || Edge
 
 let chapterURL =
   'https://spreadsheets.google.com/feeds/list/' +
@@ -57,28 +57,36 @@ const init = () => {
     return
   }
 
-  fetch(chapterURL)
-    .then(resp => resp.json())
-    .then(json => {
-      window.isMobile = window.screen.availWidth < 425
+  fetchPolyfill(chapterURL)
+    .then(function(response) {
+      return response.json()
+    })
+    .then(function(json) {
+      window.isMobile = window.innerWidth < 1040
       window.stepActions = parseChapterData(json.feed.entry)
 
       countryColors = window.stepActions
-        .filter(c => !exclude.includes(c.name))
+        .filter(c => !(exclude.indexOf(c.name) > -1))
         .map(c => [c.name, c.color])
         .reduce((a, b) => a.concat(b))
 
       paintMap = ['match', ['get', 'country']]
         .concat(countryColors)
         .concat(['#e06b91'])
+
+      return json
     })
-    .then(x => {
+    .then(function(ex) {
+      let values = Object.keys(window.stepActions).map(function(key) {
+        return window.stepActions[key]
+      })
+
       interactiveSetup({
         container: container,
         initialDesc: `${
           window.stepActions[0] ? `${window.stepActions[0].text}` : ``
         }`,
-        steps: Object.values(window.stepActions)
+        steps: values
       })
 
       Scrolling({ stepActions: window.stepActions })
@@ -89,6 +97,10 @@ const init = () => {
         makeGLMap()
       }
       window.addEventListener('resize', resize)
+      return ex
+    })
+    .catch(function(ex) {
+      console.log('i parsing failed', ex)
     })
 }
 
@@ -104,7 +116,7 @@ const parseChapterData = rawData => {
     let chapterData = {}
     Object.keys(row).forEach((c, i) => {
       let column = c
-      if (column.includes('gsx$')) {
+      if (column.indexOf('gsx$') > -1) {
         let columnName = column.replace('gsx$', '')
         chapterData[columnName] = row[column]['$t']
       }
@@ -134,7 +146,7 @@ const parseChapterData = rawData => {
 
       if (window.isIE) {
         highlightLLChapter(chapterData)
-        setLLPopup(chapterData)
+        // setLLPopup(chapterData)
       } else {
         if (window.map.getSource('United States_clusters')) {
           highlightGLChapter(chapterData)
@@ -149,7 +161,7 @@ const parseChapterData = rawData => {
 }
 
 const setLLPopup = chapterData => {
-  if (window.nation.includes('China')) {
+  if (window.nation.indexOf('China') > -1) {
     let index = parseInt(window.nation.replace('China-', ''), 10)
     let layers = nation_marker_clusters['China'].getLayers()
     layers.forEach((layer, i) => {
@@ -157,8 +169,10 @@ const setLLPopup = chapterData => {
       let latlng = new L.LatLng(coordinates[1], coordinates[0])
       let popup = L.popup({ closeButton: true })
 
-      popup.setLatLng(latlng).setContent(layer.getPopup()._content)
-      // .openOn(window.map)
+      popup
+        .setLatLng(latlng)
+        .setContent(layer.getPopup()._content)
+        .openOn(window.map)
     })
   }
 }
@@ -188,7 +202,7 @@ const setGLPopup = chapterData => {
         .filter(p => p !== 'country')
         .map(p => {
           if (properties[p])
-            return allowedHeaders.includes(p)
+            return allowedHeaders.indexOf(p) > -1
               ? `<div class=
           "popupHeaderStyle">${p
             .toUpperCase()
@@ -215,7 +229,7 @@ const setGLPopup = chapterData => {
       .setHTML(`${description}`)
       .addTo(map)
   }
-  if (!chapterData.name.includes('China')) chinaPopup.remove()
+  if (!(chapterData.name.indexOf('China') > -1)) chinaPopup.remove()
 }
 
 const fly = chapterData => {
@@ -244,17 +258,17 @@ const chapterColors = {
 
 const highlightLLChapter = chapterData => {
   let chapterName =
-    chapterData.name.indexOf('-') > 0
+    chapterData.name.indexOf('-') > -1
       ? chapterData.name.substring(0, chapterData.name.indexOf('-'))
       : chapterData.name
 
-  if (!exclude.includes(chapterName)) {
+  if (!(exclude.indexOf(chapterName) > -1)) {
     nations.forEach(nation => {
       window.map.removeLayer(window.nation_marker_clusters[nation])
     })
 
     nations.forEach(nation => {
-      if (nation === chapterName && nations.includes(chapterName)) {
+      if (nation === chapterName && nations.indexOf(chapterName) > -1) {
         window.map.addLayer(window.layer_cache[chapterName])
       }
     })
@@ -271,12 +285,12 @@ const highlightLLChapter = chapterData => {
 
 const highlightGLChapter = chapterData => {
   let chapterName =
-    chapterData.name.indexOf('-') > 0
+    chapterData.name.indexOf('-') > -1
       ? chapterData.name.substring(0, chapterData.name.indexOf('-'))
       : chapterData.name
 
-  if (!exclude.includes(chapterName)) {
-    let newFillMap = !chapterName.includes('China')
+  if (!(exclude.indexOf(chapterName) > -1)) {
+    let newFillMap = !(chapterName.indexOf('China') > -1)
       ? [
           'match',
           ['get', 'country'],
@@ -286,12 +300,12 @@ const highlightGLChapter = chapterData => {
         ]
       : ['match', ['get', 'chinese-involvement'], '', 'transparent', '#e06b91']
 
-    let newStrokeMap = !chapterName.includes('China')
+    let newStrokeMap = !(chapterName.indexOf('China') > -1)
       ? ['match', ['get', 'country'], `${chapterName}`, '#fff', 'transparent']
       : ['match', ['get', 'chinese-involvement'], '', 'transparent', '#fff']
 
     nations.forEach(nation => {
-      if (nation === chapterName && nations.includes(chapterName)) {
+      if (nation === chapterName && nations.indexOf(chapterName) > -1) {
         window.map.setPaintProperty(
           `${nation}_clusters`,
           'circle-color',

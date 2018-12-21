@@ -1,8 +1,8 @@
 import L from 'mapbox.js'
 import MarketCluster from './marketcluster.js'
-import fetch from 'isomorphic-fetch'
 import { polyfill } from 'es6-promise'
 polyfill()
+import { fetch as fetchPolyfill } from 'whatwg-fetch'
 
 let map,
   interestsData,
@@ -33,11 +33,17 @@ let islandURL =
 
 const makeMap = () => {
   window.map.on('load', function() {
-    fetch(islandURL)
-      .then(resp => resp.json())
-      .then(json => {
+    fetchPolyfill(islandURL)
+      .then(function(response) {
+        return response.json()
+      })
+      .then(function(json) {
         interestsData = parseIslandData(json.feed.entry)
         initIslands()
+        return json
+      })
+      .catch(function(ex) {
+        console.log('mm parsing failed', ex)
       })
   })
   window.map.setView([-12, 180], 4)
@@ -71,19 +77,19 @@ function addInterestsLayer() {
       }
     })
 
-    let filteredData = interestsData.features.filter(f =>
-      f.properties.country.includes(nation)
+    let filteredData = interestsData.features.filter(
+      f => f.properties.country.indexOf(nation) > -1
     )
 
     for (let i = 0; i < filteredData.length; i++) {
       let a = filteredData[i]
       let description
-      if (window.screen.availWidth > 768) {
+      if (!window.isMobile) {
         description = Object.keys(a.properties)
           .filter(p => p !== 'country')
           .map(p => {
             if (a.properties[p])
-              return allowedHeaders.includes(p)
+              return allowedHeaders.indexOf(p) > -1
                 ? `<div class=
             "popupHeaderStyle">${p
               .toUpperCase()
@@ -127,7 +133,13 @@ function addInterestsLayer() {
     })
   })
 
-  window.layer_cache = Object.assign({}, window.nation_marker_clusters)
+  let objs = [{}, window.nation_marker_clusters]
+  window.layer_cache = objs.reduce(function(r, o) {
+    Object.keys(o).forEach(function(k) {
+      r[k] = o[k]
+    })
+    return r
+  }, {})
 
   nations.forEach(nation => {
     window.map.removeLayer(window.nation_marker_clusters[nation])
@@ -188,13 +200,20 @@ function parseIslandData(rawData) {
     let islandData = {}
     Object.keys(row).forEach(c => {
       let column = c
-      if (column.includes('gsx$')) {
+      if (column.indexOf('gsx$') > -1) {
         let columnName = column.replace('gsx$', '')
         islandData[columnName] = row[column]['$t']
       }
     })
 
-    let islandDataSansCoordinates = Object.assign({}, islandData)
+    let objs = [{}, islandData]
+    let islandDataSansCoordinates = objs.reduce(function(r, o) {
+      Object.keys(o).forEach(function(k) {
+        r[k] = o[k]
+      })
+      return r
+    }, {})
+
     delete islandDataSansCoordinates.latitude
     delete islandDataSansCoordinates.longitude
 
