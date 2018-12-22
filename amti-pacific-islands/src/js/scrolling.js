@@ -53,7 +53,7 @@ const ScrollingControls = {
       }
     }
 
-    window.currentStep = response.index
+    window.currentStep = response.index || window.currentStep || 0
   },
 
   init() {

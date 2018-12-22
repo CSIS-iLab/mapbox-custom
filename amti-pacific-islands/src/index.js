@@ -122,19 +122,25 @@ const parseChapterData = rawData => {
       }
     })
 
-    if (!isMobile) {
-      chapterData.center = [
-        parseFloat(chapterData['latitude']),
-        parseFloat(chapterData['longitude'])
-      ]
-    } else {
-      chapterData.center = [
-        parseFloat(chapterData['mobile-latitude']),
-        parseFloat(chapterData['mobile-longitude'])
-      ]
+    let latKey, lngKey
 
+    if (!isMobile) {
+      latKey = 'latitude'
+      lngKey = 'longitude'
+    } else {
+      latKey = 'mobile-latitude'
+      lngKey = 'mobile-longitude'
       chapterData.zoom = chapterData['mobile-zoom']
     }
+
+    chapterData.lng =
+      parseFloat(chapterData[lngKey]) < 0 && window.isIE
+        ? 360 + parseFloat(chapterData[lngKey])
+        : parseFloat(chapterData[lngKey])
+
+    chapterData.lat = parseFloat(chapterData[latKey])
+
+    chapterData.center = [chapterData.lng, chapterData.lat]
 
     chapterData.text = `<h3 class="title">${chapterData.title}</h3>
 <p class="story">${chapterData.text}</p>`
@@ -264,7 +270,9 @@ const highlightLLChapter = chapterData => {
 
   if (!(exclude.indexOf(chapterName) > -1)) {
     nations.forEach(nation => {
-      window.map.removeLayer(window.nation_marker_clusters[nation])
+      if (window.nation_marker_clusters[nation]) {
+        window.map.removeLayer(window.nation_marker_clusters[nation])
+      }
     })
 
     nations.forEach(nation => {
@@ -274,7 +282,9 @@ const highlightLLChapter = chapterData => {
     })
   } else if (chapterName === 'Introduction') {
     nations.forEach(nation => {
-      window.map.removeLayer(window.nation_marker_clusters[chapterName])
+      if (window.nation_marker_clusters[nation]) {
+        window.map.removeLayer(window.nation_marker_clusters[nation])
+      }
     })
   } else {
     nations.forEach(nation => {

@@ -217,15 +217,19 @@ function parseIslandData(rawData) {
     delete islandDataSansCoordinates.latitude
     delete islandDataSansCoordinates.longitude
 
+    islandData.longitude =
+      parseFloat(islandData.longitude) < 0
+        ? 360 + parseFloat(islandData.longitude)
+        : parseFloat(islandData.longitude)
+
+    islandData.latitude = parseFloat(islandData.latitude)
+
     let feature = {
       type: 'Feature',
       properties: islandDataSansCoordinates,
       geometry: {
         type: 'Point',
-        coordinates: [
-          parseFloat(islandData.longitude),
-          parseFloat(islandData.latitude)
-        ]
+        coordinates: [islandData.longitude, islandData.latitude]
       }
     }
 
