@@ -1,6 +1,22 @@
 let i = 0
 
 function interactiveSetup({ container, initialDesc, steps }) {
+  let cssFiles = [
+    'https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css',
+    'https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css',
+    'https://csis-ilab.github.io/mapbox-custom/amti-pacific-islands/dist/main.css'
+  ]
+
+  cssFiles.forEach(file => {
+    let head = document.head
+    let cssLink = document.createElement('link')
+
+    cssLink.rel = 'stylesheet'
+    cssLink.href = file
+
+    head.appendChild(cssLink)
+  })
+
   let HTML = ''
 
   HTML += `<section id="scroll">
@@ -178,22 +194,6 @@ import { polyfill } from 'es6-promise'
 polyfill()
 
 const load = () => {
-  let cssFiles = [
-    'https://api.tiles.mapbox.com/mapbox-gl-js/v0.50.0/mapbox-gl.css',
-    'https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css',
-    'https://csis-ilab.github.io/mapbox-custom/amti-pacific-islands/dist/main.css'
-  ]
-
-  cssFiles.forEach(file => {
-    let head = document.head
-    let cssLink = document.createElement('link')
-
-    cssLink.rel = 'stylesheet'
-    cssLink.href = file
-
-    head.appendChild(cssLink)
-  })
-
   if (window.isIE) {
     L.mapbox.accessToken =
       'pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNqcHZvemptYzAzYnI0N3BodDg4NXBlOTUifQ.BbL7RBI4fzWi8Yi4t3imxg'
