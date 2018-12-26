@@ -57,7 +57,7 @@
 
   @include breakpoint('medium') {
     top: unset;
-    right: calc(-100vw + 35%);
+    left: calc(100vw - 40% - 20px);
     width: 40%;
   }
 
