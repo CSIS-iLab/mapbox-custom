@@ -1,9 +1,10 @@
 // Formula for revenue range slider
 
 const inputRange = document.querySelector("#controls input[type=range]");
+
 inputRange.style.setProperty(
   "--value",
-  (inputRange.value - inputRange.min) / 8800
+  (inputRange.value - inputRange.min) / (inputRange.max / 100)
 );
 
 const pricePlaceholder = document.querySelector(
@@ -22,7 +23,7 @@ function registerListeners() {
   inputRange.addEventListener("input", e => {
     inputRange.style.setProperty(
       "--value",
-      (inputRange.value - inputRange.min) / 8800
+      (inputRange.value - inputRange.min) / (inputRange.max / 100)
     );
   });
 
@@ -157,7 +158,7 @@ function setNone() {
 // Load the markets dataset
 
 const priceFilter = new carto.filter.Range("estimated_revenue_usd", {
-  lte: 500000
+  lte: 850000
 });
 
 const markets = new carto.source.SQL(
@@ -190,7 +191,6 @@ const layer_markets = new carto.layer.Layer(markets, style_markets, {
 // Add markets point data
 
 client.addLayer(layer_markets);
-
 
 // Popups
 
