@@ -24,21 +24,57 @@ map.attributionControl.addAttribution(
 );
 
 var client = new carto.Client({
-  apiKey: "YhyUHpP8_I1l-uFeIwhNjA",
+  apiKey: "N4WtDv91tQxuLTdKc1SC9w",
   username: "csis"
 });
 
-const cruisingData = new carto.source.Dataset("cruising_times");
-const cruisingStyles = new carto.style.CartoCSS(`
+const cruisingSQL = {};
+const cruisingStyle = {};
+const cruisingLayer = {};
+
+["eucom", "centcom", "pacom"].forEach(region => {
+  cruisingSQL[region] = new carto.source.SQL(
+    `SELECT * FROM cruising_times WHERE region = '${region.toUpperCase()}'`
+  );
+
+  cruisingStyle[region] = new carto.style.CartoCSS(`
   #layer {
-    line-width: 0;
-
+    line-width: 3;
+    line-color: ramp([from_to],(#b980ff,#84a6fa,#49e6e0,#00a000,#9746fb,#426cda,#2db4aa,#3ac935,#512E5F,#32488d,#309890,#00e000,#9b0000,#fb7125,#7a0fff,#b70000,#ff861d,#d70000,#ff9529,#ff0000,#fdab3a),("Darwin to Guam","Yokosuka to Guam","Pearl Harbor to Guam","San Diego to Guam","Darwin to Sea of Japan","Yokosuka to Sea of Japan","Pearl Harbor to Sea of Japan","San Diego to Sea of Japan","Darwin to South China Sea","Yokosuka to South China Sea","Pearl Harbor to South China Sea","San Diego to South China Sea","Norfolk to Arabian Gulf","Rota to Arabian Gulf","Darwin to Arabian Gulf","Norfolk to Baltic Sea","Rota to Baltic Sea","Norfolk to Eastern Mediterranean","Rota to Eastern Mediterranean","Norfolk to Black Sea","Rota to Black Sea"),"=");
+    line-comp-op: overlay;
+    line-cap: butt;
+    line-opacity:.9;
+    line-join: round;
+    line-smooth: 0;
+    line-dasharray: 7,3;
   }
-
 `);
 
-const cruisingLayer = new carto.layer.Layer(cruisingData, cruisingStyles, {
-  featureOverColumns: ["from_to", "distance", "time"]
+  cruisingLayer[region] = new carto.layer.Layer(
+    cruisingSQL[region],
+    cruisingStyle[region],
+    {
+      featureOverColumns: ["from_to", "distance", "time"]
+    }
+  );
+
+  client.addLayer(cruisingLayer[region]);
+
+  cruisingLayer[region].on(carto.layer.events.FEATURE_CLICKED, featureEvent => {
+    let data = featureEvent.data;
+    popupBases.setLatLng(featureEvent.latLng);
+
+    popupBases.setContent(`<div class="country-name">${data.from_to}</div>
+  <div class="secondary-header">Distance:</div>
+  <span class='popupEntryStyle'>${data.distance}km</span></div>
+  <div class="secondary-header">Time (30 knots):</div>
+  <span class='popupEntryStyle'>${data.time} days</span></div>
+  `);
+
+    if (!popupBases.isOpen()) {
+      popupBases.openOn(map);
+    }
+  });
 });
 
 const aegisData = new carto.source.Dataset("aegis_ports");
@@ -108,13 +144,8 @@ const aegisashoreLayer = new carto.layer.Layer(
   }
 );
 
-client.addLayers([
-  cruisingLayer,
-  nsaptsLayer,
-  otherLayer,
-  aegisashoreLayer,
-  aegisLayer
-]);
+client.addLayers([nsaptsLayer, otherLayer, aegisashoreLayer, aegisLayer]);
+
 client.getLeafletLayer().addTo(map);
 
 const popup = L.popup({ closeButton: true });
@@ -165,22 +196,6 @@ ${
   });
 });
 
-cruisingLayer.on(carto.layer.events.FEATURE_CLICKED, featureEvent => {
-  let data = featureEvent.data;
-  popupBases.setLatLng(featureEvent.latLng);
-
-  popupBases.setContent(`<div class="country-name">${data.from_to}</div>
-  <div class="secondary-header">Distance:</div>
-  <span class='popupEntryStyle'>${data.distance}km</span></div>
-  <div class="secondary-header">Time (30 knots):</div>
-  <span class='popupEntryStyle'>${data.time} days</span></div>
-  `);
-
-  if (!popupBases.isOpen()) {
-    popupBases.openOn(map);
-  }
-});
-
 function validatePopupValue(value, prefix = "", suffix = "") {
   if (!value) {
     return "-";
@@ -189,27 +204,28 @@ function validatePopupValue(value, prefix = "", suffix = "") {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  document.querySelector(".cruising").addEventListener("click", e => {
-    let checkbox = e.target || e.target.querySelector("input");
+  document
+    .querySelector("aside.toolbox .box section")
+    .addEventListener("click", e => {
+      let checkbox = e.target.tagName === "INPUT" ? e.target : undefined;
 
-    if (checkbox.checked) {
-      cruisingStyles.setContent(`
+      if (checkbox && checkbox.checked) {
+        cruisingStyle[checkbox.name].setContent(`
       #layer {
         line-width: 3;
-        line-color: ramp([from_to],(#D98880,#C39BD3,#A9CCE3,#A3E4D7,#A9DFBF,#FAD7A0,#EDBB99,#641E16,#512E5F,#154360,#0E6251,#186A3B,#7D6608,#784212,#CB4335,#7D3C98,#2E86C1,#148F77,#138D75,#2ECC71,#F39C12),("Darwin to Guam","Yokosuka to Guam","Pearl Harbor to Guam","San Diego to Guam","Darwin to Sea of Japan","Yokosuka to Sea of Japan","Pearl Harbor to Sea of Japan","San Diego to Sea of Japan","Darwin to South China Sea","Yokosuka to South China Sea","Pearl Harbor to South China Sea","San Diego to South China Sea","Norfolk to Arabian Gulf","Rota to Arabian Gulf","Darwin to Arabian Gulf","Norfolk to Baltic Sea","Rota to Baltic Sea","Norfolk to Eastern Mediterranean","Rota to Eastern Mediterranean","Norfolk to Black Sea","Rota to Black Sea"),"=");
+        line-color: ramp([from_to],(#b980ff,#84a6fa,#49e6e0,#00a000,#9746fb,#426cda,#2db4aa,#3ac935,#512E5F,#32488d,#309890,#00e000,#9b0000,#fb7125,#7a0fff,#b70000,#ff861d,#d70000,#ff9529,#ff0000,#fdab3a),("Darwin to Guam","Yokosuka to Guam","Pearl Harbor to Guam","San Diego to Guam","Darwin to Sea of Japan","Yokosuka to Sea of Japan","Pearl Harbor to Sea of Japan","San Diego to Sea of Japan","Darwin to South China Sea","Yokosuka to South China Sea","Pearl Harbor to South China Sea","San Diego to South China Sea","Norfolk to Arabian Gulf","Rota to Arabian Gulf","Darwin to Arabian Gulf","Norfolk to Baltic Sea","Rota to Baltic Sea","Norfolk to Eastern Mediterranean","Rota to Eastern Mediterranean","Norfolk to Black Sea","Rota to Black Sea"),"=");
         line-comp-op: overlay;
         line-cap: butt;
         line-opacity:.9;
         line-join: round;
-        line-smooth: 1;
+        line-smooth: 0;
         line-dasharray: 7,3;
       }
     `);
-    } else {
-      cruisingStyles.setContent(`
-    #layer {
-      line-width: 0;}
+      } else if (checkbox) {
+        cruisingStyle[checkbox.name].setContent(`
+    #layer {}
       `);
-    }
-  });
+      }
+    });
 });
