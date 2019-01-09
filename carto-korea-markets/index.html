@@ -1,108 +1,114 @@
-
 <!DOCTYPE html>
 <html>
-<head>
-<title>Markets in North Korea | Beyond Parallel | CSIS</title>
-<meta name="viewport" content="initial-scale=1.0">
-<meta charset="utf-8">
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700" rel="stylesheet">
-<link href="zoom_slider/zoomslider.css" rel="stylesheet">
-<!-- Share meta -->
-<meta property="og:locale" content="en_US" />
-<meta property="og:type" content="article" />
-<meta property="og:title" content="The Markets: Private Economy and Capitalism in North Korea - Beyond Parallel" />
-<meta property="og:description" content="The growth of markets and gradual changes in the economy are some the most significant developments to occur in North Korea over the last 20 years. An understanding of these fundamental changes is critical for the formulation of North Korea policy. In an effort to further investigate these evolving economic changes in North Korea, Beyond Parallel launched a pioneering and original data collection project in 2017 and 2018 on markets." />
-<meta property="og:image" content="https://beyondparallel.csis.org/wp-content/uploads/2018/05/north-korean-currency.jpeg" />
-<meta property="og:image:width" content="2000" />
-<meta property="og:image:height" content="1333" />
-<meta name="twitter:card" content="summary" />
-<meta name="twitter:description" content="The growth of markets and gradual changes in the economy are some the most significant developments to occur in North Korea over the last 20 years. An understanding of these fundamental changes is critical for the formulation of North Korea policy. In an effort to further investigate these evolving economic changes in North Korea, Beyond Parallel launched a pioneering and original data collection project in 2017 and 2018 on markets." />
-<meta name="twitter:title" content="The Markets: Private Economy and Capitalism in North Korea? - Beyond Parallel" />
-<meta name="twitter:image" content="https://beyondparallel.csis.org/wp-content/uploads/2018/05/north-korean-currency.jpeg" />
-<!-- Include Leaflet -->
-<script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
-<link href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" rel="stylesheet">
-<!-- Include Zoom Slider plugin -->
-<script src="zoom_slider/zoomslider.js"></script>
-<!-- Include CARTO.js -->
-<script src="https://libs.cartocdn.com/carto.js/v4.1.1/carto.min.js"></script>
-<link href="https://carto.com/developers/carto-js/examples/maps/public/style.css" rel="stylesheet">
-<!-- Include local styles and scripts -->
-<link href="css/carto_style.css" rel="stylesheet">
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-80051375-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'UA-80051375-1');
-</script>
+<head>
+  <title>Markets in North Korea | Beyond Parallel | CSIS</title>
+  <meta name="viewport" content="initial-scale=1.0">
+  <meta charset="utf-8">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700" rel="stylesheet">
+  <link href="zoom_slider/zoomslider.css" rel="stylesheet">
+  <!-- Share meta -->
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="The Markets: Private Economy and Capitalism in North Korea - Beyond Parallel" />
+  <meta property="og:description" content="The growth of markets and gradual changes in the economy are some the most significant developments to occur in North Korea over the last 20 years. An understanding of these fundamental changes is critical for the formulation of North Korea policy. In an effort to further investigate these evolving economic changes in North Korea, Beyond Parallel launched a pioneering and original data collection project in 2017 and 2018 on markets."
+  />
+  <meta property="og:image" content="https://beyondparallel.csis.org/wp-content/uploads/2018/05/north-korean-currency.jpeg" />
+  <meta property="og:image:width" content="2000" />
+  <meta property="og:image:height" content="1333" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:description" content="The growth of markets and gradual changes in the economy are some the most significant developments to occur in North Korea over the last 20 years. An understanding of these fundamental changes is critical for the formulation of North Korea policy. In an effort to further investigate these evolving economic changes in North Korea, Beyond Parallel launched a pioneering and original data collection project in 2017 and 2018 on markets."
+  />
+  <meta name="twitter:title" content="The Markets: Private Economy and Capitalism in North Korea? - Beyond Parallel" />
+  <meta name="twitter:image" content="https://beyondparallel.csis.org/wp-content/uploads/2018/05/north-korean-currency.jpeg" />
+  <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
+
+  <!-- Include Leaflet -->
+  <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+  <link href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" rel="stylesheet">
+  <!-- Include Zoom Slider plugin -->
+  <script src="zoom_slider/zoomslider.js"></script>
+  <!-- Include CARTO.js -->
+  <script src="https://libs.cartocdn.com/carto.js/v4.1.1/carto.min.js"></script>
+  <link href="https://carto.com/developers/carto-js/examples/maps/public/style.css" rel="stylesheet">
+  <!-- Include local styles and scripts -->
+  <link href="css/carto_style.css" rel="stylesheet">
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-80051375-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-80051375-1');
+  </script>
 </head>
 
 <body>
-	<nav id='menu-ui' class='menu-ui'></nav>
-	<div id="map"></div>
-		<aside class="toolbox">
-			<div class="box">
-				<header>
-					<h1>General Markets in North Korea</h1>
-					<a href="https://beyondparallel.csis.org/" target="_blank"><button class="mobile-toggle" id="bp-logo"></button></a>
-          <p id="mobile-only">This map shows the location of markets in North Korea.  Each dot represents one market.</p>
-				</header>
+  <nav id='menu-ui' class='menu-ui'></nav>
+  <div id="map"></div>
+  <aside class="toolbox">
+    <div class="box">
+      <header>
+        <h1>General Markets in North Korea</h1>
+        <a href="https://beyondparallel.csis.org/" target="_blank"><button class="mobile-toggle" id="bp-logo"></button></a>
+        <p id="mobile-only">This map shows the location of markets in North Korea. Each dot represents one market.</p>
+      </header>
 
-			<section class="mobile-toggle">
-				<p class="description open-sans">One of the most significant developments in North Korea over the past two decades has been the growth of markets. This map provides a broad view of the geographical location of markets across North Korea.  Each dot represents one market.</p>
-					<div class="separator"></div>
-<!--<section class="usage">
+      <section class="mobile-toggle">
+        <p class="description open-sans">One of the most significant developments in North Korea over the past two decades has been the growth of markets. This map provides a broad view of the geographical location of markets across North Korea. Each dot represents one market.</p>
+        <div class="separator"></div>
+        <!--<section class="usage">
 	<header>USAGE</header>
 		<p class="open-sans">Overlay borders of North Korean provinces and counties.</p>
 		</section>-->
-				<div id="controls">
-					<div id="info">
-						<h3>Administrative Regions</h3>
-						<p class="open-sans">Darker colors represent higher populations. Click to learn more about the regions.</p>
-					</div>
-<!-- Provinces/Counties checkboxes -->
-			<ul>
-				<li onclick="setProvince()">
-					<input type="radio" name="admin" id="provinces">
-					<label for="provinces">Provinces (Do 도)</label>
-					<li onclick="setCounty()">
-						<input type="radio" name="admin" id="counties">
-						<label for="counties">Counties (Gun 군)</label>
-					</li>
-					<li onclick="setNone()">
-								<input type="radio" name="admin" checked id="none">
-								<label for="none">All boundaries off</label>
-							</li>
-			</ul>
+        <div id="controls">
+          <div id="info">
+            <h3>Administrative Regions</h3>
+            <p class="open-sans">Darker colors represent higher populations. Click to learn more about the regions.</p>
+          </div>
+          <!-- Provinces/Counties checkboxes -->
+          <ul>
+            <li onclick="setProvince()">
+              <input type="radio" name="admin" id="provinces">
+              <label for="provinces">Provinces (Do 도)</label>
+              <li onclick="setCounty()">
+                <input type="radio" name="admin" id="counties">
+                <label for="counties">Counties (Gun 군)</label>
+              </li>
+              <li onclick="setNone()">
+                <input type="radio" name="admin" checked id="none">
+                <label for="none">All boundaries off</label>
+              </li>
+          </ul>
 
 
 
-			<div class="separator"></div>
-			<div id="info">
-								<h3>Rents Paid to Government <small>(Annual, in USD)</small></h3>
-							</div>
-							<!-- Revenue slider -->
-							<div class="widget">
-								<p class="open-sans">Showing markets generating greater than or equal to <span class="js-price-placeholder">$300</span> for the government per year.</p>
-							</div>
-							<input type="range" name="price" class="slider" min="349.29" max="850000" value="340" step="1" min-with-suffix="$300 / minimum" max-with-suffix="$850,000 / maximum">
-						</div>
-		</div>
-	</section>
-	<footer class="js-footer"></footer>
+          <div class="separator"></div>
+          <div id="info">
+            <h3>Rents Paid to Government <small>(Annual, in USD)</small></h3>
+          </div>
+          <!-- Revenue slider -->
+          <div class="widget">
+            <p class="open-sans">Showing markets generating greater than or equal to <span class="js-price-placeholder">$300</span> for the government per year.</p>
+          </div>
+          <input type="range" name="price" class="slider" min="349.29" max="850000" value="340" step="1" min-with-suffix="$300 / minimum" max-with-suffix="$850,000 / maximum">
+        </div>
+      </section>
+    </div>
+    <footer class="js-footer"></footer>
+  </aside>
 
-</div>
-</aside>
+  <!-- Copyright information -->
 
-<!-- Copyright information -->
-
-<div id="copyright_bug">
-	&copy; <a href="https://beyondparallel.csis.org/" target="_blank">Beyond Parallel</a> and <a href="https://www.csis.org" target="_blank">CSIS</a>, in partnership with <a href="http://nkdi.kr/" target="_blank">NKDI</a> | 2018
-</div>
-<script src="js/markets.js"></script>
+  <div id="copyright_bug">
+    &copy; <a href="https://beyondparallel.csis.org/" target="_blank">Beyond Parallel</a> and <a href="https://www.csis.org" target="_blank">CSIS</a>, in partnership with <a href="http://nkdi.kr/" target="_blank">NKDI</a> | 2018
+  </div>
+  <script src="js/markets.js"></script>
 </body>
+
 </html>

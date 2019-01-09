@@ -1,10 +1,10 @@
-let mixStyle, intstyle;
-const basemap = L.tileLayer(
+var mixStyle, intstyle;
+var basemap = L.tileLayer(
   "https://api.mapbox.com/styles/v1/ilabmedia/cjn7g1kec05k42smgqowtooaj/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
   {}
 );
 
-const map = L.map("map", {
+var map = L.map("map", {
   center: [50, -9.9504314],
   zoom: 3,
   maxZoom: 18,
@@ -25,16 +25,13 @@ var client = new carto.Client({
   username: "csis"
 });
 
-const natoCountriesData = new carto.source.Dataset("nato_trilat");
+var natoCountriesData = new carto.source.Dataset("nato_trilat");
 
-console.log(natoCountriesData);
-const natoCountriesStyles = new carto.style.CartoCSS(`
-  #layer {
-    polygon-opacity: 0.5;
-  }
-`);
+var natoCountriesStyles = new carto.style.CartoCSS(
+  " #layer {   polygon-opacity: 0.5; }"
+);
 
-const featureColumns = [
+var featureColumns = [
   "country",
   "year_joined",
   "basing",
@@ -46,7 +43,7 @@ const featureColumns = [
   "security_summit"
 ];
 
-const natoCountriesLayer = new carto.layer.Layer(
+var natoCountriesLayer = new carto.layer.Layer(
   natoCountriesData,
   natoCountriesStyles,
   {
@@ -54,75 +51,59 @@ const natoCountriesLayer = new carto.layer.Layer(
   }
 );
 
-const basesData = new carto.source.Dataset("bases");
-const basesStyles = new carto.style.CartoCSS(`
-  #layer {
-    marker-width: 12;
-    marker-fill: #fa0;
-    marker-line-color: #fff;
-    marker-allow-overlap: true;
-  }
-`);
+var basesData = new carto.source.Dataset("bases");
+var basesStyles = new carto.style.CartoCSS(
+  " #layer {   marker-width: 12;   marker-fill: #fa0;   marker-line-color: #fff;   marker-allow-overlap: true; }"
+);
 
-const basesLayer = new carto.layer.Layer(basesData, basesStyles, {
+var basesLayer = new carto.layer.Layer(basesData, basesStyles, {
   featureOverColumns: ["name"]
 });
 
 client.addLayers([natoCountriesLayer, basesLayer]);
 client.getLeafletLayer().addTo(map);
 
-const popup = L.popup({ closeButton: false });
-natoCountriesLayer.on(carto.layer.events.FEATURE_OVER, featureEvent => {
-  let data = featureEvent.data;
+var popup = L.popup({ closeButton: false });
+natoCountriesLayer.on(carto.layer.events.FEATURE_OVER, function(featureEvent) {
+  var data = featureEvent.data;
   popup.setLatLng(featureEvent.latLng);
-  popup.setContent(`
-    <div class="country-name">${data.country}</div>
-    <div><span class='popupHeaderStyle'>Joined:</span>
-    <span class='popupEntryStyle'>${data.year_joined}</span></div>
-
-    <div><span class='popupHeaderStyle'>Basing Country:</span>
-    <span class='popupEntryStyle'>${data.basing ? "Yes" : "No"}</span></div>
-
-    <div><span class='popupHeaderStyle'>Host Troops:</span>
-    <span class='popupEntryStyle'>${
-      data.host_troops_commentary
+  popup.setContent(
+    '   <div class="country-name">' +
+      data.country +
+      "</div>   <div><span class='popupHeaderStyle'>Joined:</span>   <span class='popupEntryStyle'>" +
+      data.year_joined +
+      "</span></div>    <div><span class='popupHeaderStyle'>Basing Country:</span>   <span class='popupEntryStyle'>" +
+      (data.basing ? "Yes" : "No") +
+      "</span></div>    <div><span class='popupHeaderStyle'>Host Troops:</span>   <span class='popupEntryStyle'>" +
+      (data.host_troops_commentary
         ? data.host_troops_commentary
         : data.host_troops
           ? "Yes"
-          : "No"
-    }</span></div>
-
-  <div><span class='popupHeaderStyle'>Contribute Troops:</span>
-    <span class='popupEntryStyle'>${
-      data.efp_troops_commentary
+          : "No") +
+      "</span></div>  <div><span class='popupHeaderStyle'>Contribute Troops:</span>   <span class='popupEntryStyle'>" +
+      (data.efp_troops_commentary
         ? data.efp_troops_commentary
-        : `${data.efp_troops} troops`
-    }</span></div>
-
-  <div><span class='popupHeaderStyle'>IAEA Budget:</span>
-    <span class='popupEntryStyle'>${data.iaea_budget}%</span></div>
-
-    <div><span class='popupHeaderStyle'>Gift Baskets:</span>
-    <span class='popupEntryStyle'>${
-      parseInt(data.security_summit, 10)
+        : data.efp_troops + " troops") +
+      "</span></div>  <div><span class='popupHeaderStyle'>IAEA Budget:</span>   <span class='popupEntryStyle'>" +
+      data.iaea_budget +
+      "%</span></div>    <div><span class='popupHeaderStyle'>Gift Baskets:</span>   <span class='popupEntryStyle'>" +
+      (parseInt(data.security_summit, 10)
         ? data.security_summit + " baskets"
-        : data.security_summit
-    } </span></div>
-
-
-  `);
+        : data.security_summit) +
+      " </span></div> "
+  );
   if (!popup.isOpen()) {
     popup.openOn(map);
   }
 });
 
-natoCountriesLayer.on(carto.layer.events.FEATURE_OUT, featureEvent => {
+natoCountriesLayer.on(carto.layer.events.FEATURE_OUT, function(featureEvent) {
   popup.removeFrom(map);
 });
 
-const popupBases = L.popup({ closeButton: false });
-basesLayer.on(carto.layer.events.FEATURE_OVER, featureEvent => {
-  let data = featureEvent.data;
+var popupBases = L.popup({ closeButton: false });
+basesLayer.on(carto.layer.events.FEATURE_OVER, function(featureEvent) {
+  var data = featureEvent.data;
   popupBases.setLatLng(featureEvent.latLng);
   popupBases.setContent(data.name);
   if (!popupBases.isOpen()) {
@@ -130,11 +111,16 @@ basesLayer.on(carto.layer.events.FEATURE_OVER, featureEvent => {
   }
 });
 
-basesLayer.on(carto.layer.events.FEATURE_OUT, featureEvent => {
+basesLayer.on(carto.layer.events.FEATURE_OUT, function(featureEvent) {
   popupBases.removeFrom(map);
 });
 
-function validatePopupValue(value, prefix = "", suffix = "") {
+function validatePopupValue(value) {
+  var prefix =
+    arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+  var suffix =
+    arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
+
   if (!value) {
     return "-";
   }
@@ -142,7 +128,7 @@ function validatePopupValue(value, prefix = "", suffix = "") {
 }
 
 /*----------  Shading  ----------*/
-const layerStyles = {
+var layerStyles = {
   basing: {
     field: "basing",
     max: 1
@@ -165,9 +151,9 @@ const layerStyles = {
   }
 };
 
-let currentLayer = layerStyles.basing;
+var currentLayer = layerStyles.basing;
 
-const rankingSelector = document.querySelector(".ranking");
+var rankingSelector = document.querySelector(".ranking");
 rankingSelector.addEventListener("change", function(e) {
   currentLayer = layerStyles[e.target.value];
   updateLayerStyles(currentLayer.field);
@@ -181,38 +167,17 @@ rankingSelector.addEventListener("change", function(e) {
   }
 });
 
-const colors = "#c9dcda, #98c3c4, #68abb8, #45829b, #2a5674";
+var colors = "#c9dcda, #98c3c4, #68abb8, #45829b, #2a5674";
 
 function updateLayerStyles(layer) {
-  let baseStyle = `
-    ::outline {
-      line-color: #dfe5e7;
-      line-width: 1;
-      }
-    #layer::labels {
-      text-name: [country];
-      text-face-name: 'Open Sans Bold';
-      text-transform: uppercase;
-      text-size: 12;
-      text-fill: #fff;
-      text-label-position-tolerance: 0;
-      text-halo-radius: 1.25;
-      text-halo-fill: #504e4e;
-      text-dy: 0;
-      text-allow-overlap: false;
-      text-placement: point;
-      text-placement-type: dummy;
-    }
-  `;
+  var baseStyle =
+    "   ::outline {     line-color: #dfe5e7;     line-width: 1;     }   #layer::labels {     text-name: [country];     text-face-name: 'Open Sans Bold';     text-transform: uppercase;     text-size: 12;     text-fill: #fff;     text-label-position-tolerance: 0;     text-halo-radius: 1.25;     text-halo-fill: #504e4e;     text-dy: 0;     text-allow-overlap: false;     text-placement: point;     text-placement-type: dummy;   } ";
 
-  intStyle = `polygon-fill: ramp([${layer}], (${colors}), quantiles);`;
+  intStyle =
+    "polygon-fill: ramp([" + layer + "], (" + colors + "), quantiles);";
 
-  mixStyle = `
-  [security_summit = 'Not in attendance']{
-    comp-op: multiply;
-    polygon-pattern-file: url(https://i.imgur.com/k3J0pnR.png);
-    }
-    `;
+  mixStyle =
+    " [security_summit = 'Not in attendance']{   comp-op: multiply;   polygon-pattern-file: url(https://i.imgur.com/k3J0pnR.png);   }   ";
 
   for (i = 5; i <= 40; i++) {
     if (i >= 33) {
@@ -229,12 +194,14 @@ function updateLayerStyles(layer) {
   }
 
   currentLayer.field !== "security_summit"
-    ? natoCountriesStyles.setContent(`#layer {${(intStyle += baseStyle)}}`)
-    : natoCountriesStyles.setContent(`#layer {${(mixStyle += baseStyle)}}`);
+    ? natoCountriesStyles.setContent("#layer {" + (intStyle += baseStyle) + "}")
+    : natoCountriesStyles.setContent(
+        "#layer {" + (mixStyle += baseStyle) + "}"
+      );
 }
 
 function customRamp(i, c) {
-  mixStyle += `[security_summit = "${i}"] {polygon-fill:${c}}`;
+  mixStyle += '[security_summit = "' + i + '"] {polygon-fill:' + c + "}";
 }
 
 // function updateLegend(max) {
