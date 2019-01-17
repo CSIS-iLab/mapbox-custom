@@ -105,11 +105,11 @@
 						<h3>Jihadist Attack Data</h3>
 					</div>
 					<ul>
-						<li onclick="setAttacks()">
+						<li onclick="attacksLayer.show();attacks2Layer.show()">
 							<input type="radio" name="pointdata" checked id="attacks">
 							<label for="attacks">All 2017 attacks</label>
 						</li>
-						<li onclick="setNone()">
+						<li onclick="attacksLayer.hide();attacks2Layer.hide()">
 							<input type="radio" name="pointdata" id="none">
 							<label for="none">Hide attacks data</label>
 						</li>
