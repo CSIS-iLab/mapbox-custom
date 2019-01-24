@@ -5,9 +5,7 @@ var basemap = L.tileLayer(
 
 var map = L.map("map", {
   center: [45, 0],
-  // maxBounds: [[-360, 270], [90, -90]],
-  // zoomSnap: 0.33,
-  zoom: 2.66,
+  zoom: 3,
   maxZoom: 18,
   scrollWheelZoom: true,
   minZoom: 1,
@@ -29,10 +27,15 @@ var client = new carto.Client({
 var recognitionSQL = new carto.source.SQL("SELECT * FROM guaido_recognition");
 
 let baseStyle = `
+[guaido = '?']{
+  comp-op: multiply;
+  polygon-pattern-file: url(https://i.imgur.com/k3J0pnR.png);
+  }
+
   ::outline {
     line-color: #fff;
     line-width: 1;
-    polygon-fill: ramp([guaido],(#f4da97,#5cc181,transparent),("true","false"),"=");
+    polygon-fill: ramp([guaido],(#f4da97,#5cc181,transparent),("Y","N"),"=");
 
     }
   #layer::labels {
@@ -45,8 +48,8 @@ let baseStyle = `
     text-halo-radius: 1.25;
     text-halo-fill: #504e4e;
     text-dy: 0;
-    text-opacity: ramp([guaido],(1,1,0),("true","false"),"=");
-    text-halo-opacity: ramp([guaido],(1,1,0),("true","false"),"=");
+    text-opacity: ramp([guaido],(1,1,0),("Y","N"),"=");
+    text-halo-opacity: ramp([guaido],(1,1,0),("Y","N"),"=");
     text-allow-overlap: false;
     text-placement: point;
     text-placement-type: dummy;
@@ -62,21 +65,26 @@ var recognitionLayer = new carto.layer.Layer(recognitionSQL, recognitionStyle, {
 var recognitionInfo = L.popup({ closeButton: false });
 
 recognitionLayer.on(carto.layer.events.FEATURE_OVER, function(e) {
-  if (e.data.guaido !== null) {
+  if (e.data.guaido.trim()) {
     recognitionInfo.setLatLng(e.latLng);
+    var recognitionContent =
+      e.data.guaido.toLowerCase() === "y"
+        ? `<div class='popupHeaderStyle'>${
+            e.data.country
+          }</div><div class='popupEntryStyle'>${
+            e.data.country
+          } recognizes Juan Guaidó as President</div>`
+        : e.data.guaido.toLowerCase() === "n"
+          ? `<div class='popupHeaderStyle'>${
+              e.data.country
+            }</div><div class='popupEntryStyle'>${
+              e.data.country
+            } recognizes Nicolás Maduro as President}</div>`
+          : `<div class='popupHeaderStyle'>${
+              e.data.country
+            }</div><div class='popupEntryStyle'>unconfirmed</div>`;
 
-    recognitionInfo.setContent(
-      "<div class='popupHeaderStyle'>" +
-        e.data.country +
-        "</div><div class='popupEntryStyle'>" +
-        `${
-          e.data.guaido
-            ? `${e.data.country} recognizes Nicolás Maduro as President`
-            : `${e.data.country} recognizes Juan Guaidó as President`
-        }` +
-        "</div>"
-    );
-
+    recognitionInfo.setContent(recognitionContent);
     recognitionInfo.openOn(map);
   }
 });
