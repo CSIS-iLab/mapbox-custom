@@ -69,8 +69,8 @@ electionLayer.on(carto.layer.events.FEATURE_OVER, function(e) {
         "</div><div class='popupEntryStyle'>" +
         `${
           e.data.guaido
-            ? `${e.data.country} recognized the results`
-            : `${e.data.country} rejected the results`
+            ? `${e.data.country} rejected the results`
+            : `${e.data.country} recognized the results`
         }` +
         "</div>"
     );
