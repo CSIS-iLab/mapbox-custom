@@ -16,7 +16,7 @@ var map = L.map("map", {
 L.control.zoomslider().addTo(map);
 
 map.attributionControl.addAttribution(
-  '<a href="https://www.csis.org/programs/international-security-program/project-nuclear-issues">CSIS Americas Program</a>'
+  '<a href="https://www.csis.org/programs/americas-program">CSIS Americas Program</a>'
 );
 
 var client = new carto.Client({
