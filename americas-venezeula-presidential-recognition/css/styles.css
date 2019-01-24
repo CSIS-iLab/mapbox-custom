@@ -313,9 +313,11 @@ aside.toolbox .ui:checked ~ .hamburger span:nth-child(3) {
   border-radius: 20px;
 
   display: inline-block;
-  height: 12px;
-  width: 12px;
-  margin: 3px 5px 0 5px;
+  height: 18px;
+  width: 18px;
+  margin-right: 5px;
+  position: relative;
+  top: 3px;
 }
 /* FOR DISPLAYS ≤ 425px */
 
