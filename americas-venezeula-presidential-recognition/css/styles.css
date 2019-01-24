@@ -12,6 +12,7 @@ body {
   position: absolute;
   height: 100%;
   width: 100%;
+  background-color: #00253a;
   z-index: 0;
 }
 
