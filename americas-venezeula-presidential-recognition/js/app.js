@@ -29,7 +29,7 @@ var recognitionSQL = new carto.source.SQL("SELECT * FROM guaido_recognition");
 let baseStyle = `
 [guaido = '?']{
   comp-op: multiply;
-  polygon-pattern-file: url(https://i.imgur.com/k3J0pnR.png);
+  polygon-pattern-file: url(https://csis-ilab.github.io/mapbox-custom/americas-venezeula-presidential-recognition/images/pattern.png);
   }
 
   ::outline {
