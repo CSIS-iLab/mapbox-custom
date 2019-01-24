@@ -68,13 +68,13 @@ recognitionLayer.on(carto.layer.events.FEATURE_OVER, function(e) {
   if (e.data.guaido.trim()) {
     recognitionInfo.setLatLng(e.latLng);
     var recognitionContent =
-      e.data.guaido.toLowerCase() === "y"
+      e.data.guaido.toLowerCase() === "n"
         ? `<div class='popupHeaderStyle'>${
             e.data.country
           }</div><div class='popupEntryStyle'>${
             e.data.country
           } recognizes Nicolás Maduro as President of Venezuela</div>`
-        : e.data.guaido.toLowerCase() === "n"
+        : e.data.guaido.toLowerCase() === "y"
           ? `<div class='popupHeaderStyle'>${
               e.data.country
             }</div><div class='popupEntryStyle'>${
