@@ -73,13 +73,13 @@ recognitionLayer.on(carto.layer.events.FEATURE_OVER, function(e) {
             e.data.country
           }</div><div class='popupEntryStyle'>${
             e.data.country
-          } recognizes Juan Guaidó as President</div>`
+          } recognizes Nicolás Maduro as President</div>`
         : e.data.guaido.toLowerCase() === "n"
           ? `<div class='popupHeaderStyle'>${
               e.data.country
             }</div><div class='popupEntryStyle'>${
               e.data.country
-            } recognizes Nicolás Maduro as President}</div>`
+            } recognizes Juan Guaidó as President</div>`
           : `<div class='popupHeaderStyle'>${
               e.data.country
             }</div><div class='popupEntryStyle'>unconfirmed</div>`;
