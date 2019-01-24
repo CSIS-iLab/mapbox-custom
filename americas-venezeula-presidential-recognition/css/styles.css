@@ -178,9 +178,11 @@ p {
 .label {
   font-size: 15px;
   font-weight: 400;
+  color: #636d72;
+}
+.key .label {
   line-height: 1.2;
   margin: 9px 0;
-  color: #636d72;
 }
 .popupHeaderStyle {
   font-size: 11px;
@@ -308,16 +310,26 @@ aside.toolbox .ui:checked ~ .hamburger span:nth-child(3) {
   list-style-type: none;
   padding-left: 0;
 }
+.multilat {
+  margin-top: 0;
+}
 
 .colorKey {
   border-radius: 20px;
-
   display: inline-block;
   height: 18px;
   width: 18px;
   margin-right: 5px;
   position: relative;
   top: 3px;
+}
+
+.description {
+  color: #747d82;
+  font-size: 15px;
+  line-height: 1.2;
+  font-weight: 400;
+  margin-bottom: 0.5em;
 }
 /* FOR DISPLAYS ≤ 425px */
 
