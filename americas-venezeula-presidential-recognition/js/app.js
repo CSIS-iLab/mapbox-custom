@@ -24,7 +24,7 @@ var client = new carto.Client({
   username: "csis"
 });
 
-var electionSQL = new carto.source.SQL("SELECT * FROM guaido_recognition");
+var recognitionSQL = new carto.source.SQL("SELECT * FROM guaido_recognition");
 
 let baseStyle = `
   ::outline {
@@ -51,35 +51,39 @@ let baseStyle = `
   }
 `;
 
-var electionStyle = new carto.style.CartoCSS(baseStyle);
+var recognitionStyle = new carto.style.CartoCSS(baseStyle);
 
-var electionLayer = new carto.layer.Layer(electionSQL, electionStyle, {
+var recognitionLayer = new carto.layer.Layer(recognitionSQL, recognitionStyle, {
   featureOverColumns: ["guaido", "country"]
 });
 
-var electionInfo = L.popup({ closeButton: false });
+var recognitionInfo = L.popup({ closeButton: false });
 
-electionLayer.on(carto.layer.events.FEATURE_OVER, function(e) {
+recognitionLayer.on(carto.layer.events.FEATURE_OVER, function(e) {
   if (e.data.guaido !== null) {
-    electionInfo.setLatLng(e.latLng);
+    recognitionInfo.setLatLng(e.latLng);
 
-    electionInfo.setContent(
+    recognitionInfo.setContent(
       "<div class='popupHeaderStyle'>" +
         e.data.country +
         "</div><div class='popupEntryStyle'>" +
         `${
           e.data.guaido
-            ? `${e.data.country} rejected the results`
-            : `${e.data.country} recognized the results`
+            ? `${e.data.country} recognizes Nicolás Maduro as President`
+            : `${e.data.country} recognizes Juan Guaidó as President`
         }` +
         "</div>"
     );
 
-    electionInfo.openOn(map);
+    recognitionInfo.openOn(map);
   }
 });
 
-client.addLayer(electionLayer);
+recognitionLayer.on(carto.layer.events.FEATURE_OUT, function(featureEvent) {
+  recognitionInfo.removeFrom(map);
+});
+
+client.addLayer(recognitionLayer);
 
 client
   .getLeafletLayer()

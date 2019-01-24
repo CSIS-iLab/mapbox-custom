@@ -177,7 +177,8 @@ p {
 .label {
   font-size: 15px;
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.2;
+  margin: 9px 0;
   color: #636d72;
 }
 .popupHeaderStyle {
