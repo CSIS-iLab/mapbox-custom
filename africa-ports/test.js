@@ -20,8 +20,8 @@ const source = new carto.source.SQL(query);
 
 const viz = new carto.Viz(`
   width: ramp(zoomrange([2,3,4,5,6]),[20,25,30,35,40,45])
-  symbol: ramp(buckets($p, [2,3,4]), [image('circle2.svg'), image('circle3.svg'),image('circle4.svg')],image('circle.svg'))
-  symbolPlacement: (placement(0, $p/2))
+  symbol: ramp(buckets($p, [2,3,4]), [image('cube2.svg'), image('cube3.svg'),image('cube4.svg')],image('circle.svg'))
+  symbolPlacement: (placement(0, $p*1.33))
     `);
 
 const layer = new carto.Layer("layer", source, viz);
