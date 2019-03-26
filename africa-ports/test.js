@@ -19,9 +19,8 @@ const query =
 const source = new carto.source.SQL(query);
 
 const viz = new carto.Viz(`
-  width: ramp(zoomrange([2,3,4,5,6]),[10,15,20,25,30,35])
-
-  symbol: image('circle.svg')
+  width: ramp(zoomrange([2,3,4,5,6]),[20,25,30,35,40,45])
+  symbol: ramp(buckets($p, [2,3,4]), [image('circle2.svg'), image('circle3.svg'),image('circle4.svg')],image('circle.svg'))
   symbolPlacement: (placement(0, $p/2))
     `);
 
