@@ -19,12 +19,10 @@ const query =
 const source = new carto.source.SQL(query);
 
 const viz = new carto.Viz(`
-  strokeColor: #424141
-  strokeWidth: 0.6
   width: ramp(zoomrange([2,3,4,5,6]),[10,15,20,25,30,35])
-  color: #FDBF6F
-  symbol: image('https://csis-ilab.github.io/mapbox-custom/africa-ports/circle.svg')
-  symbolPlacement: (placement(0, $p))
+
+  symbol: image('circle.svg')
+  symbolPlacement: (placement(0, $p/2))
     `);
 
 const layer = new carto.Layer("layer", source, viz);
