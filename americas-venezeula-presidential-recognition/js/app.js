@@ -24,37 +24,10 @@ var client = new carto.Client({
   username: "csis"
 });
 
-var recognitionSQL = new carto.source.SQL("SELECT * FROM guaido_recognition");
+var recognitionSQL = new carto.source.SQL("SELECT * FROM ");
 
-let baseStyle = `
-[guaido = '?']{
-  comp-op: multiply;
-  polygon-pattern-file: url(https://csis-ilab.github.io/mapbox-custom/americas-venezeula-presidential-recognition/images/stripe.png);
-  }
-
-  ::outline {
-    line-color: #fff;
-    line-width: 1;
-    polygon-fill: ramp([guaido],(#f4da97,#5cc181,transparent),("Y","N"),"=");
-
-    }
-  #layer::labels {
-    text-name: [country];
-    text-face-name: 'Open Sans Bold';
-    text-transform: uppercase;
-    text-size: 12;
-    text-fill: #fff;
-    text-label-position-tolerance: 0;
-    text-halo-radius: 1.25;
-    text-halo-fill: #504e4e;
-    text-dy: 0;
-    text-opacity: ramp([guaido],(1,1,0),("Y","N"),"=");
-    text-halo-opacity: ramp([guaido],(1,1,0),("Y","N"),"=");
-    text-allow-overlap: false;
-    text-placement: point;
-    text-placement-type: dummy;
-  }
-`;
+var baseStyle =
+  '\n[guaido = \'?\']{\n  comp-op: multiply;\n  polygon-pattern-file: url(https://csis-ilab.github.io/mapbox-custom/americas-venezeula-presidential-recognition/images/stripe.png);\n  }\n\n  ::outline {\n    line-color: #fff;\n    line-width: 1;\n    polygon-fill: ramp([guaido],(#f4da97,#5cc181,transparent),("Y","N"),"=");\n\n    }\n  #layer::labels {\n    text-name: [country];\n    text-face-name: \'Open Sans Bold\';\n    text-transform: uppercase;\n    text-size: 12;\n    text-fill: #fff;\n    text-label-position-tolerance: 0;\n    text-halo-radius: 1.25;\n    text-halo-fill: #504e4e;\n    text-dy: 0;\n    text-opacity: ramp([guaido],(1,1,0),("Y","N"),"=");\n    text-halo-opacity: ramp([guaido],(1,1,0),("Y","N"),"=");\n    text-allow-overlap: false;\n    text-placement: point;\n    text-placement-type: dummy;\n  }\n';
 
 var recognitionStyle = new carto.style.CartoCSS(baseStyle);
 
@@ -69,20 +42,20 @@ recognitionLayer.on(carto.layer.events.FEATURE_OVER, function(e) {
     recognitionInfo.setLatLng(e.latLng);
     var recognitionContent =
       e.data.guaido.toLowerCase() === "n"
-        ? `<div class='popupHeaderStyle'>${
-            e.data.country
-          }</div><div class='popupEntryStyle'>${
-            e.data.country
-          } recognizes Nicolás Maduro as President of Venezuela</div>`
+        ? "<div class='popupHeaderStyle'>" +
+          e.data.country +
+          "</div><div class='popupEntryStyle'>" +
+          e.data.country +
+          " recognizes Nicol\xE1s Maduro as President of Venezuela</div>"
         : e.data.guaido.toLowerCase() === "y"
-          ? `<div class='popupHeaderStyle'>${
-              e.data.country
-            }</div><div class='popupEntryStyle'>${
-              e.data.country
-            } recognizes Juan Guaidó as President of Venezuela</div>`
-          : `<div class='popupHeaderStyle'>${
-              e.data.country
-            }</div><div class='popupEntryStyle'>unconfirmed</div>`;
+          ? "<div class='popupHeaderStyle'>" +
+            e.data.country +
+            "</div><div class='popupEntryStyle'>" +
+            e.data.country +
+            " recognizes Juan Guaid\xF3 as President of Venezuela</div>"
+          : "<div class='popupHeaderStyle'>" +
+            e.data.country +
+            "</div><div class='popupEntryStyle'>unconfirmed</div>";
 
     recognitionInfo.setContent(recognitionContent);
     recognitionInfo.openOn(map);
