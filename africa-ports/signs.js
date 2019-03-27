@@ -11,10 +11,10 @@ const map = new mapboxgl.Map({
 
 carto.setDefaultAuth({
   username: "csis",
-  apiKey: "dpqzkr_tySIXTjlc6U3Pgw"
+  apiKey: "A1sNMTOmyl8Fiu070PX1sw"
 });
 const query =
-  "WITH m AS (SELECT count(*) n, array_agg(cartodb_id) id_list, the_geom_webmercator, ST_Y(the_geom_webmercator) y FROM stack_test GROUP BY the_geom_webmercator ORDER BY y DESC) , f AS (SELECT n, generate_series(1, array_length(id_list,1)) p, unnest(id_list) cartodb_id, the_geom_webmercator FROM m) SELECT t.the_geom_webmercator, f.cartodb_id, t.region, f.p FROM f, stack_test t WHERE f.cartodb_id = t.cartodb_id";
+  "WITH m AS (SELECT count(*) n, array_agg(cartodb_id) id_list, the_geom_webmercator, ST_Y(the_geom_webmercator) y FROM africa_port_test GROUP BY the_geom_webmercator ORDER BY y DESC) , f AS (SELECT n, generate_series(1, array_length(id_list,1)) p, unnest(id_list) cartodb_id, the_geom_webmercator FROM m) SELECT t.the_geom_webmercator, f.cartodb_id, t.port, f.p FROM f, africa_port_test t WHERE f.cartodb_id = t.cartodb_id";
 
 const source = new carto.source.SQL(query);
 
