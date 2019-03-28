@@ -6,7 +6,8 @@ const map = new mapboxgl.Map({
   style: "mapbox://styles/ilabmedia/cjtq2y5740uf61ftj7pgsxax9",
   center: [18, 4],
   zoom: 3.5,
-  pitch: 60
+  pitch: 60,
+  dragRotate: false
 });
 
 carto.setDefaultAuth({
@@ -20,7 +21,7 @@ const source = new carto.source.SQL(query);
 
 const viz = new carto.Viz(`
     width: ramp(zoomrange([2,3,4,5,6]),[10*2,15*2,20*2,25*2,30*2,35*2])
-    symbol: ramp(buckets($p, [2,3,4,5]), [image('stick.svg'), image('sign2short.svg'),image('sign4short.svg')])
+    symbol: ramp(buckets($p, [2,3,4,5]), [image('stick.svg'), image('sign2short.svg'),image('sign3short.svg'),image('sign4short.svg')])
     symbolPlacement: placement(0, $p*1.75)
     `);
 

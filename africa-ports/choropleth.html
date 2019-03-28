@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Africa</title>
+  <meta name="viewport" content="initial-scale=1.0">
+  <meta charset="utf-8">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser-polyfill.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script>
+
+  <!-- Include Leaflet -->
+  <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+  <link href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" rel="stylesheet">
+  <!-- Include CARTO.js -->
+  <script src="https://cartodb-libs.global.ssl.fastly.net/carto.js/v4.0.2/carto.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,600" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" href="css/styles.css">
+
+  <style>
+.scale .colors{ height:20px;
+   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ff0000+0,ffff00+40,ffff00+60,009b05+100 */
+background: rgb(255,0,0); /* Old browsers */
+background: -moz-linear-gradient(left, rgba(255,0,0,1) 0%, rgba(255,255,0,1) 40%, rgba(255,255,0,1) 60%, rgba(0,155,5,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(left, rgba(255,0,0,1) 0%,rgba(255,255,0,1) 40%,rgba(255,255,0,1) 60%,rgba(0,155,5,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to right, rgba(255,0,0,1) 0%,rgba(255,255,0,1) 40%,rgba(255,255,0,1) 60%,rgba(0,155,5,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ff0000', endColorstr='#009b05',GradientType=1 ); /* IE6-9 */}
+.scale .labels{
+  display:flex;
+  justify-content:space-between;
+}
+
+</style>
+</head>
+
+<body>
+<div id="map"></div>
+<aside class="toolbox">
+  <div class="box">
+    <header class="translate">
+      <h1>Title</h1>
+      <p class="translate">Description</p>
+      <div class="scale">
+          <div class="colors">
+
+          </div>
+              <div class="labels">
+              <div>
+                bad
+              </div>
+              <div>
+                good
+              </div>
+              </div>
+      </div>
+
+    </header>
+<h2>Risks</h2>
+    <div id="controls">
+<ul>
+
+</ul>
+
+    </div>
+  </div></aside>
+<script src="choropleth.js"></script>
+
+</body>
+
+</html>
