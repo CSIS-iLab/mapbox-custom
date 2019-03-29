@@ -22,8 +22,7 @@ var source = new carto.source.SQL("SELECT * FROM copy_of_africa_port_test");
 var style = new carto.style.CartoCSS(`#layer {
   marker-placement: point;
   marker-allow-overlap: true;
-  marker-line-color:black;
-  marker-line-width:.2;
+  marker-line-width:0;
 
   marker-file: ramp([risks],(url(https://csis-ilab.github.io/mapbox-custom/africa-ports/pieFunding.svg),url(https://csis-ilab.github.io/mapbox-custom/africa-ports/pieBuilding.svg),url(https://csis-ilab.github.io/mapbox-custom/africa-ports/pieOperating.svg),url(https://csis-ilab.github.io/mapbox-custom/africa-ports/pieBuildingFunding.svg),url(https://csis-ilab.github.io/mapbox-custom/africa-ports/pieBuildingOperating.svg),url(https://csis-ilab.github.io/mapbox-custom/africa-ports/pieBuildingFundingOperating.svg)),("funding","building","operating","building,funding","operating,building","building,funding,operating"),"=");
 
