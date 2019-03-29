@@ -6,6 +6,7 @@ const map = new mapboxgl.Map({
   style: "mapbox://styles/ilabmedia/cjtq2y5740uf61ftj7pgsxax9",
   center: [18, 4],
   zoom: 3.5,
+  minZoom: 3,
   pitch: 60,
   dragRotate: false
 });
