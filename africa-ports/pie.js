@@ -24,7 +24,9 @@ var style = new carto.style.CartoCSS(`#layer {
   marker-allow-overlap: true;
   marker-line-color:black;
   marker-line-width:.2;
-	marker-fill: ramp([risk_level],(green,yellow,red),(1,2,3),"=");
+
+  marker-file: ramp([risk_level],(url(./cube2.svg),url(./cube3.svg),url(./cube4.svg)),(1,2,3),"=");
+
 
     [zoom > 0] {
   marker-width: 22;

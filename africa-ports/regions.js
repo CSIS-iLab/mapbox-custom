@@ -69,6 +69,8 @@ layer.on(carto.layer.events.FEATURE_OVER, function(e) {
 
   popup.setContent(content);
   popup.openOn(map);
+  document.querySelector("#controls h3").innerHTML =
+    "<h3>" + e.data.port + "</h3>";
   document.querySelector("#controls ul").innerHTML = e.data.risks
     .split(",")
     .map(r => `<li>${r}</li>`)
