@@ -73,12 +73,11 @@ layer.on(carto.layer.events.FEATURE_OVER, function(e) {
   popup.openOn(map);
   document.querySelector("#controls h3").innerHTML =
     "<h3>" + e.data.port + "</h3>";
+
   document.querySelector("#controls ul").innerHTML = e.data.risks
     .split(",")
     .map(r => `<li>${r}</li>`)
     .join(" and ");
-
-  document.querySelector("aside").classList.remove("hidden");
 
   setTimeout(
     () => document.querySelector("aside").classList.remove("hidden"),
@@ -96,7 +95,18 @@ layer.on(carto.layer.events.FEATURE_OUT, function(e) {
 });
 
 layer2.on(carto.layer.events.FEATURE_CLICKED, function(e) {
+  document.querySelector("aside").classList.add("hidden");
+
+  document.querySelector("h1").innerHTML =
+    e.data.name.toUpperCase() + " AFRICA";
   map.flyTo([e.latLng.lat, e.latLng.lng], 5);
+});
+
+layer2.on(carto.layer.events.FEATURE_OUT, function(e) {
+  setTimeout(
+    () => document.querySelector("aside").classList.remove("hidden"),
+    300
+  );
 });
 
 client.addLayer(layer2);
