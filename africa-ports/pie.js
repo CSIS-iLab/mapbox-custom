@@ -73,12 +73,8 @@ layer.on(carto.layer.events.FEATURE_OVER, function(e) {
 });
 
 layer.on(carto.layer.events.FEATURE_OUT, function(e) {
-  setTimeout(
-    () => document.querySelector("aside").classList.remove("hidden"),
-    300
-  );
-
-  popup.removeFrom(map);
+  document.querySelector("aside").classList.add("hidden"),
+    popup.removeFrom(map);
 });
 
 client.addLayer(layer);

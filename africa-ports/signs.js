@@ -10,6 +10,7 @@ const map = new mapboxgl.Map({
   pitch: 60,
   dragRotate: false
 });
+map.addControl(new mapboxgl.NavigationControl());
 
 carto.setDefaultAuth({
   username: "csis",
