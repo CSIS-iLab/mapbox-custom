@@ -25,7 +25,7 @@ var style = new carto.style.CartoCSS(`#layer {
   marker-line-color:black;
   marker-line-width:.2;
 
-  marker-file: ramp([risk_level],(url(./cube2.svg),url(./cube3.svg),url(./cube4.svg)),(1,2,3),"=");
+  marker-file: ramp([risks],(url(https://csis-ilab.github.io/mapbox-custom/africa-ports/pieFunding.svg),url(https://csis-ilab.github.io/mapbox-custom/africa-ports/pieBuilding.svg),url(https://csis-ilab.github.io/mapbox-custom/africa-ports/pieOperating.svg),url(https://csis-ilab.github.io/mapbox-custom/africa-ports/pieBuildingFunding.svg),url(https://csis-ilab.github.io/mapbox-custom/africa-ports/pieBuildingOperating.svg),url(https://csis-ilab.github.io/mapbox-custom/africa-ports/pieBuildingFundingOperating.svg)),("funding","building","operating","building,funding","operating,building","building,funding,operating"),"=");
 
 
     [zoom > 0] {
@@ -48,9 +48,9 @@ var layer = new carto.layer.Layer(source, style, {
 var popup = L.popup({ closeButton: false });
 
 layer.on(carto.layer.events.FEATURE_OVER, function(e) {
+  document.querySelector("aside").classList.add("hidden");
   popup.setLatLng(e.latLng);
 
-  console.log(e.data);
   var content = `${e.data.port +
     "<br>risk level: " +
     e.data.risk_level +
@@ -59,15 +59,26 @@ layer.on(carto.layer.events.FEATURE_OVER, function(e) {
 
   popup.setContent(content);
   popup.openOn(map);
+
   document.querySelector("#controls h3").innerHTML =
     "<h3>" + e.data.port + "</h3>";
   document.querySelector("#controls ul").innerHTML = e.data.risks
     .split(",")
     .map(r => `<li>${r}</li>`)
     .join(" and ");
+
+  setTimeout(
+    () => document.querySelector("aside").classList.remove("hidden"),
+    300
+  );
 });
 
-layer.on(carto.layer.events.FEATURE_OUT, function(featureEvent) {
+layer.on(carto.layer.events.FEATURE_OUT, function(e) {
+  setTimeout(
+    () => document.querySelector("aside").classList.remove("hidden"),
+    300
+  );
+
   popup.removeFrom(map);
 });
 

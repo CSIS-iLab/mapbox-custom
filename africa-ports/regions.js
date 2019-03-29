@@ -59,6 +59,8 @@ var layer2 = new carto.layer.Layer(source2, style2, {
 var popup = L.popup({ closeButton: false });
 
 layer.on(carto.layer.events.FEATURE_OVER, function(e) {
+  document.querySelector("aside").classList.add("hidden");
+
   popup.setLatLng(e.latLng);
 
   var content = `${e.data.port +
@@ -75,9 +77,21 @@ layer.on(carto.layer.events.FEATURE_OVER, function(e) {
     .split(",")
     .map(r => `<li>${r}</li>`)
     .join(" and ");
+
+  document.querySelector("aside").classList.remove("hidden");
+
+  setTimeout(
+    () => document.querySelector("aside").classList.remove("hidden"),
+    300
+  );
 });
 
-layer.on(carto.layer.events.FEATURE_OUT, function(featureEvent) {
+layer.on(carto.layer.events.FEATURE_OUT, function(e) {
+  setTimeout(
+    () => document.querySelector("aside").classList.remove("hidden"),
+    300
+  );
+
   popup.removeFrom(map);
 });
 
