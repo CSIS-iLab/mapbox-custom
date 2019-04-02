@@ -50,8 +50,8 @@ var basemap = L.tileLayer(
     document.querySelector("aside").classList.add("hidden")
     popup.setLatLng(e.latLng)
 
-    risks = e.data.risks.split(",")
-    risksFormatted = []
+    const risks = e.data.risks.split(",")
+    let risksFormatted = []
     risks.forEach(risk => {
       risksFormatted.push(risk.charAt(0).toUpperCase() + risk.slice(1))
     })
