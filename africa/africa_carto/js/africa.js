@@ -23,6 +23,7 @@ var basemap = L.tileLayer(
     marker-placement: point;
     marker-allow-overlap: true;
     marker-line-width:0;
+    marker-smooth: 0;
   
     marker-file: ramp([risks],(url(https://csis-ilab.github.io/mapbox-custom/africa-ports/pieFunding.svg),url(https://csis-ilab.github.io/mapbox-custom/africa-ports/pieBuilding.svg),url(https://csis-ilab.github.io/mapbox-custom/africa-ports/pieOperating.svg),url(https://csis-ilab.github.io/mapbox-custom/africa-ports/pieBuildingFunding.svg),url(https://csis-ilab.github.io/mapbox-custom/africa-ports/pieBuildingOperating.svg),url(https://csis-ilab.github.io/mapbox-custom/africa-ports/pieBuildingFundingOperating.svg)),("funding","building","operating","building,funding","operating,building","building,funding,operating"),"=");
   
@@ -31,7 +32,7 @@ var basemap = L.tileLayer(
     marker-width: 22;
     }
       [zoom > 4] {
-    marker-width:  28;
+    marker-width:  38;
     }
        [zoom > 7] {
         marker-width: 42;
@@ -42,9 +43,10 @@ var basemap = L.tileLayer(
   var layer = new carto.layer.Layer(source, style, {
     featureOverColumns: ["port", "risks", "risk_level"]
   })
-  
+
   var popup = L.popup({ closeButton: false })
   
+
   layer.on(carto.layer.events.FEATURE_OVER, function(e) {
 
     document.querySelector("aside").classList.add("hidden")
