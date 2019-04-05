@@ -15,6 +15,8 @@ var basemap = L.tileLayer(
     "https://api.mapbox.com/styles/v1/ilabmedia/cjtzvusww016t1flh3puy792v/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw", {
 }).addTo(map)
 
+var oms = new OverlappingMarkerSpiderfier(map);
+
 fetch(
   "https://csis.carto.com/api/v2/sql?api_key=" +
     apiKey +
@@ -22,14 +24,24 @@ fetch(
 ).then(function(res) {
     return res.json()
 }).then(function (data) {
-  console.log(data)
-  
-  L.geoJson(data).addTo(map)
+  console.log(data.features)
+
+  for (var i = 0; i < data.features.length; i++) {
+    var dataPoint = data.features[i];
+    var location = new L.LatLng(dataPoint.geometry.coordinates[1], dataPoint.geometry.coordinates[0]);
+    var marker = new L.Marker(location);
+    marker.desc = dataPoint.properties.risks;
+    map.addLayer(marker);
+    oms.addMarker(marker);  // <-- here
+  }
 })
 
-  var popup = L.popup({ closeButton: false })
-  
-
+var popup = new L.Popup();
+oms.addListener('click', function(marker) {
+  popup.setContent(marker.desc);
+  popup.setLatLng(marker.getLatLng());
+  map.openPopup(popup);
+});
 //   layer.on(carto.layer.events.FEATURE_OVER, function(e) {
 
 //     document.querySelector("aside").classList.add("hidden")
