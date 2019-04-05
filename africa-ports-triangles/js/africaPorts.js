@@ -8,6 +8,7 @@ async function myMap() {
     maxZoom: 18,
     minZoom: 4,
     cluster: 15,
+    iconSize: 30,
     attribution:
       'Data by <a href="https://www.csis.org/programs/africa-program" target="_blank">CSIS Africa Program</a>, © OpenStreetMap, Leaflet contributors, © CARTO',
     table: "africa_ports",
