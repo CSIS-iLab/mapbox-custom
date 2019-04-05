@@ -105,7 +105,7 @@ async function makeMap(options) {
   var dataURL = "https://spreadsheets.google.com/feeds/list/";
   window.defaultColor =
     options.oceancolor || options.oceanColor || options["ocean color"];
-  var translations;
+  var translations, map;
 
   if (lang) {
     fetch(dataURL + options.googleSheet + "/" + 3 + "/public/values?alt=json")
@@ -113,18 +113,19 @@ async function makeMap(options) {
         return response.json();
       })
       .then(async function(json) {
-        var translations = parseLanguageData(json.feed.entry);
-        var map = await initWithSpreadsheet(dataURL, options, translations);
+        translations = parseLanguageData(json.feed.entry);
+        map = await initWithSpreadsheet(dataURL, options, translations);
       });
   } else if (options.googleSheet) {
-    var map = await initWithSpreadsheet(dataURL, options);
+    map = await initWithSpreadsheet(dataURL, options);
     return map;
   } else {
-    initWithoutSpreadsheet(options);
+    map = await initWithoutSpreadsheet(options);
+    return map;
   }
 }
 
-function initWithoutSpreadsheet(options, translations) {
+async function initWithoutSpreadsheet(options, translations) {
   options.slug = options.mapID.toLowerCase().replace(/ /g, "-");
   options.translations = translations;
   makeNodes(options);
@@ -132,55 +133,60 @@ function initWithoutSpreadsheet(options, translations) {
 
   if (options.formatToolbox) {
     var map = new Map(container, options).render();
+    return new Promise((resolve, reject) => {
+      return fetch(
+        "https://csis.carto.com/api/v2/sql?api_key=" +
+          map.apikey +
+          "&format=geojson&q=SELECT%20*%20FROM%20" +
+          map.table
+      )
+        .then(function(resp) {
+          return resp.json();
+        })
+        .then(function(json) {
+          map.json = [json];
+          var box = document.querySelector("#" + options.slug + " #controls");
 
-    fetch(
-      "https://csis.carto.com/api/v2/sql?api_key=" +
-        map.apikey +
-        "&format=geojson&q=SELECT%20*%20FROM%20" +
-        map.table
-    )
-      .then(function(resp) {
-        return resp.json();
-      })
-      .then(function(json) {
-        map.json = [json];
-        var box = document.querySelector("#" + options.slug + " #controls");
+          map.formatToolbox(box);
 
-        map.formatToolbox(box);
-
-        makeGroups(map);
-      });
+          makeGroups(map);
+          resolve(map);
+        });
+    });
   } else {
-    fetch(
-      "https://csis.carto.com/api/v2/sql?api_key=" +
-        (options.apikey || options.apiKey || options["api key"]) +
-        "&format=geojson&q=SELECT%20*%20FROM%20" +
-        options.table
-    )
-      .then(function(resp) {
-        return resp.json();
-      })
-      .then(function(json) {
-        options.json = [json];
-        var box = document.querySelector("#" + options.slug + " #controls");
+    return new Promise((resolve, reject) => {
+      return fetch(
+        "https://csis.carto.com/api/v2/sql?api_key=" +
+          (options.apikey || options.apiKey || options["api key"]) +
+          "&format=geojson&q=SELECT%20*%20FROM%20" +
+          options.table
+      )
+        .then(function(resp) {
+          return resp.json();
+        })
+        .then(async function(json) {
+          options.json = [json];
+          var box = document.querySelector("#" + options.slug + " #controls");
 
-        var boxContent = "";
+          var boxContent = "";
 
-        makeWidgets(null, options, boxContent);
+          var map = await makeWidgets(null, options, boxContent);
 
-        if (options.footer && options.footer.trim()) {
-          var footerNode = document.createElement("footer");
-          footerNode.innerHTML =
-            options.footer + '  <div class="hidden"></div>';
-          var penUltimateNode =
-            document.querySelector("#" + options.slug + " #controls") ||
-            document.querySelector("#" + options.slug + "header");
-          penUltimateNode.parentNode.insertBefore(
-            footerNode,
-            penUltimateNode.nextSibling
-          );
-        }
-      });
+          if (options.footer && options.footer.trim()) {
+            var footerNode = document.createElement("footer");
+            footerNode.innerHTML =
+              options.footer + '  <div class="hidden"></div>';
+            var penUltimateNode =
+              document.querySelector("#" + options.slug + " #controls") ||
+              document.querySelector("#" + options.slug + "header");
+            penUltimateNode.parentNode.insertBefore(
+              footerNode,
+              penUltimateNode.nextSibling
+            );
+          }
+          resolve(map);
+        });
+    });
   }
 }
 
@@ -1049,7 +1055,7 @@ function parseMetaData(json) {
 function stylePoint(feature, latlng, map, colorKeyWidget, formKeyWidget) {
   var CustomIcon = L.Icon.extend({
     options: {
-      iconSize: [20, 20]
+      iconSize: map.iconsize || [20, 20]
     }
   });
   var pointStyle;
@@ -1395,7 +1401,7 @@ function formatPopupContent(feature, map) {
 function handleLayerClick(feature, layer, map) {
   var isSpiderfied = false;
 
-  if (!layer._popupHandlersAdded) {
+  if (layer._popupHandlersAdded) {
     Object.keys(map.map._layers).forEach(function(l, i) {
       if (map.map._layers[l].unspiderfy) map.map._layers[l].unspiderfy();
     });
@@ -1406,12 +1412,12 @@ function handleLayerClick(feature, layer, map) {
     });
     Array.from(document.querySelectorAll("div.leaflet-marker-icon")).forEach(
       function(d) {
-        return (d.style.opacity = isSpiderfied ? 0.2 : 1);
+        return (d.style.opacity = isSpiderfied ? 0.33 : 1);
       }
     );
     Array.from(document.querySelectorAll("img.leaflet-marker-icon")).forEach(
       function(d) {
-        return (d.style.opacity = isSpiderfied ? 0.2 : 1);
+        return (d.style.opacity = isSpiderfied ? 0.33 : 1);
       }
     );
   }
@@ -1432,12 +1438,12 @@ function handleClusterClick(e, map, i) {
   });
   Array.from(document.querySelectorAll("div.leaflet-marker-icon")).forEach(
     function(d) {
-      return (d.style.opacity = isSpiderfied ? 0.2 : 1);
+      return (d.style.opacity = isSpiderfied ? 0.33 : 1);
     }
   );
   Array.from(document.querySelectorAll("img.leaflet-marker-icon")).forEach(
     function(d) {
-      return (d.style.opacity = isSpiderfied ? 0.2 : 1);
+      return (d.style.opacity = isSpiderfied ? 0.33 : 1);
     }
   );
   Object.values(map.groups[i]._featureGroup._layers).filter(function(v) {

@@ -1401,7 +1401,7 @@ function formatPopupContent(feature, map) {
 function handleLayerClick(feature, layer, map) {
   var isSpiderfied = false;
 
-  if (!layer._popupHandlersAdded) {
+  if (layer._popupHandlersAdded) {
     Object.keys(map.map._layers).forEach(function(l, i) {
       if (map.map._layers[l].unspiderfy) map.map._layers[l].unspiderfy();
     });
@@ -1412,12 +1412,12 @@ function handleLayerClick(feature, layer, map) {
     });
     Array.from(document.querySelectorAll("div.leaflet-marker-icon")).forEach(
       function(d) {
-        return (d.style.opacity = isSpiderfied ? 0.2 : 1);
+        return (d.style.opacity = isSpiderfied ? 0.33 : 1);
       }
     );
     Array.from(document.querySelectorAll("img.leaflet-marker-icon")).forEach(
       function(d) {
-        return (d.style.opacity = isSpiderfied ? 0.2 : 1);
+        return (d.style.opacity = isSpiderfied ? 0.33 : 1);
       }
     );
   }
@@ -1438,12 +1438,12 @@ function handleClusterClick(e, map, i) {
   });
   Array.from(document.querySelectorAll("div.leaflet-marker-icon")).forEach(
     function(d) {
-      return (d.style.opacity = isSpiderfied ? 0.2 : 1);
+      return (d.style.opacity = isSpiderfied ? 0.33 : 1);
     }
   );
   Array.from(document.querySelectorAll("img.leaflet-marker-icon")).forEach(
     function(d) {
-      return (d.style.opacity = isSpiderfied ? 0.2 : 1);
+      return (d.style.opacity = isSpiderfied ? 0.33 : 1);
     }
   );
   Object.values(map.groups[i]._featureGroup._layers).filter(function(v) {
