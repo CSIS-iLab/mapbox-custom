@@ -65,6 +65,31 @@
       font: 14px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
     }
 
+    .icon-group {
+      border-bottom: 27px solid #fff;
+      border-top: 0 solid transparent;
+      border-radius: 0;
+      border-right: 18px solid transparent;
+      border-left: 18px solid transparent;
+      height:0 !important;
+      width:0 !important;
+    }
+
+    .leaflet-marker-icon.leaflet-interactive:not(.marker-cluster-small):not(img) .text{
+      border: 0 !important;
+      top: 6px;
+      left: -4px;
+    }
+
+    span.text::after {
+        content: "ports";
+        display: block;
+        font-size: 9px;
+        position: absolute;
+        left: -6px;
+        top: 110%;
+    }
+
   </style>
 
 </head>
