@@ -6,7 +6,7 @@ async function myMap() {
     center: [5, 20],
     maxBounds: [[50, -40], [-50, 80]],
     zoom: 4,
-    maxZoom: 18,
+    maxZoom: 6,
     minZoom: 4,
     cluster: 15,
     iconSize: 30,
