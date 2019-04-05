@@ -107,26 +107,9 @@ async function myMap() {
       }
     ]
   });
-  setIconSize();
-  map.map.on("zoomend", setIconSize);
 }
 
 myMap();
-
-function setIconSize() {
-  var zoomLevel = map.map.getZoom();
-
-  var iconElements = Array.from(
-    document.querySelectorAll(".leaflet-marker-icon")
-  );
-
-  iconElements.forEach(function(icon) {
-    if (icon.tagName === "IMG") {
-      icon.style.width = zoomLevel * 8 + "px";
-      icon.style.height = zoomLevel * 8 + "px";
-    }
-  });
-}
 
 //
 // function formatToolbox(box) {

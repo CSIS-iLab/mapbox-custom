@@ -1055,7 +1055,7 @@ function parseMetaData(json) {
 function stylePoint(feature, latlng, map, colorKeyWidget, formKeyWidget) {
   var CustomIcon = L.Icon.extend({
     options: {
-      iconSize: [20, 20]
+      iconSize: [30, 30]
     }
   });
   var pointStyle;
