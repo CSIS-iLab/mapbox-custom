@@ -23,6 +23,8 @@ fetch(
     return res.json()
 }).then(function (data) {
   console.log(data)
+  
+  L.geoJson(data).addTo(map)
 })
 
   var popup = L.popup({ closeButton: false })
