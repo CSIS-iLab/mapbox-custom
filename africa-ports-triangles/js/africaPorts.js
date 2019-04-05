@@ -4,6 +4,7 @@ async function myMap() {
   map = await makeMap({
     mapID: "africa",
     center: [5, 20],
+    maxBounds: [[50, -40], [-50, 80]],
     zoom: 4,
     maxZoom: 18,
     minZoom: 4,
