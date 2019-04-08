@@ -9,12 +9,12 @@ makeMap({
   zoom: 4,
   maxZoom: 6,
   minZoom: 4,
-  cluster: 15,
+  clusterDistance: 15,
   attribution:
     'Data by <a href="https://www.csis.org/programs/africa-program" target="_blank">CSIS Africa Program</a>, © OpenStreetMap, Leaflet contributors, © CARTO',
   table: "africa_ports",
   apiKey: "ygiequrextxlLldXwZ2g0Q",
-  program: "Aerospace Security",
+  program: "Africa Program",
   website: "https://www.csis.org/programs/africa-program",
   logo:
     "https://pbs.twimg.com/profile_images/459755242079260672/ilsUDAkD_400x400.jpeg",
