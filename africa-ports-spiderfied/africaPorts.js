@@ -13,7 +13,7 @@ makeMap({
   attribution:
     'Data by <a href="https://www.csis.org/programs/africa-program" target="_blank">CSIS Africa Program</a>, © OpenStreetMap, Leaflet contributors, © CARTO',
   table: "africa_ports",
-  apiKey: "ygiequrextxlLldXwZ2g0Q",
+  apiKey: "YNJEEYb06BbPcarCz1psmQ",
   program: "Africa Program",
   website: "https://www.csis.org/programs/africa-program",
   logo:

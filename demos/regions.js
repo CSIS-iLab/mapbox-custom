@@ -14,7 +14,7 @@ var map = L.map("map", {
 });
 
 var client = new carto.Client({
-  apiKey: "mVvGbDC6DYjJITvJK1o-HA",
+  apiKey: "YNJEEYb06BbPcarCz1psmQ",
   username: "csis"
 });
 
