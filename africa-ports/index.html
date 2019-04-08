@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title></title>
+  <meta name="viewport" content="initial-scale=1.0">
+  <meta charset="utf-8">
+
+  <!-- Share meta -->
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="article" />
+  <meta property="og:image:width" content="2000" />
+  <meta property="og:image:height" content="1333" />
+  <meta name="twitter:card" content="summary" />
+
+
+  <!-- Include Leaflet -->
+  <script src="https://csis-ilab.github.io/map-templates/dist/js/makeMap.js"></script>
+
+
+
+</head>
+
+<body>
+
+
+  <script src="africaPorts.js"></script>
+
+  <style>
+    ul.popupEntryStyle{
+      margin:0;
+     padding: 0 0 0 24px;
+    }
+    .popupEntryStyle{
+      margin-bottom:.5em;
+    }
+    .popupTitleStyle{
+      text-align:left;
+    }
+
+    .leaflet-popup-tip,
+    .leaflet-popup-content-wrapper {
+      background-color: rgba(255, 255, 255, 0.85);
+    }
+
+    .leaflet-container {
+      font: 14px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+    }
+
+    .icon-group {
+      border-bottom: 27px solid #fff;
+      border-top: 0 solid transparent;
+      border-radius: 0;
+      border-right: 18px solid transparent;
+      border-left: 18px solid transparent;
+      height:0 !important;
+      width:0 !important;
+    }
+
+    .leaflet-marker-icon.leaflet-interactive:not(.marker-cluster-small):not(img) .text{
+      border: 0 !important;
+      top: 6px !important;
+      left: -5px !important;
+    }
+
+    span.text::after {
+        content: "ports";
+        display: block;
+        font-size: 9px;
+        font-size: .6rem;
+        position: absolute;
+        left: -6px;
+        top: 110%;
+    }
+
+  </style>
+</body>
+
+</html>
