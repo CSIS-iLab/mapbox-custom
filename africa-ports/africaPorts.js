@@ -2,7 +2,6 @@
   var map = await makeMap({
     googleSheet: "11hN6uzXcO7amn5bT-a09T8oEvgrw7lZ-oBfGtLRzpws",
     mapID: "africa",
-    maxBounds: [[50, -40], [-50, 80]],
     formatPopupContent: function(feature, map) {
       return (
         '<div class="popupTitleStyle">' +
@@ -22,4 +21,5 @@
       );
     }
   });
+
 })();
