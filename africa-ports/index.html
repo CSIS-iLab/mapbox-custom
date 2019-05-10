@@ -6,6 +6,7 @@
   <meta name="viewport" content="initial-scale=1.0">
   <meta charset="utf-8">
   <script src="https://csis-ilab.github.io/map-templates/dist/js/makeMapmin.js"></script>
+
 </head>
 
 <body>
@@ -50,14 +51,39 @@
     }
 
     span.text::after {
-        content: "ports";
-        display: block;
-        font-size: 9px;
-        font-size: .6rem;
-        position: absolute;
-        left: -6px;
-        top: 110%;
+      content: "ports";
+      display: block;
+      font-size: 9px;
+      font-size: .6rem;
+      position: absolute;
+      left: -6px;
+      top: 110%;
     }
+
+    #controls .widget:last-child {
+      margin-bottom: 0
+    }
+
+    section.risks h3 {
+      display:none
+    }
+
+  @media (min-width: 425px) {
+    section.risks {
+      height: 150px;
+    }
+
+    aside.toolbox {
+      width: 420px;
+    }
+
+    #controls ul {
+      display: flex;
+      flex-flow: column wrap;
+      height: 100%;
+    }
+  }
+
 
   </style>
 </body>

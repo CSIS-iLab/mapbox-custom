@@ -10,8 +10,6 @@
         feature.properties.port_city +
         ", " +
         feature.properties.port_country +
-        '</div><div class="popupHeaderStyle">Risk Level</div><div class="popupEntryStyle">' +
-        feature.properties.risk_level +
         '</div><div class="popupHeaderStyle">Risks</div><ul class="popupEntryStyle">' +
         feature.properties.risks
           .split(",")
@@ -21,5 +19,4 @@
       );
     }
   });
-
 })();

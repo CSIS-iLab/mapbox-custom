@@ -85,10 +85,14 @@
     .attr("class", "annotations")
     .call(annotation);
 
-  annotations.selectAll(".annotation-note text").style("opacity", 0.25);
+  annotations.style("opacity", 0);
+  annotations.selectAll(".annotation-note-label").attr("y", "10");
 
-  annotations.selectAll(".note-line").style("opacity", 0.25);
-  annotations.selectAll(".connector").style("opacity", 0.25);
+  annotations.selectAll(".annotation-note text").style("font-size", "10px");
+  // .style("opacity", 0.25)
+  //
+  // annotations.selectAll(".note-line").style("opacity", 0.25);
+  // annotations.selectAll(".connector").style("opacity", 0.25);
 
   // Reposition the SVG to cover the features.
   var topLeft, bottomRight;
@@ -138,8 +142,7 @@
   simulation.nodes(box).on("end", function() {
     const noteBoxes = annotation.collection().noteNodes;
 
-    d3
-      .forceSimulation(noteBoxes)
+    d3.forceSimulation(noteBoxes)
       .force(
         "x",
         d3
@@ -166,10 +169,8 @@
         });
 
         annotation.update();
-
-        annotations.selectAll(".note-line").style("opacity", 0.25);
-        annotations.selectAll(".connector").style("opacity", 0.25);
       });
+    annotations.style("opacity", 0.5);
   });
 
   reset();
