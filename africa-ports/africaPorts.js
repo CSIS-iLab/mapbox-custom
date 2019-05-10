@@ -10,7 +10,7 @@
         feature.properties.port_city +
         ", " +
         feature.properties.port_country +
-        '</div><div class="popupHeaderStyle">Risks</div><ul class="popupEntryStyle">' +
+        '</div><div class="popupHeaderStyle">Investment Type</div><ul class="popupEntryStyle">' +
         feature.properties.investment_type
           .split(",")
           .map(r => `<li>${capitalize(r)}</li>`)
