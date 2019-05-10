@@ -11,7 +11,7 @@
         ", " +
         feature.properties.port_country +
         '</div><div class="popupHeaderStyle">Risks</div><ul class="popupEntryStyle">' +
-        feature.properties.risks
+        feature.properties.investment_type
           .split(",")
           .map(r => `<li>${capitalize(r)}</li>`)
           .join("") +
