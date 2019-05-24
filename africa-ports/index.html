@@ -49,20 +49,22 @@
         color:white;
         text-transform:uppercase;
         font-size:10px;
-        text-decoration:none;
-        background-image: linear-gradient(rgba(255,255,255,1) 33%, rgba(255,255,255,1) 33%);
-        background-repeat: repeat-x;
-        background-position-y: 100%;
-        background-size: 1px 1px;
-        -moz-transition: all .2s ease-in-out;
-        -o-transition: all .2s ease-in-out;
-        -webkit-transition: all .2s ease-in-out;
-        transition: all .2s ease-in-out;
+         border-bottom: 1px solid white;
+        -webkit-transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
+        color: inherit;
+        text-decoration: none;
+        background-image: linear-gradient(rgba(255,255,255,.33) 33%, rgba(255,255,255,.33) 33%);
+        background-size: 100% 0%;
+        background-repeat: no-repeat;
+        background-position-y:100%;
         }
 
       .leaflet-popup-content a:hover {
+        -webkit-transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
         background-image: linear-gradient(rgba(255,255,255,.33) 33%, rgba(255,255,255,.33) 33%);
-        background-size:1px 100%;
+        background-size: 100% 100%;
 
       }
 
