@@ -73,7 +73,7 @@ _asyncToGenerator(
             }).addTo(map.leaflet)
             chokepoint = L.divIcon({
               className: 'chokepoint-label',
-              html: '<span>Chokepoint</span>',
+              html: '<span>choke point</span>',
               iconAnchor: [-75, 7.5],
               iconSize: 20
             })
