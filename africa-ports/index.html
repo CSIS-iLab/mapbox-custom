@@ -7,6 +7,8 @@
   <meta charset="utf-8">
   <script src="https://unpkg.com/babel-polyfill@6.26.0/dist/polyfill.js"></script>
   <script src="https://csis-ilab.github.io/map-templates/dist/js/makeMapmin.js"></script>
+  <script src="https://d3js.org/d3.v4.js"></script>
+  <script src="https://cdn.rawgit.com/susielu/d3-annotation/master/d3-annotation.js"></script>
 
 </head>
 
@@ -82,6 +84,26 @@
     header p {
       font: 13.5px/17.5px "Open Sans"
     }
+
+    .chokepoint {
+      border-radius: 50%;
+      border: 6px solid black;
+    }
+
+    .chokepoint-label span{
+      background-color:white;
+      padding: 3px;
+      border: 1px solid black;
+    }
+    .chokepoint-label span::before {
+      content: "";
+      width: 200%;
+      right: 103%;
+      height: 1px;
+      background-color: black;
+      position: absolute;
+      top: 50%;
+  }
 
   /* @media (min-width: 425px) {
     section.risks {
