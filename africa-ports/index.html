@@ -39,6 +39,41 @@
       text-align:left;
     }
 
+    .leaflet-popup-content p {
+      color:white
+    }
+
+
+      .leaflet-popup-content a {
+        white-space:nowrap;
+        color:white;
+        text-transform:uppercase;
+        font-size:10px;
+        text-decoration:none;
+        background-image: linear-gradient(rgba(255,255,255,1) 33%, rgba(255,255,255,1) 33%);
+        background-repeat: repeat-x;
+        background-position-y: 100%;
+        background-size: 1px 1px;
+        -moz-transition: all .2s ease-in-out;
+        -o-transition: all .2s ease-in-out;
+        -webkit-transition: all .2s ease-in-out;
+        transition: all .2s ease-in-out;
+        }
+
+      .leaflet-popup-content a:hover {
+        background-image: linear-gradient(rgba(255,255,255,.33) 33%, rgba(255,255,255,.33) 33%);
+        background-size:1px 100%;
+
+      }
+
+      .leaflet-popup-content a svg {
+        height: 12px;
+        width: 12px;
+        margin-left: 6px;
+        fill:rgba(255,255,255,1);
+      }
+
+
     .leaflet-container {
       font: 14px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
     }
@@ -108,36 +143,7 @@
       top: 50%;
   }
 
-  /* @media (min-width: 425px) {
-    section.risks {
-      height: calc((800px - 90vw) / 2);
-    }
 
-    aside.toolbox {
-      width: calc(100% - 24px);
-      max-width: 800px;
-      left: 24px;
-    }
-
-    #controls ul {
-      display: flex;
-      flex-flow: column wrap;
-      height: 100%;
-    }
-  }
-
-
-  @media (min-width: 800px) {
-    section.risks {
-      height: calc((800px - 30vw) / 4);
-    }
-
-    aside.toolbox {
-      left: calc(50% - 60px);
-      transform: translateX(-50%);
-    }
-
-  } */
 
   </style>
 

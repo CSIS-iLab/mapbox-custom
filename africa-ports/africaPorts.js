@@ -43,6 +43,18 @@ _asyncToGenerator(
               googleSheet: '11hN6uzXcO7amn5bT-a09T8oEvgrw7lZ-oBfGtLRzpws',
               mapID: 'africa',
               formatPopupContent: function formatPopupContent(feature, map) {
+                var description = feature.properties.description
+                  ? feature.properties.description +
+                    (feature.properties.link
+                      ? ' <a target="_blank" rel="noreferrer noopener" href="' +
+                        feature.properties.link +
+                        '"</a>' +
+                        feature.properties.link_title +
+                        externalLink +
+                        '</a>'
+                      : '')
+                  : ''
+
                 return (
                   '<div class="popupTitleStyle">' +
                   feature.properties.port +
@@ -54,10 +66,13 @@ _asyncToGenerator(
                   feature.properties.investment_type
                     .split(',')
                     .map(function(r) {
-                      return '<li>'.concat(capitalize(r), '</li>')
+                      return '<li>' + capitalize(r) + '</li>'
                     })
                     .join('') +
-                  '</ul>'
+                  '</ul>' +
+                  '<p>' +
+                  description +
+                  '</p>'
                 )
               }
             })
