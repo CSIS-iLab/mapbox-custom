@@ -175,6 +175,10 @@ header p {
     display:block
   }
 
+  body > section {
+  height:95vh
+}
+
   aside.toolbox .ui:not(:checked) ~ .box {
     display: none;
   }
