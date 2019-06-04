@@ -96,6 +96,10 @@ _asyncToGenerator(
               icon: chokepoint
             }).addTo(map.leaflet)
 
+            document
+              .querySelector(".toolbox input.ui[type='checkbox']")
+              .removeAttribute('checked')
+
           case 7:
           case 'end':
             return _context.stop()

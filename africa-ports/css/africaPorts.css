@@ -156,3 +156,31 @@ header p {
   position: absolute;
   top: 50%;
 }
+
+.disclaimer{
+
+  background-color:black;
+    color:white;
+  padding:0.3rem;
+  display:none;
+  text-align: center;
+  font-weight: bold;
+  z-index:10;
+  width:100vw;
+}
+
+@media (max-width: 425px) {
+
+  .disclaimer {
+    display:block
+  }
+
+  aside.toolbox .ui:not(:checked) ~ .box {
+    display: none;
+  }
+
+  aside.toolbox .ui:not(:checked) ~ .box {
+    display: none;
+  }
+
+}
