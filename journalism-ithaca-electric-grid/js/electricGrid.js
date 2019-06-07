@@ -60,7 +60,7 @@ L.control
     position: 'bottomright'
   })
   .setPrefix(
-    ' © <a href="https://energydata.info" target="_blank">EnergyData.info</a> and <a href="https://journalism.csis.org" target="_blank">CSIS Journalism Practicum</a> | '
+    ' © <a href="https://energydata.info" target="_blank">EnergyData.info</a> and <a href="https://journalism.csis.org" target="_blank">CSIS Journalism Bootcamp</a> | '
   )
   .addTo(map)
 
@@ -68,8 +68,20 @@ document.querySelector('.owner ul').addEventListener('click', e => {
   var checkbox = e.target.type === 'checkbox' ? e.target : null
 
   if (checkbox) {
-    var checkboxes = Array.from(
+    var checks = Array.from(document.querySelectorAll('.owner ul input')).map(
+      function(checkbox) {
+        return checkbox.name
+      }
+    )
+
+    var checked = Array.from(
       document.querySelectorAll('.owner ul input:checked')
+    ).map(function(checkbox) {
+      return checkbox.name
+    })
+
+    var notChecked = Array.from(
+      document.querySelectorAll('.owner ul input:not(:checked)')
     ).map(function(checkbox) {
       return checkbox.name
     })
@@ -78,10 +90,25 @@ document.querySelector('.owner ul').addEventListener('click', e => {
       grid_source.removeFilter(f)
     })
 
-    grid_source.addFilter(
-      new carto.filter.Category('owner', {
-        in: checkboxes
-      })
-    )
+    var filter_checks = new carto.filter.Category('owner', {
+      notIn: checked
+    })
+
+    var filter_checked = new carto.filter.Category('owner', {
+      in: checked
+    })
+
+    var filter_notChecked = new carto.filter.Category('owner', {
+      notIn: notChecked
+    })
+
+    var filters =
+      checkbox.name === 'OTHERS' && checkbox.checked
+        ? [filter_checks, filter_checked]
+        : checkbox.name === 'OTHERS' && !checkbox.checked
+          ? [filter_checked]
+          : [filter_notChecked]
+
+    grid_source.addFilter(new carto.filter.OR(filters))
   }
 })
