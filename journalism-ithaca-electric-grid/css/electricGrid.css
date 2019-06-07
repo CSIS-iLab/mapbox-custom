@@ -6,46 +6,49 @@ h3 {
   display: none;
 }
 
+aside.toolbox {
+  width: 250px;
+}
 
 input[name='ALABAMA POWER CO'] + .colorKey {
-  background-color: #1D6996;
+  background-color: #1d6996;
   border-radius: 50%;
 }
 input[name='BONNEVILLE POWER ADMINISTRATION'] + .colorKey {
-  background-color: #0F8554;
+  background-color: #0f8554;
   border-radius: 50%;
 }
 input[name='CENTERPOINT ENERGY'] + .colorKey {
-  background-color: #38A6A5;
+  background-color: #38a6a5;
   border-radius: 50%;
 }
 input[name='GEORGIA POWER CO'] + .colorKey {
-  background-color: #73AF48;
+  background-color: #73af48;
   border-radius: 50%;
 }
 input[name='PACIFICORP'] + .colorKey {
-  background-color: #EDAD08;
+  background-color: #edad08;
   border-radius: 50%;
 }
 input[name='PG&E'] + .colorKey {
-  background-color: #E17C05;
+  background-color: #e17c05;
   border-radius: 50%;
 }
 input[name='PROGRESS ENERGY CAROLINAS INC'] + .colorKey {
-  background-color: #CC503E;
+  background-color: #cc503e;
   border-radius: 50%;
 }
 input[name='TENNESSEE VALLEY AUTHORITY'] + .colorKey {
-  background-color: #94346E;
+  background-color: #94346e;
   border-radius: 50%;
 }
 input[name='SCE'] + .colorKey {
-  background-color: #94346E;
+  background-color: #94346e;
   border-radius: 50%;
 }
 
 input[name='OTHERS'] + .colorKey {
-  background-color: #5F4690;
+  background-color: #5f4690;
   border-radius: 50%;
 }
 
@@ -54,33 +57,31 @@ input[name='NOT AVAILABLE'] + .colorKey {
   border-radius: 50%;
 }
 
-.disclaimer{
-  background-color:black;
-  color:white;
-  padding:0.3rem;
-  display:none;
+.disclaimer {
+  background-color: black;
+  color: white;
+  padding: 0.3rem;
+  display: none;
   text-align: center;
   font-weight: bold;
-  z-index:10;
-  width:100vw;
+  z-index: 10;
+  width: 100vw;
 }
 
 @media (max-width: 425px) {
-
   .disclaimer {
-    display:block
+    display: block;
   }
 
   body > section {
-  height:95vh
-}
-
-  aside.toolbox .ui:not(:checked) ~ .box {
-    display: none;
+    height: 95vh;
   }
 
   aside.toolbox .ui:not(:checked) ~ .box {
     display: none;
   }
 
+  aside.toolbox .ui:not(:checked) ~ .box {
+    display: none;
+  }
 }
