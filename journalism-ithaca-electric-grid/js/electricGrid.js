@@ -64,34 +64,28 @@ L.control
   )
   .addTo(map)
 
-document.querySelector('.owner ul').addEventListener('click', e => {
+var checks = Array.from(document.querySelectorAll('.owner ul input')).map(
+  function(checkbox) {
+    return checkbox.name
+  }
+)
+
+var filter_checks = new carto.filter.Category('owner', {
+  notIn: checks
+})
+
+document.querySelector('.owner ul').addEventListener('click', function(e) {
   var checkbox = e.target.type === 'checkbox' ? e.target : null
 
   if (checkbox) {
-    var checks = Array.from(document.querySelectorAll('.owner ul input')).map(
-      function(checkbox) {
-        return checkbox.name
-      }
-    )
-
     var checked = Array.from(
       document.querySelectorAll('.owner ul input:checked')
     ).map(function(checkbox) {
       return checkbox.name
     })
 
-    var notChecked = Array.from(
-      document.querySelectorAll('.owner ul input:not(:checked)')
-    ).map(function(checkbox) {
-      return checkbox.name
-    })
-
-    grid_source.getFilters().forEach(function(f) {
-      grid_source.removeFilter(f)
-    })
-
-    var filter_checks = new carto.filter.Category('owner', {
-      notIn: checked
+    var notChecked = checks.filter(function(name) {
+      return checked.indexOf(name) < 0
     })
 
     var filter_checked = new carto.filter.Category('owner', {
@@ -108,6 +102,10 @@ document.querySelector('.owner ul').addEventListener('click', e => {
         : checkbox.name === 'OTHERS' && !checkbox.checked
           ? [filter_checked]
           : [filter_notChecked]
+
+    grid_source.getFilters().forEach(function(f) {
+      grid_source.removeFilter(f)
+    })
 
     grid_source.addFilter(new carto.filter.OR(filters))
   }
