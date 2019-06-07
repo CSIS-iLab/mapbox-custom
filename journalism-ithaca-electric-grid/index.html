@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://csis-ilab.github.io/map-templates/dist/css/style.css">
+  <link rel="stylesheet" href="https://csis-ilab.github.io/map-templates/dist/css/vendor.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600">
+  <title>Top Electric Grid Providers | CSIS CSIS Journalism Bootcamp</title>
+  <meta name="viewport" content="initial-scale=1.0">
+  <meta charset="utf-8">
+
+  <script src="https://unpkg.com/babel-polyfill@6.26.0/dist/polyfill.js"></script>
+    <!-- Include Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+    <link href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" rel="stylesheet">
+    <!-- Include CARTO.js -->
+    <script src="https://libs.cartocdn.com/carto.js/v4.1.1/carto.min.js"></script>
+
+  <link href="css/electricGrid.css" rel="stylesheet">
+
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="article">
+  <meta property="og:image:width" content="2000">
+  <meta property="og:image:height" content="1333">
+  <meta property="twitter:card" content="summary">
+  <meta property="og:title" content="Top Electric Grid Providers | CSIS CSIS Journalism Bootcamp">
+  <meta property="twitter:title" content="Top Electric Grid Providers | CSIS CSIS Journalism Bootcamp">
+  <meta property="og:description" content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.">
+  <meta property="twitter:description" content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.">
+  <meta property="og:image" content="undefined">
+  <meta property="twitter:image" content="undefined">
+</head>
+
+
+<body>
+
+  <!-- <script src="js/electricGrid.js"> -->
+
+
+  </script>
+
+  <div class="disclaimer">Best experienced on a desktop computer.</div>
+  <section>
+<div id="electric-grid__map" class="map" tabindex="0"></div>
+
+  <aside class="toolbox"><input type="checskbox" class="ui mobile-only">
+    <div class="hamburger mobile-only">
+      <div class="icon"><span></span> <span></span> <span></span></div>
+      <div class="menu translate">Top Electric Grid Providers</div>
+    </div>
+    <div class="box">
+      <header class="translate">
+        <h1>
+    <a target="_blank" id="logo" href="" style="background-image: url(&quot;https://journalism.csis.org/wp-content/themes/modern-journalist/img/small-logo.svg&quot;);">
+  </a>
+  Top Electric Grid Providers</h1>
+        <p class="translate">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+      </header>
+      <p class="translate">Click to toggle provider grids</p>
+      <div id="controls">
+        <section class="widget owner">
+          <h3 class="translate">owner</h3>
+          <ul>
+            <li><label for="Alabama Power Co"><input class="widget checkbox" type="checkbox" name="ALABAMA POWER CO" id="Alabama Power Co" checked=""><span class="colorKey"></span><span class="itemText" style="transform: translateY(14.1667%);">Alabama Power Co</span></label></li>
+            <li><label for="Bonneville Power Administration"><input class="widget checkbox" type="checkbox" name="BONNEVILLE POWER ADMINISTRATION" id="Bonneville Power Administration" checked=""><span class="colorKey"></span><span class="itemText" style="transform: translateY(14.1667%);">Bonneville Power Administration</span></label></li>
+            <li><label for="Centerpoint Energy"><input class="widget checkbox" type="checkbox" name="CENTERPOINT ENERGY" id="Centerpoint Energy" checked=""><span class="colorKey"></span><span class="itemText" style="transform: translateY(14.1667%);">Centerpoint Energy</span></label></li>
+            <li><label for="Georgia Power Co"><input class="widget checkbox" type="checkbox" name="GEORGIA POWER CO" id="Georgia Power Co" checked=""><span class="colorKey"></span><span class="itemText" style="transform: translateY(14.1667%);">Georgia Power Co</span></label></li>
+            <li><label for="Pacificorp"><input class="widget checkbox" type="checkbox" name="PACIFICORP" id="Pacificorp" checked=""><span class="colorKey"></span><span class="itemText" style="transform: translateY(14.1667%);">Pacificorp</span></label></li>
+            <li><label for="PG&amp;E"><input class="widget checkbox" type="checkbox" name="PG&amp;E" id="PG&amp;E" checked=""><span class="colorKey"></span><span class="itemText" style="transform: translateY(14.1667%);">PG&amp;E</span></label></li>
+            <li><label for="Progress Energy Carolinas Inc"><input class="widget checkbox" type="checkbox" name="PROGRESS ENERGY CAROLINAS INC" id="Progress Energy Carolinas Inc" checked=""><span class="colorKey"></span><span class="itemText" style="transform: translateY(14.1667%);">Progress Energy Carolinas Inc</span></label></li>
+            <li><label for="Tennessee Valley Authority"><input class="widget checkbox" type="checkbox" name="TENNESSEE VALLEY AUTHORITY" id="Tennessee Valley Authority" checked=""><span class="colorKey"></span><span class="itemText" style="transform: translateY(14.1667%);">Tennessee Valley Authority</span></label></li>
+            <li><label for="SCE"><input class="widget checkbox" type="checkbox" name="SCE" id="SCE" checked=""><span class="colorKey"></span><span class="itemText" style="transform: translateY(14.1667%);">SCE</span></label></li>
+            <li><label for="Others"><input class="widget checkbox" type="checkbox" name="OTHERS" id="Others" checked=""><span class="colorKey"></span><span class="itemText" style="transform: translateY(14.1667%);">Others</span></label></li>
+            <li><label for="Not Available"><input class="widget checkbox" type="checkbox" name="NOT AVAILABLE" id="Not Available" checked=""><span class="colorKey"></span><span class="itemText" style="transform: translateY(14.1667%);">Not Available</span></label></li>
+          </ul>
+        </section>
+      </div>
+      <footer>
+        <div class="hidden">
+
+
+        </div>
+      </footer>
+    </div>
+  </aside>
+
+  </section>
+  <script src="js/electricGrid.js"></script>
+
+</body>
+
+</html>

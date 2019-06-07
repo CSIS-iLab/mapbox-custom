@@ -1,0 +1,86 @@
+.box {
+  border-radius: 0;
+}
+
+h3 {
+  display: none;
+}
+
+
+input[name='ALABAMA POWER CO'] + .colorKey {
+  background-color: #1D6996;
+  border-radius: 50%;
+}
+input[name='BONNEVILLE POWER ADMINISTRATION'] + .colorKey {
+  background-color: #0F8554;
+  border-radius: 50%;
+}
+input[name='CENTERPOINT ENERGY'] + .colorKey {
+  background-color: #38A6A5;
+  border-radius: 50%;
+}
+input[name='GEORGIA POWER CO'] + .colorKey {
+  background-color: #73AF48;
+  border-radius: 50%;
+}
+input[name='PACIFICORP'] + .colorKey {
+  background-color: #EDAD08;
+  border-radius: 50%;
+}
+input[name='PG&E'] + .colorKey {
+  background-color: #E17C05;
+  border-radius: 50%;
+}
+input[name='PROGRESS ENERGY CAROLINAS INC'] + .colorKey {
+  background-color: #CC503E;
+  border-radius: 50%;
+}
+input[name='TENNESSEE VALLEY AUTHORITY'] + .colorKey {
+  background-color: #94346E;
+  border-radius: 50%;
+}
+input[name='SCE'] + .colorKey {
+  background-color: #94346E;
+  border-radius: 50%;
+}
+
+input[name='OTHERS'] + .colorKey {
+  background-color: #5F4690;
+  border-radius: 50%;
+}
+
+input[name='NOT AVAILABLE'] + .colorKey {
+  background-color: #666;
+  border-radius: 50%;
+}
+
+.disclaimer{
+  background-color:black;
+  color:white;
+  padding:0.3rem;
+  display:none;
+  text-align: center;
+  font-weight: bold;
+  z-index:10;
+  width:100vw;
+}
+
+@media (max-width: 425px) {
+
+  .disclaimer {
+    display:block
+  }
+
+  body > section {
+  height:95vh
+}
+
+  aside.toolbox .ui:not(:checked) ~ .box {
+    display: none;
+  }
+
+  aside.toolbox .ui:not(:checked) ~ .box {
+    display: none;
+  }
+
+}
