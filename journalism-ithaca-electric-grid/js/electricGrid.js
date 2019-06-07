@@ -4,13 +4,14 @@ var basemap = L.tileLayer(
 )
 
 var map = L.map('electric-grid__map', {
-  center: [35, -100],
+  center: [40, -100],
   zoom: window.innerWidth > 768 ? 5 : 4,
   maxZoom: 18,
   scrollWheelZoom: true,
   minZoom: 3,
   zoomControl: true,
   maxBounds: [[0, -130], [60, -50]],
+  scrollWheelZoom: false,
   layers: [basemap],
   attributionControl: false
 })
