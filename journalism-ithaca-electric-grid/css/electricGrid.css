@@ -27,6 +27,16 @@ h3,
   font-size: 21px;
 }
 
+.leaflet-container .leaflet-control-attribution {
+  background-color: black;
+  color: white;
+}
+
+.leaflet-control-attribution.leaflet-control a {
+  text-decoration: underline;
+  color: white;
+}
+
 input[name='ALABAMA POWER CO'] + .colorKey {
   background-color: #1d6996;
   border-radius: 50%;
