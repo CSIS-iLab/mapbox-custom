@@ -1,0 +1,27 @@
+path.leaflet-interactive {
+  fill-opacity: 1;
+  stroke: #fff;
+  stroke-width: 1px;
+  stroke-opacity: 1;
+}
+
+ul {
+  margin: 0;
+}
+
+.leaflet-popup-tip,
+.leaflet-popup-content-wrapper {
+  color: #fff;
+  font-size: 16px;
+  background-color: rgba(0, 0, 0, 0.67);
+}
+
+.icon-div span {
+  color: #000;
+  border: 2px solid #000;
+  border-radius: 50%;
+}
+
+#controls section:first-child h3 {
+  display: none;
+}
