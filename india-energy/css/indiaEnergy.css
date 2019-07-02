@@ -134,28 +134,8 @@ header p {
   font: 13.5px/17.5px 'Open Sans';
 }
 
-.chokepoint {
-  border-radius: 50%;
-  border: 6px solid black;
-}
-
-.chokepoint-label span {
-  text-transform: uppercase;
-  font-size: 10px;
-  background-color: white;
-  padding: 3px;
-  border: 1px solid black;
-  white-space: nowrap;
-}
-
-.chokepoint-label span::before {
-  content: '';
-  width: 200%;
-  right: 103%;
-  height: 1px;
-  background-color: black;
-  position: absolute;
-  top: 50%;
+#controls li label .itemText {
+  transform: none !important;
 }
 
 .disclaimer {
