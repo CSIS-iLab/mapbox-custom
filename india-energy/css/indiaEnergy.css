@@ -53,10 +53,6 @@ aside.toolbox .box,
   fill: rgba(255, 255, 255, 1);
 }
 
-.leaflet-container {
-  font: 14px/1.5 'Helvetica Neue', Arial, Helvetica, sans-serif;
-}
-
 .icon-group {
   border-radius: 50%;
   background-color: white;
