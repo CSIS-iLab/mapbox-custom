@@ -82,8 +82,7 @@ span.text::after {
 }
 
 body,
-label,
-.leaflet-container p {
+label {
   font-size: 14px;
   font-family: 'expo-serif-pro', serif;
 }
