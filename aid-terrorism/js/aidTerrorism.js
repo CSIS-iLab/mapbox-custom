@@ -23,20 +23,16 @@
             terrorism: a.terrorism ? a.terrorism : b.terrorism,
             foreign_assistance: a.foreign_assistance
               ? a.foreign_assistance
-              : b.foreign_assistance
+              : b.foreign_assistance,
+            actual_assistance: a.actual_assistance
+              ? a.actual_assistance
+              : b.actual_assistance
           }
         })
 
       var groups = '',
-        assistance,
-        terrorism = countryData.terrorism,
-        aid = {
-          e: '$100,000,000-$1,500,000,000',
-          d: '$30,000,000-$99,000,000',
-          c: '$2,000,000-$29,999,000',
-          b: '$10,000-$1,999,000',
-          a: '$0-$10,000'
-        }
+        assistance = '',
+        terrorism = countryData.terrorism
 
       if (terrorism.length) {
         groups = `<br><div class="popupHeaderStyle">Terrorist Groups</div>
@@ -48,10 +44,9 @@
           .join('')}</ul>`
       }
 
-      assistance = aid[countryData.foreign_assistance]
-        ? `<div class="popupHeaderStyle">Foreign Assistance: ${(assistance =
-            aid[countryData.foreign_assistance])}</div>`
-        : ''
+      if (countryData.actual_assistance) {
+        assistance = `<div class="popupHeaderStyle">Foreign Assistance: $${countryData.actual_assistance.toLocaleString()}</div>`
+      }
 
       return `<div class="popupTitleStyle">${feature.properties.country}</div>
         ${assistance}      ${groups}`

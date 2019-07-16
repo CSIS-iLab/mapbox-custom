@@ -25,3 +25,7 @@ ul {
 #controls section:first-child h3 {
   display: none;
 }
+
+.popupTitleStyle {
+  text-align: left;
+}
