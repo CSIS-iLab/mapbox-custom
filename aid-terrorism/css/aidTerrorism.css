@@ -29,3 +29,7 @@ ul {
 .popupTitleStyle {
   text-align: left;
 }
+
+.mobile-only {
+  height: 80px;
+}
