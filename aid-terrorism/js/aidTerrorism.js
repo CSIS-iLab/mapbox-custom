@@ -1,27 +1,27 @@
-;(async function() {
-  var newMap = makeMap({
-    googleSheet: '1gG0m4xRVeBQ7eTypfZ0SQev_RxUK0uj_9IlyUqSev7c',
-    mapID: 'aid-terrorism',
-    formatPopupContent: function(feature, map) {
-      var jsons = map.json
-        .reduce(function(a, b) {
-          return {
-            type: 'FeatureCollection',
-            features: a.features.concat(b.features)
-          }
-        })
-        .features.map(function(f) {
-          return f.properties
-        })
+makeMap({
+  googleSheet: '1gG0m4xRVeBQ7eTypfZ0SQev_RxUK0uj_9IlyUqSev7c',
+  mapID: 'aid-terrorism',
+  formatPopupContent: function(feature, map) {
+    var jsons = map.json
+      .reduce(function(a, b) {
+        return {
+          type: 'FeatureCollection',
+          features: a.features.concat(b.features)
+        }
+      })
+      .features.map(function(f) {
+        return f.properties
+      })
 
-      var palestinianTerritories = ['Gaza Strip', 'West Bank', 'Palestine']
-      var countryData0 = jsons.filter(function(f) {
+    var palestinianTerritories = ['Gaza Strip', 'West Bank', 'Palestine']
+
+    var countryData = jsons
+      .filter(function(f) {
         return palestinianTerritories.indexOf(feature.properties.country) > -1
           ? palestinianTerritories.indexOf(f.country) > -1
           : f.country === feature.properties.country
       })
-
-      var countryData = countryData0.reduce(function(a, b) {
+      .reduce(function(a, b) {
         var countryTerrorismData = ''
 
         switch (feature.properties.country) {
@@ -63,12 +63,16 @@
         }
       })
 
-      var groups = '',
-        assistance = '',
-        terrorism = countryData.terrorism
+    var groups = '',
+      assistance = '',
+      terrorism = countryData.terrorism
+    countryData.country =
+      feature.properties.country === 'Gambia'
+        ? 'The Gambia'
+        : feature.properties.country
 
-      if (terrorism.length) {
-        groups = `<br><div class="popupHeaderStyle">Terrorist Groups</div>
+    if (terrorism.length) {
+      groups = `<br><div class="popupHeaderStyle">Terrorist Groups</div>
         <ul>${terrorism
           .split('~')
           .filter(function(t) {
@@ -78,14 +82,13 @@
             return `<li class='popupEntryStyle'>${group}</li>`
           })
           .join('')}</ul>`
-      }
-
-      if (countryData.actual_assistance) {
-        assistance = `<div class="popupHeaderStyle">Foreign Assistance: $${countryData.actual_assistance.toLocaleString()}</div>`
-      }
-
-      return `<div class="popupTitleStyle">${countryData.country}</div>
-        ${assistance}      ${groups}`
     }
-  })
-})()
+
+    if (countryData.actual_assistance) {
+      assistance = `<div class="popupHeaderStyle">Foreign Assistance: $${countryData.actual_assistance.toLocaleString()}</div>`
+    }
+
+    return `<div class="popupTitleStyle">${countryData.country}</div>
+        ${assistance}      ${groups}`
+  }
+})
