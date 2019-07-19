@@ -31,6 +31,8 @@ path.leaflet-interactive {
   text-align: left;
 }
 
-.mobile-only {
-  height: 80px;
+@media screen and (max-width: 48em) {
+  .mobile-only {
+    height: 80px;
+  }
 }
