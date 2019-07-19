@@ -5,8 +5,9 @@ path.leaflet-interactive {
   stroke-opacity: 1;
 }
 
-ul {
+.leaflet-popup-content ul {
   margin: 0;
+  padding-left: 20px;
 }
 
 .leaflet-popup-tip,
