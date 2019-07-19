@@ -72,7 +72,7 @@ makeMap({
         : feature.properties.country
 
     if (terrorism.length) {
-      groups = `<br><div class="popupHeaderStyle">Terrorist Groups</div>
+      groups = `<div class="popupHeaderStyle">Terrorist Groups</div>
         <ul>${terrorism
           .split('~')
           .filter(function(t) {
@@ -85,7 +85,7 @@ makeMap({
     }
 
     if (countryData.actual_assistance) {
-      assistance = `<div class="popupHeaderStyle">Foreign Assistance: $${countryData.actual_assistance.toLocaleString()}</div>`
+      assistance = `<div class="popupHeaderStyle">Foreign Assistance: $${countryData.actual_assistance.toLocaleString()}</div><br>`
     }
 
     return `<div class="popupTitleStyle">${countryData.country}</div>
