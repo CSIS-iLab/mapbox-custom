@@ -8,7 +8,8 @@
     g = svg.append('g').attr('class', 'leaflet-zoom-hide')
 
   svg.style('overflow', 'visible')
-  var json = map.json[2]
+
+  var json = map.json[3]
   var transform = d3.geoTransform({ point: projectPoint }),
     path = d3.geoPath().projection(transform)
 
