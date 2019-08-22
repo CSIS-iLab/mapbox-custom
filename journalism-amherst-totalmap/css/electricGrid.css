@@ -1,0 +1,88 @@
+.box {
+  border-radius: 0;
+}
+
+h3 {
+  display: none;
+}
+
+aside.toolbox {
+  width: 250px;
+}
+
+body,
+#controls li label {
+  font-family: 'canada-type-gibson', sans-serif;
+}
+
+h1,
+h2,
+h3,
+.hamburger .menu,
+.mobile-only {
+  font-family: 'baskerville-urw', serif;
+  font-weight: 300;
+}
+.box header h1 {
+  font-size: 21px;
+}
+
+.leaflet-container .leaflet-control-attribution {
+  background-color: black;
+  color: white;
+}
+
+.leaflet-control-attribution.leaflet-control a {
+  text-decoration: underline;
+  color: white;
+}
+
+input[name='5'] + .colorKey {
+  background-color: #1d6996;
+  border-radius: 50%;
+}
+input[name='4'] + .colorKey {
+  background-color: #0f8554;
+  border-radius: 50%;
+}
+input[name='3'] + .colorKey {
+  background-color: #22b2b1;
+  border-radius: 50%;
+}
+input[name='2'] + .colorKey {
+  background-color: #5ead26;
+  border-radius: 50%;
+}
+input[name='1'] + .colorKey {
+  background-color: #edb908;
+  border-radius: 50%;
+}
+
+.disclaimer {
+  background-color: black;
+  color: white;
+  padding: 0.3rem;
+  display: none;
+  text-align: center;
+  font-weight: bold;
+  z-index: 10;
+  width: 100vw;
+}
+
+@media (max-width: 425px) {
+  .disclaimer {
+    display: block;
+  }
+
+  body > section {
+    height: 95vh;
+  }
+
+  aside.toolbox .ui:not(:checked) ~ .box {
+    display: none;
+  }
+
+  aside.toolbox .ui:not(:checked) ~ .box {
+    display: none;
+  }
+}
