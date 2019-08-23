@@ -38,23 +38,23 @@ h3,
 }
 
 input[name='5'] + .colorKey {
-  background-color: #1d6996;
+  background-color: #9b7d00;
   border-radius: 50%;
 }
 input[name='4'] + .colorKey {
-  background-color: #0f8554;
+  background-color: #cb9500;
   border-radius: 50%;
 }
 input[name='3'] + .colorKey {
-  background-color: #22b2b1;
+  background-color: #ecb637;
   border-radius: 50%;
 }
 input[name='2'] + .colorKey {
-  background-color: #5ead26;
+  background-color: #eedb7a;
   border-radius: 50%;
 }
 input[name='1'] + .colorKey {
-  background-color: #edb908;
+  background-color: #e7e1b0;
   border-radius: 50%;
 }
 

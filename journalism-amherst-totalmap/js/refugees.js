@@ -1,5 +1,5 @@
 var basemap = L.tileLayer(
-  'https://api.mapbox.com/styles/v1/ilabmedia/cjwl7303s3kut1dqxh986tojd/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw',
+  'https://api.mapbox.com/styles/v1/ilabmedia/cjzoboqis2j0c1cqdwusmzdde/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw',
   {}
 )
 
@@ -27,7 +27,7 @@ var country_source = new carto.source.SQL(
 
 var country_style = new carto.style.CartoCSS(`
   #layer {
-    polygon-fill: ramp([ranking], (#5F4690, #1D6996, #38A6A5, #0F8554, #73AF48, #666666), (2, 1, 4, 3, 5), "=", category);
+    polygon-fill: ramp([ranking], (#e7e1b0, #eedb7a, #ecb637, #cb9500, #9b7d00), (1, 2, 3, 4, 5), "=", category);
 }
 #layer::outline {
   line-width: 1;
