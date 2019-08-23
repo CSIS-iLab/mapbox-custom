@@ -4,13 +4,13 @@ var basemap = L.tileLayer(
 )
 
 var map = L.map('electric-grid__map', {
-  center: [40, -100],
-  zoom: window.innerWidth > 768 ? 4 : 3,
+  center: [22.47, -41.34],
+  zoom: 3,
   maxZoom: 18,
   scrollWheelZoom: true,
   minZoom: 2,
   zoomControl: true,
-  maxBounds: [[0, -130], [60, -50]],
+  //maxBounds: [[0, -130], [60, -50]],
   scrollWheelZoom: false,
   layers: [basemap],
   attributionControl: false
@@ -36,7 +36,14 @@ var country_style = new carto.style.CartoCSS(`
 }
 `)
 
-var country_layer = new carto.layer.Layer(country_source, country_style, {})
+var country_layer = new carto.layer.Layer(country_source, country_style, {
+  featureOverColumns: [
+    "venezualan_refugee_destintion",
+    "total_population",
+    "venezualan_refugee_population",
+    "percentage_they_account_for"
+  ]
+});
 
 client.addLayer(country_layer)
 
@@ -50,7 +57,7 @@ L.control
     position: 'bottomright'
   })
   .setPrefix(
-    ' © <a href="https://energydata.info" target="_blank">EnergyData.info</a> and <a href="https://journalism.csis.org" target="_blank">CSIS Journalism Bootcamp</a> '
+    ' © <a href="https://data2.unhcr.org/en/documents/download/69838" target="_blank">UNHCR</a> and <a href="https://journalism.csis.org" target="_blank">CSIS Journalism Bootcamp</a> '
   )
   .addTo(map)
 
@@ -63,6 +70,22 @@ var checks = Array.from(document.querySelectorAll('.owner ul input')).map(
 var filter_checks = new carto.filter.Category('ranking', {
   notIn: checks
 })
+
+// Popups
+
+var popup = L.popup({ closeButton: false });
+country_layer.on(carto.layer.events.FEATURE_OVER, function(featureEvent) {
+  var data = featureEvent.data;
+  popup.setLatLng(featureEvent.latLng);
+  popup.setContent("<h2><strong>" + data.venezualan_refugee_destintion + "</strong></h2><br /><strong>Total Population</strong>: " + data.total_population + "<br /><strong>Total Migrants</strong>: " + data.venezualan_refugee_population + "<br /><strong>Percentage Migrants–Population</strong>: " + data.percentage_they_account_for);
+  if (!popup.isOpen()) {
+    popup.openOn(map);
+  }
+});
+
+country_layer.on(carto.layer.events.FEATURE_OUT, function(featureEvent) {
+  popup.removeFrom(map);
+});
 
 document.querySelector('.owner ul').addEventListener('click', function(e) {
   var checkbox = e.target.type === 'checkbox' ? e.target : null
