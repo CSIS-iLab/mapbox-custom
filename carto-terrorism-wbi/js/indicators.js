@@ -99,7 +99,7 @@ map.attributionControl.addAttribution(
 L.control.zoomslider().addTo(map);
 
 var client = new carto.Client({
-  apiKey: "wFc6cVixWBJwkvfKfqIOdA",
+  apiKey: "dpARmpusf2OkQaeY5BlAuQ",
   username: "csis"
 });
 
@@ -118,8 +118,8 @@ var wbi2Style = new carto.style.CartoCSS("#layer { }");
 
 var wbi2Layer = new carto.layer.Layer(wbi2, wbi2Style);
 
-var attacks = new carto.source.SQL("SELECT * FROM governance_wbi_attacks");
-var attacks2 = new carto.source.SQL("SELECT * FROM governance_wbi_attacks");
+var attacks = new carto.source.SQL("SELECT * FROM table_2019_aq_attacks");
+var attacks2 = new carto.source.SQL("SELECT * FROM table_2019_aq_attacks");
 
 var attacks_style = new carto.style.CartoCSS(
   " #layer {marker-width: 10;marker-fill: #FFFFFF;marker-fill-opacity: 1;marker-allow-overlap: true;marker-line-width: 0; }"
