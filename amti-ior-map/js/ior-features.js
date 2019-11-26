@@ -16,50 +16,98 @@ var map = L.map('map', {
   attributionControl: false
 })
 
-var client = new carto.Client({
-  apiKey: 'lkmWH7tR69I4VbMRjVODQQ',
-  username: 'csis'
-})
 
-var grid_source = new carto.source.SQL(
-  'SELECT * FROM ior_feature_descriptions'
-)
+// const map = L.map('map').setView([30, 0], 3);
+//       map.scrollWheelZoom.disable();
 
-var grid_style = new carto.style.CartoCSS(`
-  #layer {
-    marker-width: 7;
-    marker-fill: ramp([type_of_asset], (#3969ac, #f2b701, #7f3c8d, #11a579, #e73f74), ("Coastal Surveillance Radar Systems", "Indian Offshore Military Facility", "Commercial/Dual-use Facilities", "Foreign Military Facilities w/ Indian Access"), "=");
-    marker-fill-opacity: 1;
-    marker-allow-overlap: true;
-    marker-line-width: 1;
-    marker-line-color: #FFFFFF;
-    marker-line-opacity: 1;
- }
-`)
+      // L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}.png', {
+      //   maxZoom: 18
+      // }).addTo(map);
 
-var grid_layer = new carto.layer.Layer(grid_source, grid_style, {})
+      const client = new carto.Client({
+        apiKey: 'lkmWH7tR69I4VbMRjVODQQ',
+        username: 'csis'
+      });
 
-// var state_source = new carto.source.SQL(
-//   'SELECT * FROM ithaca_usstates_ne_50m_admin_1_states_csv'
-// )
+      const populatedPlacesSource = new carto.source.SQL(
+      'SELECT * FROM ior_feature_descriptions'
+      );
+      const populatedPlacesStyle = new carto.style.CartoCSS(`
+        #layer {
+          marker-width: 7;
+          marker-fill: ramp([type_of_asset], (#3969ac, #f2b701, #7f3c8d, #11a579, #e73f74), ("Coastal Surveillance Radar Systems", "Indian Offshore Military Facility", "Commercial/Dual-use Facilities", "Foreign Military Facilities w/ Indian Access"), "=");
+          marker-fill-opacity: 1;
+          marker-allow-overlap: true;
+          marker-line-width: 1;
+          marker-line-color: #FFFFFF;
+          marker-line-opacity: 1;
+        }
+      `);
+      const populatedPlacesLayer = new carto.layer.Layer(populatedPlacesSource, populatedPlacesStyle, {
+        featureOverColumns: ['name_of_asset', 'type_of_asset', 'location_city_country_', 'description']
+      });
 
-// var state_style = new carto.style.CartoCSS(`
-//   #layer::outline {
-//     line-width: 1;
-//     line-color: #FFFFFF;
-//     line-opacity: 0.5;
-//   }
-// `)
+      client.addLayer(populatedPlacesLayer);
 
-// var state_layer = new carto.layer.Layer(state_source, state_style, {})
 
-client.addLayer(grid_layer)
-// client.addLayer(state_layer)
+      client
+        .getLeafletLayer()
+        .bringToFront()
+        .addTo(map)
+        
 
-client
-  .getLeafletLayer()
-  .bringToFront()
-  .addTo(map)
+      const popup = L.popup({ closeButton: false });
+
+      function openPopup(featureEvent) {
+        let content = '<div class="widget">';
+
+        if (featureEvent.data.name_of_asset) {
+          content += `<h2 class="h2">${featureEvent.data.name_of_asset}</h2>`;
+        }
+
+        if (featureEvent.data.type_of_asset || featureEvent.data.location_city_country_ || featureEvent.data.description ) {
+          content += `<ul>`;
+
+          if (featureEvent.data.type_of_asset) {
+            content += `<li><h3>Asset:</h3><p class="open-sans">${featureEvent.data.type_of_asset}</p></li>`;
+          }
+
+          if (featureEvent.data.location_city_country_) {
+            content += `<li><h3>Location:</h3><p class="open-sans">${featureEvent.data.location_city_country_}</p></li>`;
+          }
+
+          if (featureEvent.data.description) {
+            content += `<li><h3>Description:</h3><p class="open-sans">${featureEvent.data.description}</p></li>`;
+          }
+
+          content += `</ul>`;
+        }
+
+        content += `</div>`;
+
+        popup.setContent(content);
+        popup.setLatLng(featureEvent.latLng);
+        if (!popup.isOpen()) {
+          popup.openOn(map);
+        }
+      }
+
+      function closePopup(featureEvent) {
+        popup.removeFrom(map);
+      }
+
+      function setPopupsClick() {
+        populatedPlacesLayer.off('featureOver');
+        populatedPlacesLayer.off('featureOut');
+        populatedPlacesLayer.on('featureClicked', openPopup);
+      }
+
+      function setPopupsHover() {
+        populatedPlacesLayer.off('featureClicked');
+        populatedPlacesLayer.on('featureOver', openPopup);
+        populatedPlacesLayer.on('featureOut', closePopup);
+      }
+
 
 L.control
   .attribution({
@@ -109,10 +157,10 @@ document.querySelector('.type_of_asset ul').addEventListener('click', function(e
           ? [filter_checked]
           : [filter_notChecked]
 
-    grid_source.getFilters().forEach(function(f) {
-      grid_source.removeFilter(f)
+  populatedPlacesSource.getFilters().forEach(function(f) {
+    populatedPlacesSource.removeFilter(f)
     })
 
-    grid_source.addFilter(new carto.filter.OR(filters))
+    populatedPlacesSource.addFilter(new carto.filter.OR(filters))
   }
 })

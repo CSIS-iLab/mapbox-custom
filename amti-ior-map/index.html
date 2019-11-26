@@ -6,68 +6,55 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville:300,400,600">
   <title>IOR Map | AMTI</title>
   <meta name="viewport" content="initial-scale=1.0">
-
   <meta charset="utf-8">
 
   <script src="https://unpkg.com/babel-polyfill@6.26.0/dist/polyfill.js"></script>
-    <!-- Include Leaflet -->
-    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
-    <link href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" rel="stylesheet">
-    <!-- Include CARTO.js -->
-    <script src="https://libs.cartocdn.com/carto.js/v4.1.1/carto.min.js"></script>
-    <link href="https://carto.com/developers/carto-js/examples/maps/public/style.css" rel="stylesheet">
+  <!-- Include Leaflet -->
+  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+  <link href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" rel="stylesheet">
+  <!-- Include CARTO.js -->
+  <script src="https://libs.cartocdn.com/carto.js/v4.1.11/carto.min.js"></script>
+  <link href="https://carto.com/developers/carto-js/examples/maps/public/style.css" rel="stylesheet">
     
 
   <link rel="preconnect stylesheet" href="https://use.typekit.net/ats0hoc.css" />
 
   <link href="css/makeMap.css" rel="stylesheet">
 
-
-  <meta property="og:locale" content="en_US">
-  <meta property="og:type" content="article">
-  <meta property="og:image:width" content="2000">
-  <meta property="og:image:height" content="1333">
-  <meta property="twitter:card" content="summary">
-  <meta property="og:title" content="Top Electric Grid Providers | CSIS Journalism Bootcamp">
-  <meta property="twitter:title" content="Top Electric Grid Providers | CSIS Journalism Bootcamp">
-  <meta property="og:description" content="A map of the U.S. electrical grid, organized by operating utility company.">
-  <meta property="twitter:description" content="A map of the U.S. electrical grid, organized by operating utility company.">
-  <meta property="og:image" content="undefined">
-  <meta property="twitter:image" content="undefined">
 </head>
 
 
 <body>
 
-
-
-  </script>
-
-  <div class="disclaimer">Best experienced on a desktop computer.</div>
-
-  
   <section>
-<div id="map" class="map" tabindex="0"></div>
 
+    <div id="map" class="map" tabindex="0"></div>
+   
   <aside class="toolbox"><input type="checkbox" class="ui mobile-only">
+    
     <div class="hamburger mobile-only">
       <div class="icon"><span></span> <span></span> <span></span></div>
-      <div class="menu translate">Top Electric Grid Providers</div>
+      <div class="menu translate">Indian Ocean Resources</div>
     </div>
     <div class="box">
       <header class="translate">
         <h1>
-      <a href="https://amti.csis.org/" target="_blank" id="logo" ><img src="images/logo.jpg"/></a></a>
-  </a>
-  Top Electric Grid Providers</h1>
+      <a href="https://amti.csis.org/" target="_blank" id="logo" ><img src="images/logo.jpg"/></a>
+    Indian Ocean Features
+  </h1>
         <p class="translate">A map of the U.S. electrical grid, organized by operating utility company.</p>
       </header>
       <p class="translate">Click to toggle type of asset </p>
       <div id="controls">
         <section class="widget type_of_asset">
           <h3 class="translate">Type of Asset</h3>
-          <ul>
-            <li><label for="Coastal Surveillance Radar Systems"><input class="widget checkbox" type="checkbox" name="Coastal Surveillance Radar Systems" id="Coastal Surveillance Radar Systems" checked=""><span class="colorKey"></span><span class="itemText" style="transform: translateY(14.1667%);">Coastal Surveillance Radar Systems</span></label></li>
+          <button onclick="setPopupsHover()">
+            <input type="radio" name="style" value="01" id="hover">
+                <label for="hover">Pop-ups on hover</label>
+          </button>
+          
+          <ul class="actions">
+            <li ><label for="Coastal Surveillance Radar Systems"><input class="widget checkbox" type="checkbox" name="Coastal Surveillance Radar Systems" id="Coastal Surveillance Radar Systems" checked=""><span class="colorKey"></span><span class="itemText" style="transform: translateY(14.1667%);">Coastal Surveillance Radar Systems</span></label></li>
             <li><label for="Indian Offshore Military Facility"><input class="widget checkbox" type="checkbox" name="Indian Offshore Military Facility" id="Indian Offshore Military Facility" checked=""><span class="colorKey"></span><span class="itemText" style="transform: translateY(14.1667%);">Indian Offshore Military Facility</span></label></li>
             <li><label for="Commercial/Dual-use Facilities"><input class="widget checkbox" type="checkbox" name="Commercial/Dual-use Facilities" id="Commercial/Dual-use Facilities" checked=""><span class="colorKey"></span><span class="itemText" style="transform: translateY(14.1667%);">Commercial/Dual-use Facilities</span></label></li>
             <li><label for="FOREIGN MILITARY FACILITIES W/ INDIAN ACCESS"><input class="widget checkbox" type="checkbox" name="Foreign Military Facilities w/ Indian Access" id="Foreign Military Facilities w/ Indian Access" checked=""><span class="colorKey"></span><span class="itemText" style="transform: translateY(14.1667%);">Foreign Military Facilities w/ Indian Access</span></label></li>
@@ -85,6 +72,11 @@
       </footer>
     </div>
   </aside>
+
+  <script>
+    
+    
+    </script>
   
   </section>
   <script src="js/ior-features.js"></script>
