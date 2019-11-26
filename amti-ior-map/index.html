@@ -15,10 +15,13 @@
     <link href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" rel="stylesheet">
     <!-- Include CARTO.js -->
     <script src="https://libs.cartocdn.com/carto.js/v4.1.1/carto.min.js"></script>
+    <link href="https://carto.com/developers/carto-js/examples/maps/public/style.css" rel="stylesheet">
+    
 
   <link rel="preconnect stylesheet" href="https://use.typekit.net/ats0hoc.css" />
 
   <link href="css/makeMap.css" rel="stylesheet">
+
 
   <meta property="og:locale" content="en_US">
   <meta property="og:type" content="article">
@@ -36,12 +39,13 @@
 
 <body>
 
-  <!-- <script src="js/electricGrid.js"> -->
 
 
   </script>
 
   <div class="disclaimer">Best experienced on a desktop computer.</div>
+
+  
   <section>
 <div id="map" class="map" tabindex="0"></div>
 
@@ -53,15 +57,15 @@
     <div class="box">
       <header class="translate">
         <h1>
-    <a target="_blank" id="logo" href="https://journalism.csis.org" style="background-image: url(&quot;https://journalism.csis.org/wp-content/themes/modern-journalist/img/small-logo.svg&quot;);">
+      <a href="https://amti.csis.org/" target="_blank" id="logo" ><img src="images/logo.jpg"/></a></a>
   </a>
   Top Electric Grid Providers</h1>
         <p class="translate">A map of the U.S. electrical grid, organized by operating utility company.</p>
       </header>
-      <p class="translate">Click to toggle asset types</p>
+      <p class="translate">Click to toggle type of asset </p>
       <div id="controls">
-        <section class="widget asset">
-          <h3 class="translate">Asset</h3>
+        <section class="widget type_of_asset">
+          <h3 class="translate">Type of Asset</h3>
           <ul>
             <li><label for="Coastal Surveillance Radar Systems"><input class="widget checkbox" type="checkbox" name="Coastal Surveillance Radar Systems" id="Coastal Surveillance Radar Systems" checked=""><span class="colorKey"></span><span class="itemText" style="transform: translateY(14.1667%);">Coastal Surveillance Radar Systems</span></label></li>
             <li><label for="Indian Offshore Military Facility"><input class="widget checkbox" type="checkbox" name="Indian Offshore Military Facility" id="Indian Offshore Military Facility" checked=""><span class="colorKey"></span><span class="itemText" style="transform: translateY(14.1667%);">Indian Offshore Military Facility</span></label></li>
@@ -72,6 +76,7 @@
           </ul>
         </section>
       </div>
+      
       <footer>
         <div class="hidden">
 
@@ -80,7 +85,7 @@
       </footer>
     </div>
   </aside>
-
+  
   </section>
   <script src="js/ior-features.js"></script>
 

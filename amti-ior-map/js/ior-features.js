@@ -70,22 +70,22 @@ L.control
   )
   .addTo(map)
 
-var checks = Array.from(document.querySelectorAll('.asset ul input')).map(
+var checks = Array.from(document.querySelectorAll('.type_of_asset ul input')).map(
   function(checkbox) {
     return checkbox.name
   }
 )
 
-var filter_checks = new carto.filter.Category('asset', {
+var filter_checks = new carto.filter.Category('type_of_asset', {
   notIn: checks
 })
 
-document.querySelector('.asset ul').addEventListener('click', function(e) {
+document.querySelector('.type_of_asset ul').addEventListener('click', function(e) {
   var checkbox = e.target.type === 'checkbox' ? e.target : null
 
   if (checkbox) {
     var checked = Array.from(
-      document.querySelectorAll('.asset ul input:checked')
+      document.querySelectorAll('.type_of_asset ul input:checked')
     ).map(function(checkbox) {
       return checkbox.name
     })
@@ -94,11 +94,11 @@ document.querySelector('.asset ul').addEventListener('click', function(e) {
       return checked.indexOf(name) < 0
     })
 
-    var filter_checked = new carto.filter.Category('asset', {
+    var filter_checked = new carto.filter.Category('type_of_asset', {
       in: checked
     })
 
-    var filter_notChecked = new carto.filter.Category('asset', {
+    var filter_notChecked = new carto.filter.Category('type_of_asset', {
       notIn: notChecked
     })
 
