@@ -11,20 +11,13 @@ var map = L.map("map", {
   minZoom: 2,
   zoomControl: true,
   maxBounds: [
-    [0, 150],
-    [20, -20]
+    // [0, 150],
+    // [10, -20]
   ],
   scrollWheelZoom: false,
   layers: [basemap],
   attributionControl: false
 });
-
-// const map = L.map('map').setView([30, 0], 3);
-//       map.scrollWheelZoom.disable();
-
-// L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_nolabels/{z}/{x}/{y}.png', {
-//   maxZoom: 18
-// }).addTo(map);
 
 const client = new carto.Client({
   apiKey: "lkmWH7tR69I4VbMRjVODQQ",
@@ -45,6 +38,7 @@ const populatedPlacesStyle = new carto.style.CartoCSS(`
           marker-line-opacity: 1;
         }
       `);
+
 const populatedPlacesLayer = new carto.layer.Layer(
   populatedPlacesSource,
   populatedPlacesStyle,
@@ -67,59 +61,46 @@ client
 
 const popup = L.popup({ closeButton: false });
 
-function openPopup(featureEvent) {
-  let content = '<div class="widget">';
+populatedPlacesLayer.on(carto.layer.events.FEATURE_OVER, createPopup);
 
-  if (featureEvent.data.name_of_asset) {
-    content += `<h2 class="h2">${featureEvent.data.name_of_asset}</h2>`;
-  }
+function createPopup(event) {
+  popup.setLatLng(event.latLng);
 
-  if (
-    featureEvent.data.type_of_asset ||
-    featureEvent.data.location_city_country_ ||
-    featureEvent.data.description
-  ) {
-    content += `<ul>`;
-
-    if (featureEvent.data.type_of_asset) {
-      content += `<li><h3>Asset:</h3><p class="open-sans">${featureEvent.data.type_of_asset}</p></li>`;
-    }
-
-    if (featureEvent.data.location_city_country_) {
-      content += `<li><h3>Location:</h3><p class="open-sans">${featureEvent.data.location_city_country_}</p></li>`;
-    }
-
-    if (featureEvent.data.description) {
-      content += `<li><h3>Description:</h3><p class="open-sans">${featureEvent.data.description}</p></li>`;
-    }
-
-    content += `</ul>`;
-  }
-
-  content += `</div>`;
-
-  popup.setContent(content);
-  popup.setLatLng(featureEvent.latLng);
   if (!popup.isOpen()) {
+    var data = event.data;
+    var content = "<div>";
+
+    var keys = [
+      "name_of_asset",
+      "type_of_asset",
+      "location_city_country_",
+      "description"
+    ];
+
+    for (const i of keys) {
+      content += buildPopupHTML(data, i);
+    }
+
+    content += "</div>";
+
+    popup.setContent("" + content);
     popup.openOn(map);
   }
 }
 
-function closePopup(featureEvent) {
+function buildPopupHTML(data, key) {
+  return `
+    <div class="popupHeaderStyle"> 
+      ${key.replace(/_/g, " ")}
+    </div>
+    <div class="popupEntryStyle"> 
+      ${data[key]}
+    </div><br/>`;
+}
+
+populatedPlacesLayer.on(carto.layer.events.FEATURE_OUT, function(event) {
   popup.removeFrom(map);
-}
-
-function setPopupsClick() {
-  populatedPlacesLayer.off("featureOver");
-  populatedPlacesLayer.off("featureOut");
-  populatedPlacesLayer.on("featureClicked", openPopup);
-}
-
-function setPopupsHover() {
-  populatedPlacesLayer.off("featureClicked");
-  populatedPlacesLayer.on("featureOver", openPopup);
-  populatedPlacesLayer.on("featureOut", closePopup);
-}
+});
 
 L.control
   .attribution({
