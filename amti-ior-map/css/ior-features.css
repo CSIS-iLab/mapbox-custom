@@ -125,6 +125,7 @@ aside.toolbox .ui {
   opacity: 0;
   z-index: 3;
   -webkit-touch-callout: none;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.25);
 }
 
 .hamburger {
@@ -184,6 +185,12 @@ aside.toolbox .ui:checked ~ .hamburger span:nth-child(2) {
 
 aside.toolbox .ui:checked ~ .hamburger span:nth-child(3) {
   transform: rotate(-45deg) translate(0, 0px);
+}
+
+.leaflet-control-zoom,
+leaflet-bar,
+leaflet-control {
+  display: none;
 }
 
 /* FOR DISPLAYS ≤ 425px */
