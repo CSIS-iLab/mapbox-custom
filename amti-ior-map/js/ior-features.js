@@ -19,13 +19,17 @@ var map = L.map("map", {
   attributionControl: false
 });
 
+// apiKey: "lkmWH7tR69I4VbMRjVODQQ"
+
 const client = new carto.Client({
-  apiKey: "lkmWH7tR69I4VbMRjVODQQ",
+  apiKey: "-zz8CT9UmMschCuI96Mnug",
   username: "csis"
 });
 
 const populatedPlacesSource = new carto.source.SQL(
-  "SELECT * FROM ior_feature_descriptions"
+  // "SELECT * FROM ior_feature_descriptions"
+  "SELECT * FROM ior_feature_descriptions_11132019_1"
+
 );
 const populatedPlacesStyle = new carto.style.CartoCSS(`
         #layer {
@@ -46,7 +50,7 @@ const populatedPlacesLayer = new carto.layer.Layer(
     featureOverColumns: [
       "name_of_asset",
       "type_of_asset",
-      "location_city_country_",
+      "location",
       "description"
     ]
   }
@@ -59,9 +63,9 @@ client
   .bringToFront()
   .addTo(map);
 
-const popup = L.popup({ closeButton: false });
+const popup = L.popup({ closeButton: true });
 
-populatedPlacesLayer.on(carto.layer.events.FEATURE_OVER, createPopup);
+populatedPlacesLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
 
 function createPopup(event) {
   popup.setLatLng(event.latLng);
@@ -73,7 +77,7 @@ function createPopup(event) {
     var keys = [
       "name_of_asset",
       "type_of_asset",
-      "location_city_country_",
+      "location",
       "description"
     ];
 
@@ -98,16 +102,57 @@ function buildPopupHTML(data, key) {
     </div><br/>`;
 }
 
-populatedPlacesLayer.on(carto.layer.events.FEATURE_OUT, function(event) {
-  popup.removeFrom(map);
-});
+if (window.innerWidth > 768) {
+  const popup = L.popup({ closeButton: false });
+
+  populatedPlacesLayer.on(carto.layer.events.FEATURE_OVER, createPopup);
+  function createPopup(event) {
+    popup.setLatLng(event.latLng);
+  
+    if (!popup.isOpen()) {
+      var data = event.data;
+      var content = "<div>";
+  
+      var keys = [
+        "name_of_asset",
+        "type_of_asset",
+        "location",
+        "description"
+      ];
+  
+      for (const i of keys) {
+        content += buildPopupHTML(data, i);
+      }
+  
+      content += "</div>";
+  
+      popup.setContent("" + content);
+      popup.openOn(map);
+    }
+  }
+  
+  function buildPopupHTML(data, key) {
+    return `
+      <div class="popupHeaderStyle"> 
+        ${key.replace(/_/g, " ")}
+      </div>
+      <div class="popupEntryStyle"> 
+        ${data[key]}
+      </div><br/>`;
+  }
+
+  populatedPlacesLayer.on(carto.layer.events.FEATURE_OUT, function(event) {
+    popup.removeFrom(map);
+  });
+}
+
 
 L.control
   .attribution({
     position: "bottomright"
   })
   .setPrefix(
-    ' <a href="https://amti.csis.org" target="_blank">Data by</a> <a href="https://amti.csis.org" target="_blank">CSIS AMTI</a> '
+    'Data by <a href="https://amti.csis.org" target="_blank">CSIS AMTI</a>, © OpenStreetMap, Leaflet contributors, © CARTO'
   )
   .addTo(map);
 
