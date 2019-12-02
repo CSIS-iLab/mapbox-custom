@@ -19,27 +19,24 @@ var map = L.map("map", {
   attributionControl: false
 });
 
-// apiKey: "lkmWH7tR69I4VbMRjVODQQ"
-
 const client = new carto.Client({
   apiKey: "-zz8CT9UmMschCuI96Mnug",
   username: "csis"
 });
 
 const populatedPlacesSource = new carto.source.SQL(
-  // "SELECT * FROM ior_feature_descriptions"
   "SELECT * FROM ior_feature_descriptions_11132019_1"
 
 );
 const populatedPlacesStyle = new carto.style.CartoCSS(`
         #layer {
-          marker-width: 7;
+          marker-width: 12;
           marker-fill: ramp([type_of_asset], (#3969ac, #f2b701, #7f3c8d, #11a579, #e73f74), ("Coastal Surveillance Radar Systems", "Indian Offshore Military Facility", "Commercial/Dual-use Facilities", "Foreign Military Facilities w/ Indian Access"), "=");
           marker-fill-opacity: 1;
           marker-allow-overlap: true;
-          marker-line-width: 1;
-          marker-line-color: #FFFFFF;
-          marker-line-opacity: 1;
+          marker-line-width: 0.5;
+          marker-line-color: #fff;
+          marker-line-opacity: 0.5;
         }
       `);
 
