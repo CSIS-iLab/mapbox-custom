@@ -107,7 +107,7 @@ L.control
     position: "bottomright"
   })
   .setPrefix(
-    ' © <a href="https://energydata.info" target="_blank">EnergyData.info</a> and <a href="https://journalism.csis.org" target="_blank">CSIS Journalism Bootcamp</a> '
+    ' <a href="https://amti.csis.org" target="_blank">Data by</a> <a href="https://amti.csis.org" target="_blank">CSIS AMTI</a> '
   )
   .addTo(map);
 
