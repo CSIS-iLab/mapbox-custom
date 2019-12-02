@@ -90,16 +90,17 @@ input[name='Foreign Military Facilities w/ Indian Access'] + .colorKey {
 .leaflet-popup-content-wrapper {
   background-color: white;
   box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
+  color: #333;
 }
 
 .popupHeaderStyle {
   font-family: "Open Sans Condensed", sans-serif;
-  font-weight: 700;
+  font-weight: 300;
   text-transform: uppercase;
 }
 
 .popupEntryStyle {
-  font-weight: 500;
+  font-weight: 600;
   font-family: "Open Sans", sans-serif;
   margin: 0;
   padding: 0;
@@ -124,6 +125,7 @@ input[name='Foreign Military Facilities w/ Indian Access'] + .colorKey {
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
   background-color: #e4e3e3;
+  box-shadow: 0 3px 14px rgba(0,0,0,0.4);
 }
 
 .js-price-placeholder {
