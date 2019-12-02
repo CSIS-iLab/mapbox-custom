@@ -41,23 +41,28 @@
     <nav id='menu-ui' class='menu-ui'></nav>
       <div id="map" class="map" tabindex="0"></div>
       <aside class="toolbox">
-        <input type="checkbox" class="ui mobile-only" />
+        <input type="checkbox" checked class="ui mobile-only" />
 
-          <div class="menu menu-translate">
-            Key Maritime Power Assets
+          <div class="hamburger mobile-only">
+            <div class="icon">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="menu-translate">
+                Key Maritime Power Assets
+            </div>
           </div>
         </div>
         <div class="box">
-          <header class="translate mobile-toggle">
-            <h1>
-              <a target="_blank" id="logo" href="https://amti.csis.org" style="background-image: url(&quot;https://raw.githubusercontent.com/CSIS-iLab/amti-viz/master/logo.jpeg&quot;);"></a>
-              Key Maritime Power Assets
+          <header class="mobile-toggle">
+            <h1 class="translate">
+                Key Maritime Power Assets
             </h1>
-            <p class="translate mobile-only open-sans">
-              <!-- description -->
-            </p>
+            
+            <a href="https://amti.csis.org" target="_blank" style="background-image: url(&quot;https://raw.githubusercontent.com/CSIS-iLab/amti-viz/master/logo.jpeg&quot;)"class="mobile-toggle" id="logo" ></a> 
           </header>
-         
+        
           <p class="translate description open-sans mobile-toggle">Click to toggle type of facility</p>
           <div class="separator mobile-toggle"></div>
           <div id="controls">

@@ -99,57 +99,12 @@ function buildPopupHTML(data, key) {
     </div><br/>`;
 }
 
-if (window.innerWidth > 768) {
-  const popup = L.popup({ closeButton: false });
-
-  populatedPlacesLayer.on(carto.layer.events.FEATURE_OVER, createPopup);
-  function createPopup(event) {
-    popup.setLatLng(event.latLng);
-  
-    if (!popup.isOpen()) {
-      var data = event.data;
-      var content = "<div>";
-  
-      var keys = [
-        "name_of_asset",
-        "type_of_asset",
-        "location",
-        "description"
-      ];
-  
-      for (const i of keys) {
-        content += buildPopupHTML(data, i);
-      }
-  
-      content += "</div>";
-  
-      popup.setContent("" + content);
-      popup.openOn(map);
-    }
-  }
-  
-  function buildPopupHTML(data, key) {
-    return `
-      <div class="popupHeaderStyle"> 
-        ${key.replace(/_/g, " ")}
-      </div>
-      <div class="popupEntryStyle"> 
-        ${data[key]}
-      </div><br/>`;
-  }
-
-  populatedPlacesLayer.on(carto.layer.events.FEATURE_OUT, function(event) {
-    popup.removeFrom(map);
-  });
-}
-
-
 L.control
   .attribution({
     position: "bottomright"
   })
   .setPrefix(
-    'Data by <a href="https://amti.csis.org" target="_blank">CSIS AMTI</a>, © OpenStreetMap, Leaflet contributors, © CARTO'
+    'Data by <a href="https://amti.csis.org" target="_blank">CSIS AMTI</a>, Leaflet contributors'
   )
   .addTo(map);
 

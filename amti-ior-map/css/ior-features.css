@@ -23,13 +23,10 @@ div#results {
 
 #logo {
   position: absolute;
-  top: 50px;
-  right: 20px;
+  top: 70px;
+  right: 15px;
   width: 50px;
   height: 50px;
-  border: 0;
-  padding: 0;
-  background-image: url("../images/logo.jpg");
   background-repeat: no-repeat;
   background-color: transparent;
   cursor: pointer;
@@ -42,6 +39,7 @@ div#results {
   width: 12px;
   margin: 3px 5px 0 5px;
 }
+
 .colorKey {
   border-radius: 20px;
 }
@@ -50,14 +48,17 @@ input[name='Coastal Surveillance Radar Systems'] + .colorKey {
   background-color: #3969ac;
   border-radius: 50%;
 }
+
 input[name='Indian Offshore Military Facility'] + .colorKey {
   background-color: #f2b701;
   border-radius: 50%;
 }
+
 input[name='Commercial/Dual-use Facilities'] + .colorKey {
   background-color: #7f3c8d;
   border-radius: 50%;
 }
+
 input[name='Foreign Military Facilities w/ Indian Access'] + .colorKey {
   background-color: #11a579;
   border-radius: 50%;
@@ -209,6 +210,14 @@ leaflet-bar,
 leaflet-control {
   display: none;
 }
+
+.menu-translate {
+  font-weight: 700;
+  font-size: 16px;
+  font-family: "Open Sans Condensed, sans-serif";
+  color: #000;
+}
+
 
 /* FOR DISPLAYS ≤ 425px */
 
