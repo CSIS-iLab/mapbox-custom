@@ -12,7 +12,7 @@ var map = L.map("map", {
   zoomControl: true,
   maxBounds: [
     [-30, -20],
-    [51, 141]
+    [51, 140]
   ],
   scrollWheelZoom: false,
   layers: [basemap],
