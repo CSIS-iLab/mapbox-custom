@@ -46,7 +46,6 @@ const populatedPlacesLayer = new carto.layer.Layer(
   {
     featureOverColumns: [
       "name_of_asset",
-      "type_of_asset",
       "location",
       "description"
     ]
@@ -73,30 +72,23 @@ function createPopup(event) {
 
     var keys = [
       "name_of_asset",
-      "type_of_asset",
       "location",
       "description"
     ];
 
-    for (const i of keys) {
-      content += buildPopupHTML(data, i);
-    }
-
-    content += "</div>";
-
+    content += `
+    <div class="popupHeaderStyle"> 
+      ${data.name_of_asset}
+    </div> 
+    <div class="popupEntryStyle"> 
+      ${data.location}
+      <br/>
+      ${data.description}
+    </div>
+    `
     popup.setContent("" + content);
     popup.openOn(map);
   }
-}
-
-function buildPopupHTML(data, key) {
-  return `
-    <div class="popupHeaderStyle"> 
-      ${key.replace(/_/g, " ")}
-    </div>
-    <div class="popupEntryStyle"> 
-      ${data[key]}
-    </div><br/>`;
 }
 
 L.control
