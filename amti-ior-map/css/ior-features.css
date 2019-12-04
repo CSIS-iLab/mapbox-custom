@@ -106,10 +106,6 @@ input[name='Foreign Military Facilities w/ Indian Access'] + .colorKey {
   -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
-.popupLoc {
-  font-style: italic;
-}
-
 #copyright_bug {
   font-family: "Open Sans", sans-serif;
   position: absolute;
