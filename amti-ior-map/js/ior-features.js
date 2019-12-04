@@ -8,11 +8,11 @@ var map = L.map("map", {
   zoom: window.innerWidth > 768 ? 4 : 3,
   maxZoom: 12,
   scrollWheelZoom: true,
-  minZoom: 1,
+  minZoom: 4,
   zoomControl: true,
   maxBounds: [
-    [-50, -20],
-    [80, 180]
+    [-33.91,18.37],
+    [38.50,102.16]
   ],
   scrollWheelZoom: true,
   layers: [basemap],
