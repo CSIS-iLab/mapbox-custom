@@ -83,9 +83,9 @@ function createPopup(event) {
     <div class="popupEntryStyle popupLoc"> 
       ${data.location}
     </div>
-    <div class="popupEntryStyle"> 
+    <p class="popupEntryStyle"> 
       ${data.description}
-    </div>
+    </p>
     `
     popup.setContent("" + content);
     popup.openOn(map);
