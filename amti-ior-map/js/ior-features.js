@@ -3,16 +3,19 @@ var basemap = L.tileLayer(
   {}
 );
 
+// [-33.91,18.37],
+// [38.50,102.16]
+
 var map = L.map("map", {
-  center: [5, 70],
+  center: [20.75, 73.73],
   zoom: window.innerWidth > 768 ? 4 : 3,
   maxZoom: 12,
   scrollWheelZoom: true,
   minZoom: 4,
   zoomControl: true,
   maxBounds: [
-    [-33.91,18.37],
-    [38.50,102.16]
+    [-29.84,30.92],
+    [35.50,138.64]
   ],
   scrollWheelZoom: true,
   layers: [basemap],
