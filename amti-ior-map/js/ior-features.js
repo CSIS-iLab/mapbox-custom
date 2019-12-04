@@ -5,7 +5,7 @@ var basemap = L.tileLayer(
 
 var map = L.map("map", {
   center: [-7.34, 72.35],
-  zoom: window.innerWidth > 768 ? 4 : 3,
+  zoom: 3,
   maxZoom: 12,
   scrollWheelZoom: true,
   minZoom: 3,
