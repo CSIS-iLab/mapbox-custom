@@ -80,9 +80,10 @@ function createPopup(event) {
     <div class="popupHeaderStyle"> 
       ${data.name_of_asset}
     </div> 
-    <div class="popupEntryStyle"> 
+    <div class="popupEntryStyle popupLoc"> 
       ${data.location}
-      <br/>
+    </div>
+    <div class="popupEntryStyle"> 
       ${data.description}
     </div>
     `
