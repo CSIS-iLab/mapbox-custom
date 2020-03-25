@@ -17,12 +17,12 @@ var map = L.map('electric-grid__map', {
 })
 
 var client = new carto.Client({
-  apiKey: '2u18bULCzvWLmVMSrAJpTA',
+  apiKey: 'S61PpqPWVKZgdB5iaY65Cg',
   username: 'csis'
 })
 
 var grid_source = new carto.source.SQL(
-  'SELECT * FROM electric_power_transmission_lines_1'
+  'SELECT * FROM us_electric_compressed'
 )
 
 var grid_style = new carto.style.CartoCSS(`
