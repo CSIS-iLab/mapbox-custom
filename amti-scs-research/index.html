@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <title>Australian Strategic Maritime Investments | AMTI | CSIS</title>
+    <meta name="viewport" content="initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700" rel="stylesheet" />
+
+      <!-- Share meta -->
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Australian Strategic Maritime Investments - Asia Maritime Transparency Initiative" />
+
+    <script src="https://unpkg.com/babel-polyfill@6.26.0/dist/polyfill.js"></script>
+    <!-- Include Leaflet -->
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+    <link
+      href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+      rel="stylesheet"
+    />
+    <!-- Include CARTO.js -->
+    <script src="https://libs.cartocdn.com/carto.js/v4.1.11/carto.min.js"></script>
+    <link
+      href="https://carto.com/developers/carto-js/examples/maps/public/style.css"
+      rel="stylesheet"
+    />
+
+    <!-- Include Zoom Slider plugin -->
+    <script src="zoom-slider/zoomslider.js"></script>
+    <link href="zoom-slider/zoomslider.css" rel="stylesheet">
+
+    <link
+      rel="preconnect stylesheet"
+      href="https://use.typekit.net/ats0hoc.css"
+    />
+
+    <link href="css/makeMap.css" rel="stylesheet" />
+
+    <link href="css/ior-features.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <nav id='menu-ui' class='menu-ui'></nav>
+      <div id="map" class="map" tabindex="0"></div>
+      <aside class="toolbox">
+        <input type="checkbox" checked class="ui mobile-only" />
+
+          <div class="hamburger mobile-only">
+            <div class="icon">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="menu-translate">
+              Australian Strategic Maritime Investments
+            </div>
+          </div>
+        </div>
+        <div class="box">
+          <header class="mobile-toggle">
+            <h1 class="translate">
+              Research Ships in the Pacific
+            </h1>
+
+            <a href="https://amti.csis.org" target="_blank" style="background-image: url(&quot;https://raw.githubusercontent.com/CSIS-iLab/amti-viz/master/logo.jpeg&quot;)"class="mobile-toggle" id="logo" ></a>
+
+          </header>
+
+          <section>
+            <p class="translate description open-sans mobile-toggle">Hover over points to see the name and times of ships.</p>
+            <div class="separator mobile-toggle"></div>
+            <div id="controls">
+            <div id="info">
+          </section>
+            <section class="widget type_of_asset">
+              <h3 class="mobile-toggle translate">Country of Ship Origin</h3>
+              <ul class="actions">
+                <li>
+                  <label for="China"
+                    ><input
+                      class="widget checkbox"
+                      type="checkbox"
+                      name="China"
+                      id="IChina"
+                      checked=""
+                    /><span class="colorKey"></span
+                    ><span
+                      class="itemText"
+                      style="transform: translateY(14.1667%);"
+                      >China</span
+                    ></label
+                  >
+                  </li>
+
+                <li>
+                  <label for="Japan"
+                    ><input
+                      class="widget checkbox"
+                      type="checkbox"
+                      name="Japan"
+                      id="Japan"
+                      checked=""
+                    /><span class="colorKey"></span
+                    ><span
+                      class="itemText"
+                      style="transform: translateY(14.1667%);"
+                      >Japan</span
+                    ></label
+                  >
+                </li>
+
+                <li>
+                    <label for="United States"
+                      ><input
+                        class="widget checkbox"
+                        type="checkbox"
+                        name="United States"
+                        id="United States"
+                        checked=""
+                      /><span class="colorKey"></span
+                      ><span
+                        class="itemText"
+                        style="transform: translateY(14.1667%);"
+                        >United States</span
+                      ></label
+                    >
+                  </li>
+
+                <li>
+                  <label for="India"
+                    ><input
+                      class="widget checkbox"
+                      type="checkbox"
+                      name="India"
+                      id="India"
+                      checked=""
+                    /><span class="colorKey"></span
+                    ><span
+                      class="itemText"
+                      style="transform: translateY(14.1667%);"
+                      >India</span
+                    ></label
+                  >
+                </li>
+
+                <li>
+                  <label for="Australia"
+                    ><input
+                      class="widget checkbox"
+                      type="checkbox"
+                      name="Australia"
+                      id="Australia"
+                      checked=""
+                    /><span class="colorKey"></span
+                    ><span
+                      class="itemText"
+                      style="transform: translateY(14.1667%);"
+                      >Australia</span
+                    ></label
+                  >
+                </li>
+
+                <li>
+                  <label for="France"
+                    ><input
+                      class="widget checkbox"
+                      type="checkbox"
+                      name="France"
+                      id="France"
+                      checked=""
+                    /><span class="colorKey"></span
+                    ><span
+                      class="itemText"
+                      style="transform: translateY(14.1667%);"
+                      >France</span
+                    ></label
+                  >
+                </li>
+
+                <li>
+                  <label for="Philippines"
+                    ><input
+                      class="widget checkbox"
+                      type="checkbox"
+                      name="Philippines"
+                      id="Philippines"
+                      checked=""
+                    /><span class="colorKey"></span
+                    ><span
+                      class="itemText"
+                      style="transform: translateY(14.1667%);"
+                      >Philippines</span
+                    ></label
+                  >
+                </li>
+
+                <li>
+                  <label for="Taiwan"
+                    ><input
+                      class="widget checkbox"
+                      type="checkbox"
+                      name="Taiwan"
+                      id="Taiwan"
+                      checked=""
+                    /><span class="colorKey"></span
+                    ><span
+                      class="itemText"
+                      style="transform: translateY(14.1667%);"
+                      >Taiwan</span
+                    ></label
+                  >
+                </li>
+
+              </ul>
+            </section>
+          </div>
+
+          <footer>
+            <div class="hidden"></div>
+          </footer>
+        </div>
+      </aside>
+    </section>
+    <script src="js/ior-features.js"></script>
+  </body>
+</html>
