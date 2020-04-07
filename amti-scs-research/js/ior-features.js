@@ -16,12 +16,12 @@ var map = L.map("map", {
 });
 
 const client = new carto.Client({
-  apiKey: "yYQnNe9s6m5YzZOluFdXzA",
+  apiKey: "fa25wuWXIgGB5qONxX8_nA",
   username: "csis"
 });
 
 const populatedPlacesSource = new carto.source.SQL(
-  "SELECT * FROM amti_research_ships_pacific"
+  "SELECT * FROM amti_research_ships2"
 
 );
 const populatedPlacesStyle = new carto.style.CartoCSS(`
