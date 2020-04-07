@@ -76,14 +76,12 @@ function createPopup(event) {
 
     content += `
     <div class="popupHeaderStyle">
-      ${data.vessel}
+      <strong>${data.vessel}</strong>
     </div>
     <div class="popupEntryStyle">
-      ${data.start}
+    Observed Dates of Transit<br />
+      ${data.start} – ${data._end}
     </div>
-    <p class="popupEntryStyle">
-      ${data._end}
-    </p>
     `
     popup.setContent("" + content);
     popup.openOn(map);
