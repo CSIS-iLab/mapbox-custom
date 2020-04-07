@@ -55,9 +55,11 @@ client
   .bringToFront()
   .addTo(map);
 
-const popup = L.popup({ closeButton: true });
+const popup = L.popup({ closeButton: false });
 
-populatedPlacesLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
+populatedPlacesLayer.on(carto.layer.events.FEATURE_OVER, createPopup);
+
+populatedPlacesLayer.on(carto.layer.events.FEATURE_OUT, removePopup);
 
 function createPopup(event) {
   popup.setLatLng(event.latLng);
@@ -87,6 +89,10 @@ function createPopup(event) {
     popup.openOn(map);
   }
 }
+
+function removePopup(featureEvent) {
+       popup.removeFrom(map);
+     }
 
 L.control
   .attribution({
