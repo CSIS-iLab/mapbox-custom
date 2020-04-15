@@ -16,12 +16,12 @@ var map = L.map("map", {
 });
 
 const client = new carto.Client({
-  apiKey: "fa25wuWXIgGB5qONxX8_nA",
+  apiKey: "A-LwffERjB9Ykhtxztn3Qg",
   username: "csis"
 });
 
 const populatedPlacesSource = new carto.source.SQL(
-  "SELECT * FROM amti_research_ships2"
+  "SELECT * FROM table_20_04_amti_research_ships"
 
 );
 const populatedPlacesStyle = new carto.style.CartoCSS(`
@@ -43,7 +43,8 @@ const populatedPlacesLayer = new carto.layer.Layer(
     featureOverColumns: [
       "vessel",
       "start",
-      "_end"
+      "_end",
+      "institution"
     ]
   }
 );
@@ -71,7 +72,8 @@ function createPopup(event) {
     var keys = [
       "vessel",
       "start",
-      "_end"
+      "_end",
+      "institution"
     ];
 
     content += `
@@ -81,6 +83,10 @@ function createPopup(event) {
     <div class="popupEntryStyle">
     Observed Dates of Transit<br />
       ${data.start} – ${data._end}
+    </div>
+    <div class="popupEntryStyle">
+    <strong>Operating Institution</strong> <br />
+      ${data.institution}
     </div>
     `
     popup.setContent("" + content);
