@@ -78,14 +78,14 @@ function createPopup(event) {
 
     content += `
     <div class="popupHeaderStyle">
-      <strong>${data.vessel}</strong>
+      <em>${data.vessel}</em>
     </div>
     <div class="popupEntryStyle">
     Research Dates<br />
       ${data.start} – ${data._end}
     </div>
     <div class="popupEntryStyle">
-    <strong>Operator</strong> <br />
+    <em>Operator</em> <br />
       ${data.institution}
     </div>
     `
