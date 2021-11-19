@@ -53,23 +53,23 @@ aside.toolbox .box,
   fill: rgba(255, 255, 255, 1);
 }
 
-.icon-group {
+/* .icon-group {
   border-radius: 50%;
   background-color: white;
   height: 36px !important;
   width: 36px !important;
   margin: -18px 0 0 -18px !important;
-}
+} */
 
-.leaflet-marker-icon.leaflet-interactive:not(.marker-cluster-small):not(img)
+/* .leaflet-marker-icon.leaflet-interactive:not(.marker-cluster-small):not(img)
   .text {
   top: -15px;
   border: 0 !important;
   left: -4px;
   color: black !important;
-}
+} */
 
-span.text::after {
+/* span.text::after {
   color: black;
   content: 'projects';
   display: block;
@@ -79,7 +79,7 @@ span.text::after {
   left: 50%;
   transform: translateX(-50%);
   letter-spacing: 1px;
-}
+} */
 
 body,
 label {
