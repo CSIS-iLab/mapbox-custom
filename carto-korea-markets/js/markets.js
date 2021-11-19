@@ -72,7 +72,7 @@ L.control.zoomslider().addTo(map);
 // API connection information
 
 var client = new carto.Client({
-  apiKey: "SbU34R5Sn5DtMNEyXSSg_A",
+  apiKey: "xb32vxt3qQmJKxxxze77nw",
   username: "csis"
 });
 
