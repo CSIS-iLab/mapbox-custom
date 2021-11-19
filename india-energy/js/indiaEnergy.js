@@ -1,5 +1,8 @@
 makeMap({
-  googleSheet: '1xbXzCDqc2p_IlS3VQiicDybsA2KAeZY3rHPLD-9QaRY',
+  googleAPIKey: 'AIzaSyAImbihK2tiRewSFzuJTF_lcgPlGSr7zcg',
+  googleSpreadsheetKey: '1xbXzCDqc2p_IlS3VQiicDybsA2KAeZY3rHPLD-9QaRY',
+  googleSpreadsheetRange: "AllData",
+  // googleSheet: '1xbXzCDqc2p_IlS3VQiicDybsA2KAeZY3rHPLD-9QaRY',
   mapID: 'india-energy',
   formatPopupContent: function formatPopupContent(feature, map) {
     var title =
