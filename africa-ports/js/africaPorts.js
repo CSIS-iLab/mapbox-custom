@@ -42,8 +42,24 @@ _asyncToGenerator(
           case 0:
             _context.next = 2
             return makeMap({
-              googleSheet: '11hN6uzXcO7amn5bT-a09T8oEvgrw7lZ-oBfGtLRzpws',
               mapID: 'africa',
+    center: [-5, 40],
+    fullscreen: true,
+    zoom: 4,
+    maxZoom: 6,
+    minZoom: 3,
+    zoomSlider: false,
+    clusterDistance: 15,
+    Attribution:
+      'Data by <a href="https://www.csis.org/programs/africa-program" target="_blank">CSIS Africa Program</a>, © OpenStreetMap, Leaflet contributors, © CARTO',
+    table: 'africa_ports',
+    apiKey: 'ED7zNVPForUJEfIMdXnZyQ',
+    program: 'Africa Program',
+    website: 'https://www.csis.org/programs/africa-program',
+    title: 'Chinese Port Investments in Africa',
+    description: 'The CSIS Africa Program identified sub-Saharan African ports with financial, construction, and or operational involvement by Chinese entities.  While the expansion of ports is key to economic development, these investments also provide China with access to achieve varying strategic objectives. Mapping the spread and scope of Chinese port projects provides clarity on which investments are the most susceptible to Chinese influence, as well as their geostrategic and commercial importance.',
+    mapboxStyle: "cjvii04q60c881cpj9iph9ibw",
+    'ocean color': '#b7c7d1',
               formatPopupContent: function formatPopupContent(feature, map) {
                 var description = feature.properties.description
                   ? feature.properties.description +
@@ -75,8 +91,103 @@ _asyncToGenerator(
                   description +
                   '</p>'
                 )
-              }
+              },
+              widgets: [
+                {
+                  id: '1',
+                  field: "maritime_routes",
+                  input: "checkbox",
+                  type: "color",
+                  keys: [
+                    {
+                      color: '#000',
+                      value: "major",
+                      label: 'Major',
+                      selected: true,
+                      form: 'line'
+                    },
+                    {
+                      color: '#ddd',
+                      value: "other",
+                      label: 'Other',
+                      selected: true,
+                      form: 'line'
+                    },
+                    {
+                      color: '#39a4ac',
+                      value: 'Maritime Silk Road',
+                      label: 'Maritime Silk Road',
+                      selected: true,
+                      form: 'line'
+                    },
+                  ],
+                },
+            
+                {
+                  id: '0',
+                  field: "investment_type",
+                  input: "checkbox",
+                  type: "form",
+                  keys: [
+                    {
+                      value: 'builder',
+                      label: 'Builder',
+                      selected: true,
+                      form: 'icon',
+                      icon: 'icons/building.svg'
+                    },
+                    {
+                      value: 'operator',
+                      label: 'Operator',
+                      selected: true,
+                      form: 'icon',
+                      icon: 'icons/operating.svg'
+                    },
+                    {
+                      value: 'funder',
+                      label: 'Funder',
+                      selected: true,
+                      form: 'icon',
+                      icon: 'icons/funding.svg'
+                    },
+                    {
+                      value: 'builder,operator',
+                      label: 'Builder and Operator',
+                      selected: true,
+                      form: 'icon',
+                      icon: 'icons/BuildingOperating.svg'
+                    },
+                    {
+                      value: 'operator,funder',
+                      label: 'Operator and Funder',
+                      selected: true,
+                      form: 'icon',
+                      icon: 'icons/FundingOperating.svg'
+                    },
+                    {
+                      value: 'funder,builder',
+                      label: 'Funder and Builder',
+                      selected: true,
+                      form: 'icon',
+                      icon: 'icons/FundingBuilding.svg'
+                    },
+                    {
+                      value: 'funder,builder,operator',
+                      label: 'Funder, Builder and Operator',
+                      selected: true,
+                      form: 'icon',
+                      icon: 'icons/FundingBuildingOperating.svg'
+                    },          
+                  ],
+                },
+            
+            
+            
+              ]
+
             })
+
+            
 
           case 2:
             newMap = _context.sent
@@ -97,6 +208,7 @@ _asyncToGenerator(
           case 'end':
             return _context.stop()
         }
+        
       }
     }, _callee)
   })
