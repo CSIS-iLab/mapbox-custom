@@ -16,12 +16,12 @@ var map = L.map("map", {
 });
 
 const client = new carto.Client({
-  apiKey: "-zz8CT9UmMschCuI96Mnug",
+  apiKey: "yMsOtJvnN6H3XH6wS9LLJg",
   username: "csis"
 });
 
 const populatedPlacesSource = new carto.source.SQL(
-  "SELECT * FROM ior_feature_descriptions_11132019_1"
+  "SELECT * FROM indian_ocean_map_2022"
 
 );
 const populatedPlacesStyle = new carto.style.CartoCSS(`
