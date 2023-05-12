@@ -4,56 +4,50 @@ var basemap = L.tileLayer(
 );
 
 var map = L.map("map", {
-  center: [12.95, 77.49],
-  zoom: 3,
+  // center: [12.95, 77.49],
+  center: [0.1, 149.68],
+  zoom: 4,
   maxZoom: 12,
   scrollWheelZoom: true,
   minZoom: 3,
   zoomControl: true,
   scrollWheelZoom: true,
   layers: [basemap],
-  attributionControl: false
+  attributionControl: false,
 });
 
 const client = new carto.Client({
   apiKey: "KTs6hE1ilX2T9KEHzbHPfA",
-  username: "csis"
+  username: "csis",
 });
 
 const populatedPlacesSource = new carto.source.SQL(
   "SELECT * FROM pacificislandsmapdata"
-
 );
 const populatedPlacesStyle = new carto.style.CartoCSS(`
-        #layer {
-          marker-width: 12;
-          marker-fill: ramp([country_ownership], (#3969ac, #f2b701, #7f3c8d, #11a579, #e73f74), ("Australia (U.S.)", "United States", "China", "Australia"), "=");
-          marker-fill-opacity: 1;
-          marker-allow-overlap: true;
-          marker-line-width: 0.5;
-          marker-line-color: #fff;
-          marker-line-opacity: 0.5;
-        }
-      `);
+  #layer {
+    marker-width: 12;
+    marker-fill: ramp([country_ownership], (#7f3c8d, #f2b701, #3969ac, #11a579, #e73f74),
+    ("Australia (U.S.)", "United States", "China", "Australia"), "=");
+    marker-fill-opacity: 1;
+    marker-allow-overlap: true;
+    marker-line-width: 0.5;
+    marker-line-color: #fff;
+    marker-line-opacity: 0.5;
+  }
+`);
 
 const populatedPlacesLayer = new carto.layer.Layer(
   populatedPlacesSource,
   populatedPlacesStyle,
   {
-    featureOverColumns: [
-      "name",
-      "location",
-      "description"
-    ]
+    featureOverColumns: ["name", "location", "description"],
   }
 );
 
 client.addLayer(populatedPlacesLayer);
 
-client
-  .getLeafletLayer()
-  .bringToFront()
-  .addTo(map);
+client.getLeafletLayer().bringToFront().addTo(map);
 
 const popup = L.popup({ closeButton: true });
 
@@ -66,11 +60,7 @@ function createPopup(event) {
     var data = event.data;
     var content = "<div>";
 
-    var keys = [
-      "name",
-      "location",
-      "description"
-    ];
+    var keys = ["name", "location", "description"];
 
     content += `
     <div class="popupHeaderStyle"> 
@@ -82,7 +72,7 @@ function createPopup(event) {
     <p class="popupEntryStyle"> 
       ${data.description}
     </p>
-    `
+    `;
     popup.setContent("" + content);
     popup.openOn(map);
   }
@@ -90,7 +80,7 @@ function createPopup(event) {
 
 L.control
   .attribution({
-    position: "bottomright"
+    position: "bottomright",
   })
   .setPrefix(
     'Data by <a href="https://amti.csis.org" target="_blank">CSIS AMTI</a>, Leaflet contributors'
@@ -99,36 +89,36 @@ L.control
 
 var checks = Array.from(
   document.querySelectorAll(".country_ownership ul input")
-).map(function(checkbox) {
+).map(function (checkbox) {
   return checkbox.name;
 });
 
 var filter_checks = new carto.filter.Category("country_ownership", {
-  notIn: checks
+  notIn: checks,
 });
 
 document
   .querySelector(".country_ownership ul")
-  .addEventListener("click", function(e) {
+  .addEventListener("click", function (e) {
     var checkbox = e.target.type === "checkbox" ? e.target : null;
 
     if (checkbox) {
       var checked = Array.from(
         document.querySelectorAll(".country_ownership ul input:checked")
-      ).map(function(checkbox) {
+      ).map(function (checkbox) {
         return checkbox.name;
       });
 
-      var notChecked = checks.filter(function(name) {
+      var notChecked = checks.filter(function (name) {
         return checked.indexOf(name) < 0;
       });
 
       var filter_checked = new carto.filter.Category("country_ownership", {
-        in: checked
+        in: checked,
       });
 
       var filter_notChecked = new carto.filter.Category("country_ownership", {
-        notIn: notChecked
+        notIn: notChecked,
       });
 
       var filters =
@@ -138,7 +128,7 @@ document
           ? [filter_checked]
           : [filter_notChecked];
 
-      populatedPlacesSource.getFilters().forEach(function(f) {
+      populatedPlacesSource.getFilters().forEach(function (f) {
         populatedPlacesSource.removeFilter(f);
       });
 
