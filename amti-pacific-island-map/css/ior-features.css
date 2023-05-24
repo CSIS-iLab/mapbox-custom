@@ -67,17 +67,7 @@ div#results {
   border-radius: 20px;
 }
 
-input[name='Australia (U.S.)'] + .colorKey {
-  background-color: #7f3c8d;
-  border-radius: 50%;
-}
-
 input[name='United States'] + .colorKey {
-  background-color: #f2b701;
-  border-radius: 50%;
-}
-
-input[name='China'] + .colorKey {
   background-color: #3969ac;
   border-radius: 50%;
 }

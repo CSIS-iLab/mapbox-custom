@@ -4,7 +4,6 @@ var basemap = L.tileLayer(
 );
 
 var map = L.map("map", {
-  // center: [12.95, 77.49],
   center: [0.1, 149.68],
   zoom: 4,
   maxZoom: 12,
@@ -27,8 +26,8 @@ const populatedPlacesSource = new carto.source.SQL(
 const populatedPlacesStyle = new carto.style.CartoCSS(`
   #layer {
     marker-width: 12;
-    marker-fill: ramp([country_ownership], (#7f3c8d, #f2b701, #3969ac, #11a579, #e73f74),
-    ("Australia (U.S.)", "United States", "China", "Australia"), "=");
+    marker-fill: ramp([country_ownership], (#11a579, #3969ac),
+    ("Australia", "United States"), "=");
     marker-fill-opacity: 1;
     marker-allow-overlap: true;
     marker-line-width: 0.5;
