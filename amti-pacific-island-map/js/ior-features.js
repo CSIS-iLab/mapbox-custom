@@ -26,8 +26,8 @@ const populatedPlacesSource = new carto.source.SQL(
 const populatedPlacesStyle = new carto.style.CartoCSS(`
   #layer {
     marker-width: 12;
-    marker-fill: ramp([country_ownership], (#11a579, #3969ac),
-    ("Australia", "United States"), "=");
+    marker-fill: ramp([country_ownership], (#11a579, #3969ac,#ca6d92),
+    ("Australia", "United States", "China"), "=");
     marker-fill-opacity: 1;
     marker-allow-overlap: true;
     marker-line-width: 0.5;
