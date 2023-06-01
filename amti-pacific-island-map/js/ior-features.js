@@ -48,34 +48,50 @@ client.addLayer(populatedPlacesLayer);
 
 client.getLeafletLayer().bringToFront().addTo(map);
 
-const popup = L.popup({ closeButton: true });
+var oms = new OverlappingMarkerSpiderfier(map);
 
-populatedPlacesLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
+var popup = new L.Popup();
+oms.addListener("click", function (marker) {
+  console.log(marker);
+  popup.setContent(marker.desc);
+  popup.setLatLng(marker.getLatLng());
+  map.openPopup(popup);
+});
 
-function createPopup(event) {
-  popup.setLatLng(event.latLng);
+oms.addListener("spiderfy", function (markers) {
+  map.closePopup();
+});
 
-  if (!popup.isOpen()) {
-    var data = event.data;
-    var content = "<div>";
 
-    var keys = ["name", "location", "description"];
 
-    content += `
-    <div class="popupHeaderStyle"> 
-      ${data.name}
-    </div> 
-    <div class="popupEntryStyle"> 
-      ${data.location}
-    </div>
-    <p class="popupEntryStyle"> 
-      ${data.description}
-    </p>
-    `;
-    popup.setContent("" + content);
-    popup.openOn(map);
-  }
-}
+// const popup = L.popup({ closeButton: true });
+
+// populatedPlacesLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
+
+// function createPopup(event) {
+//   popup.setLatLng(event.latLng);
+
+//   if (!popup.isOpen()) {
+//     var data = event.data;
+//     var content = "<div>";
+
+//     var keys = ["name", "location", "description"];
+
+//     content += `
+//     <div class="popupHeaderStyle"> 
+//       ${data.name}
+//     </div> 
+//     <div class="popupEntryStyle"> 
+//       ${data.location}
+//     </div>
+//     <p class="popupEntryStyle"> 
+//       ${data.description}
+//     </p>
+//     `;
+//     popup.setContent("" + content);
+//     popup.openOn(map);
+//   }
+// }
 
 L.control
   .attribution({
