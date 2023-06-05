@@ -3,6 +3,8 @@ var basemap = L.tileLayer(
   {}
 );
 
+const cartoSourceMarkers = "pacificislandsmapdata";
+
 var map = L.map("map", {
   center: [0.1, 149.68],
   zoom: 4,
@@ -15,14 +17,66 @@ var map = L.map("map", {
   attributionControl: false,
 });
 
+const markersByCountry = {}
+let sql = new cartodb.SQL({ user: "csis" })
+sql
+  .execute("SELECT * FROM csis." + cartoSourceMarkers)
+  .done(function (data) {
+    console.log(data);
+    const rows = data.rows;
+    let latLngArr = [];
+    rows.forEach((row) => {
+      let latLong = row.lat + ", " + row.long;
+      let markerName = row.country_ownership.toLowerCase();
+      // if (!latLngArr.includes(latLong)) {
+      //   latLngArr.push(latLong);
+      // } else {
+      //   row.lat = row.lat + (Math.random() * (0.15 - 0.05) + 0.05);
+      //   latLong = row.lat + ", " + row.long;
+      //   latLngArr.push(latLong);
+      // }
+
+      let marker = L.marker([row.lat, row.long], {
+        riseOnHover: false,
+        data: null,
+      });
+
+      marker.data = row;
+      oms.addMarker(marker);
+    });
+
+    /* -------------------- Set up spiderfier event listeners ------------------- */
+    oms.addListener("click", function (marker) {
+      console.log(marker);
+      if (marker.data.formal_name === "") {
+        popup.setContent(
+          "<p class='leaflet-popup-content--no-name'>Name not available</p>"
+        );
+      } else {
+        popup.setContent(marker.data.formal_name);
+      }
+      popup.setLatLng(marker.getLatLng());
+      map.openPopup(popup);
+    });
+
+    oms.addListener("spiderfy", function (markers) {
+      map.closePopup();
+    });
+  })
+  .error(function (errors) {
+    // errors contains a list of errors
+    console.log("errors:" + errors);
+  });
+
 const client = new carto.Client({
-  apiKey: "KTs6hE1ilX2T9KEHzbHPfA",
+  apiKey: "PeizYXLqqBZGs4RwvSnVjA",
   username: "csis",
 });
 
 const populatedPlacesSource = new carto.source.SQL(
   "SELECT * FROM pacificislandsmapdata"
 );
+
 const populatedPlacesStyle = new carto.style.CartoCSS(`
   #layer {
     marker-width: 12;
@@ -48,19 +102,13 @@ client.addLayer(populatedPlacesLayer);
 
 client.getLeafletLayer().bringToFront().addTo(map);
 
-var oms = new OverlappingMarkerSpiderfier(map);
+let omsOptions = {
+  keepSpiderfied: true,
+  nearbyDistance: 35,
+  circleSpiralSwitchover: 3,
+};
 
-var popup = new L.Popup();
-oms.addListener("click", function (marker) {
-  console.log(marker);
-  popup.setContent(marker.desc);
-  popup.setLatLng(marker.getLatLng());
-  map.openPopup(popup);
-});
-
-oms.addListener("spiderfy", function (markers) {
-  map.closePopup();
-});
+const oms = new OverlappingMarkerSpiderfier(map, omsOptions);
 
 
 
@@ -87,7 +135,7 @@ oms.addListener("spiderfy", function (markers) {
 //     <p class="popupEntryStyle"> 
 //       ${data.description}
 //     </p>
-//     `;
+//     </div>`;
 //     popup.setContent("" + content);
 //     popup.openOn(map);
 //   }
