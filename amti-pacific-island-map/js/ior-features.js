@@ -18,6 +18,19 @@ var map = L.map("map", {
 });
 
 const markersByCountry = {}
+var oms = new OverlappingMarkerSpiderfier(map)
+let omsOptions = {
+  keepSpiderfied: true,
+  nearbyDistance: 35,
+  circleSpiralSwitchover: 3,
+}
+
+var lightIcon = L.Icon.Default;
+var darkIcon = L.Icon.Default.extend({
+  options: { iconUrl: L.Icon.Default.imagePath + "/marker-desat.png" },
+})
+var bounds = new L.LatLngBounds()
+
 let sql = new cartodb.SQL({ user: "csis" })
 sql
   .execute("SELECT * FROM csis." + cartoSourceMarkers)
@@ -26,42 +39,56 @@ sql
     const rows = data.rows;
     let latLngArr = [];
     rows.forEach((row) => {
-      let latLong = row.lat + ", " + row.long;
-      let markerName = row.country_ownership.toLowerCase();
-      // if (!latLngArr.includes(latLong)) {
-      //   latLngArr.push(latLong);
-      // } else {
-      //   row.lat = row.lat + (Math.random() * (0.15 - 0.05) + 0.05);
-      //   latLong = row.lat + ", " + row.long;
-      //   latLngArr.push(latLong);
-      // }
+      // let latLong = row.lat + ", " + row.long;
+      let loc = new L.LatLng(row.lat, row.long)
+      console.log(loc)
+      bounds.extend(loc)
+      let marker = new L.Marker(loc, { icon: new lightIcon})
+      marker.desc = row.description
+      map.addLayer(marker)
+      oms.addMarker(marker)
+    })
+    map.fitBounds(bounds)
 
-      let marker = L.marker([row.lat, row.long], {
-        riseOnHover: false,
-        data: null,
+    var popup = new L.Popup({
+      closeButton: false,
+      offset: new L.Point(0.5, -24),
+    })
+
+      oms.addListener("click", function (marker) {
+        popup.setContent(marker.desc);
+        popup.setLatLng(marker.getLatLng());
+        map.openPopup(popup);
       });
-
-      marker.data = row;
-      oms.addMarker(marker);
-    });
+      oms.addListener("spiderfy", function (markers) {
+        for (var i = 0, len = markers.length; i < len; i++)
+          markers[i].setIcon(new lightIcon());
+        map.closePopup();
+      });
+      oms.addListener("unspiderfy", function (markers) {
+        for (var i = 0, len = markers.length; i < len; i++)
+          markers[i].setIcon(new darkIcon());
+      });
+    // from here https://github.com/jawj/OverlappingMarkerSpiderfier-Leaflet/blob/gh-pages/demo.html
+    // i need to continue on line 44
 
     /* -------------------- Set up spiderfier event listeners ------------------- */
-    oms.addListener("click", function (marker) {
-      console.log(marker);
-      if (marker.data.formal_name === "") {
-        popup.setContent(
-          "<p class='leaflet-popup-content--no-name'>Name not available</p>"
-        );
-      } else {
-        popup.setContent(marker.data.formal_name);
-      }
-      popup.setLatLng(marker.getLatLng());
-      map.openPopup(popup);
-    });
+    // oms.addListener("click", function (marker) {
+    //   console.log(marker);
+    //   if (marker.data.formal_name === "") {
+    //     popup.setContent(
+    //       "<p class='leaflet-popup-content--no-name'>Name not available</p>"
+    //     );
+    //   } else {
+    //     popup.setContent(marker.data.formal_name);
+    //   }
+    //   popup.setLatLng(marker.getLatLng());
+    //   map.openPopup(popup);
+    // });
 
-    oms.addListener("spiderfy", function (markers) {
-      map.closePopup();
-    });
+    // oms.addListener("spiderfy", function (markers) {
+    //   map.closePopup();
+    // });
   })
   .error(function (errors) {
     // errors contains a list of errors
@@ -102,13 +129,7 @@ client.addLayer(populatedPlacesLayer);
 
 client.getLeafletLayer().bringToFront().addTo(map);
 
-let omsOptions = {
-  keepSpiderfied: true,
-  nearbyDistance: 35,
-  circleSpiralSwitchover: 3,
-};
-
-const oms = new OverlappingMarkerSpiderfier(map, omsOptions);
+// const oms = new OverlappingMarkerSpiderfier(map, omsOptions);
 
 
 
