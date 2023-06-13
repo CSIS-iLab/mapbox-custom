@@ -15,14 +15,13 @@
 
     <script src="https://unpkg.com/babel-polyfill@6.26.0/dist/polyfill.js"></script>
     <!-- Include Leaflet -->
-    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
-    <link
-      href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
-      rel="stylesheet"
-    />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+ <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
     <!-- Include CARTO.js -->
     <script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/cartodb.js"></script>
-    <!-- <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script> -->
     <script src="https://libs.cartocdn.com/carto.js/v4.1.11/carto.min.js"></script>
     <link href="https://carto.com/developers/carto-js/examples/maps/public/style.css" rel="stylesheet">
 
@@ -70,7 +69,7 @@
           </header>
           
           <section>
-            <p class="translate description open-sans mobile-toggle">Explore a map of recent and ongoing strategic investments and facility upgrades in the Pacific. Click below to toggle by country:</p>
+            <p class="translate description open-sans mobile-toggle">Explore a map of recent and ongoing strategic investments and facility upgrades in the Pacific.</p>
             <div class="separator mobile-toggle"></div>
             <div id="controls">
             <div id="info">
@@ -80,14 +79,11 @@
               <ul class="actions">
                 <li>
                   <label for="United States"
-                    ><input
-                      class="widget checkbox"
-                      type="checkbox"
+                    ><span class="colorKey"
                       name="United States"
-                      id="United States"
-                      checked=""
-                    /><span class="colorKey"></span
-                    ><span
+                      id="United States"  
+                      ></span
+                      ><span
                       class="itemText"
                       style="transform: translateY(14.1667%);"
                       >United States</span
@@ -97,13 +93,10 @@
 
                 <li>
                   <label for="Australia"
-                    ><input
-                      class="widget checkbox"
-                      type="checkbox"
+                    ><span class="colorKey"
                       name="Australia"
                       id="Australia"
-                      checked=""
-                    /><span class="colorKey"></span
+                    ></span
                     ><span
                       class="itemText"
                       style="transform: translateY(14.1667%);"
@@ -113,13 +106,10 @@
                 </li>
                 <li>
                   <label for="China"
-                    ><input
-                      class="widget checkbox"
-                      type="checkbox"
+                    ><span class="colorKey"
                       name="China"
                       id="China"
-                      checked=""
-                    /><span class="colorKey"></span
+                    ></span
                     ><span
                       class="itemText"
                       style="transform: translateY(14.1667%);"
