@@ -3,26 +3,106 @@ var basemap = L.tileLayer(
   {}
 );
 
+const cartoSourceMarkers = "pacificislandsmapdata";
+
 var map = L.map("map", {
   center: [0.1, 149.68],
-  zoom: 4,
-  maxZoom: 12,
+  zoom: 5,
+  maxZoom: 10,
   scrollWheelZoom: true,
-  minZoom: 3,
+  minZoom: 4,
   zoomControl: true,
   scrollWheelZoom: true,
   layers: [basemap],
   attributionControl: false,
 });
 
+const markersByCountry = {}
+let omsOptions = {
+  keepSpiderfied: false,
+  nearbyDistance: 20  ,
+  circleSpiralSwitchover: 3,
+}
+var oms = new OverlappingMarkerSpiderfier(map, omsOptions)
+
+var lightIcon = L.Icon.Default;
+var transparentIcon = L.divIcon({
+  className: "transparent-icon"
+});
+var myIcon = L.divIcon({
+  className: "my-div-icon"
+});
+
+var bounds = new L.LatLngBounds()
+
+let sql = new cartodb.SQL({ user: "csis" })
+sql
+  .execute("SELECT * FROM csis." + cartoSourceMarkers)
+  .done(function (data) {
+    const rows = data.rows;
+    rows.forEach((row) => {
+      let loc = new L.LatLng(row.lat, row.long)
+      bounds.extend(loc)
+      let marker = new L.Marker(loc, { icon: transparentIcon })
+      marker.desc = row.description
+      marker.name = row.name
+      marker.location = row.location
+      map.addLayer(marker)
+      oms.addMarker(marker)
+    })
+    map.fitBounds(bounds)
+
+    var popup = new L.Popup({
+      closeButton: true,
+      offset: new L.Point(0.5, -24),
+    })
+
+    oms.addListener("click", function (marker) {
+          var content = "<div>";
+
+          content += `
+          <div class="popupHeaderStyle">
+            ${marker.name}
+          </div>
+          <div class="popupEntryStyle">
+            ${marker.location}
+          </div>
+          <p class="popupEntryStyle">
+            ${marker.desc}
+          </p>
+          </div>`;
+      popup.setContent(content);
+      popup.setLatLng(marker.getLatLng())
+      map.openPopup(popup);
+    })
+
+    oms.addListener("spiderfy", function (markers) {
+      console.log(markers.length)
+      for (var i = 0, len = markers.length; i < len; i++)
+        markers[i].setIcon(myIcon);
+      map.closePopup()
+    })
+
+      oms.addListener("unspiderfy", function (markers) {
+        for (var i = 0, len = markers.length; i < len; i++)
+          markers[i].setIcon(transparentIcon);
+      })
+  // from here https://github.com/jawj/OverlappingMarkerSpiderfier-Leaflet/blob/gh-pages/demo.html
+  })
+  .error(function (errors) {
+    // errors contains a list of errors
+    console.log("errors:" + errors);
+  });
+
 const client = new carto.Client({
-  apiKey: "KTs6hE1ilX2T9KEHzbHPfA",
+  apiKey: "PeizYXLqqBZGs4RwvSnVjA",
   username: "csis",
 });
 
 const populatedPlacesSource = new carto.source.SQL(
   "SELECT * FROM pacificislandsmapdata"
 );
+
 const populatedPlacesStyle = new carto.style.CartoCSS(`
   #layer {
     marker-width: 12;
@@ -42,40 +122,11 @@ const populatedPlacesLayer = new carto.layer.Layer(
   {
     featureOverColumns: ["name", "location", "description"],
   }
-);
+)
 
-client.addLayer(populatedPlacesLayer);
+client.addLayer(populatedPlacesLayer)
 
-client.getLeafletLayer().bringToFront().addTo(map);
-
-const popup = L.popup({ closeButton: true });
-
-populatedPlacesLayer.on(carto.layer.events.FEATURE_CLICKED, createPopup);
-
-function createPopup(event) {
-  popup.setLatLng(event.latLng);
-
-  if (!popup.isOpen()) {
-    var data = event.data;
-    var content = "<div>";
-
-    var keys = ["name", "location", "description"];
-
-    content += `
-    <div class="popupHeaderStyle"> 
-      ${data.name}
-    </div> 
-    <div class="popupEntryStyle"> 
-      ${data.location}
-    </div>
-    <p class="popupEntryStyle"> 
-      ${data.description}
-    </p>
-    `;
-    popup.setContent("" + content);
-    popup.openOn(map);
-  }
-}
+client.getLeafletLayer().bringToFront().addTo(map)
 
 L.control
   .attribution({
@@ -85,52 +136,3 @@ L.control
     'Data by <a href="https://amti.csis.org" target="_blank">CSIS AMTI</a>, Leaflet contributors'
   )
   .addTo(map);
-
-var checks = Array.from(
-  document.querySelectorAll(".country_ownership ul input")
-).map(function (checkbox) {
-  return checkbox.name;
-});
-
-var filter_checks = new carto.filter.Category("country_ownership", {
-  notIn: checks,
-});
-
-document
-  .querySelector(".country_ownership ul")
-  .addEventListener("click", function (e) {
-    var checkbox = e.target.type === "checkbox" ? e.target : null;
-
-    if (checkbox) {
-      var checked = Array.from(
-        document.querySelectorAll(".country_ownership ul input:checked")
-      ).map(function (checkbox) {
-        return checkbox.name;
-      });
-
-      var notChecked = checks.filter(function (name) {
-        return checked.indexOf(name) < 0;
-      });
-
-      var filter_checked = new carto.filter.Category("country_ownership", {
-        in: checked,
-      });
-
-      var filter_notChecked = new carto.filter.Category("country_ownership", {
-        notIn: notChecked,
-      });
-
-      var filters =
-        checkbox.name === "OTHERS" && checkbox.checked
-          ? [filter_checks, filter_checked]
-          : checkbox.name === "OTHERS" && !checkbox.checked
-          ? [filter_checked]
-          : [filter_notChecked];
-
-      populatedPlacesSource.getFilters().forEach(function (f) {
-        populatedPlacesSource.removeFilter(f);
-      });
-
-      populatedPlacesSource.addFilter(new carto.filter.OR(filters));
-    }
-  });

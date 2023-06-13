@@ -51,7 +51,7 @@ div#results {
 
 .ul {
   font: 12px/16px 'Open Sans';
-  cursor: pointer;
+  /* cursor: pointer; */
   color: #000;
 }
 
@@ -67,17 +67,17 @@ div#results {
   border-radius: 20px;
 }
 
-input[name='United States'] + .colorKey {
+.colorKey[name='United States'] {
   background-color: #3969ac;
   border-radius: 50%;
 }
 
-input[name='Australia'] + .colorKey {
+.colorKey[name='Australia'] {
   background-color: #11a579;
   border-radius: 50%;
 }
 
-input[name='China'] + .colorKey {
+.colorKey[name='China'] {
   background-color: #ca6d92;
   border-radius: 50%;
 }
@@ -290,4 +290,15 @@ leaflet-control {
   aside.toolbox .ui:not(:checked) ~ .box {
     display: none;
   }
+}
+
+
+.transparent-icon {
+  background-color: transparent;
+}
+
+.my-div-icon {
+  background-color: transparent;
+  border-radius: 50%;
+  border: 1px solid gray; 
 }
