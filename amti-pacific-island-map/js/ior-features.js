@@ -1,21 +1,20 @@
-var basemap = L.tileLayer(
+const basemap = L.tileLayer(
   "https://api.mapbox.com/styles/v1/ilabmedia/cj84s9bet10f52ro2lrna50yg/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiaWxhYm1lZGlhIiwiYSI6ImNpbHYycXZ2bTAxajZ1c2tzdWU1b3gydnYifQ.AHxl8pPZsjsqoz95-604nw",
   {}
-);
+)
 
 const cartoSourceMarkers = "pacificislandsmapdata";
 
 var map = L.map("map", {
   center: [0.1, 149.68],
+  zoomControl: true,
   zoom: 5,
   maxZoom: 10,
-  scrollWheelZoom: true,
   minZoom: 4,
-  zoomControl: true,
   scrollWheelZoom: true,
   layers: [basemap],
   attributionControl: false,
-});
+})
 
 const markersByCountry = {}
 let omsOptions = {
@@ -23,15 +22,15 @@ let omsOptions = {
   nearbyDistance: 20  ,
   circleSpiralSwitchover: 3,
 }
+
 var oms = new OverlappingMarkerSpiderfier(map, omsOptions)
 
-var lightIcon = L.Icon.Default;
 var transparentIcon = L.divIcon({
   className: "transparent-icon"
-});
+})
 var myIcon = L.divIcon({
   className: "my-div-icon"
-});
+})
 
 var bounds = new L.LatLngBounds()
 
@@ -92,16 +91,16 @@ sql
   .error(function (errors) {
     // errors contains a list of errors
     console.log("errors:" + errors);
-  });
+  })
 
 const client = new carto.Client({
   apiKey: "PeizYXLqqBZGs4RwvSnVjA",
   username: "csis",
-});
+})
 
 const populatedPlacesSource = new carto.source.SQL(
   "SELECT * FROM pacificislandsmapdata"
-);
+)
 
 const populatedPlacesStyle = new carto.style.CartoCSS(`
   #layer {
@@ -114,7 +113,7 @@ const populatedPlacesStyle = new carto.style.CartoCSS(`
     marker-line-color: #fff;
     marker-line-opacity: 0.5;
   }
-`);
+`)
 
 const populatedPlacesLayer = new carto.layer.Layer(
   populatedPlacesSource,
@@ -135,4 +134,4 @@ L.control
   .setPrefix(
     'Data by <a href="https://amti.csis.org" target="_blank">CSIS AMTI</a>, Leaflet contributors'
   )
-  .addTo(map);
+  .addTo(map)

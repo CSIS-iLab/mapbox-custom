@@ -306,3 +306,8 @@ leaflet-control {
   border-radius: 50%;
   border: 1px solid gray; 
 }
+
+/* hide zoom bar level */
+.leaflet-control-zoomslider-wrap {
+  display: none;
+}
